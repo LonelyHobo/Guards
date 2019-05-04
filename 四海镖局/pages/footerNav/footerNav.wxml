@@ -1,0 +1,7 @@
+<!-- 底部导航 -->
+<view class="footer-height"></view>
+<view class="footerNav">
+  <view class="ul">
+    <view class="li {{item.code=='seek'?'seek':'lis'}}" data-code="{{item.code}}" bindtap="btnclick" wx:for="{{footerlist}}" wx:for-index="index" wx:for-item="item"><view><text>{{item.name}}</text></view></view>
+  </view>
+</view>

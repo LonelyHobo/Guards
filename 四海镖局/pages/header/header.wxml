@@ -1,0 +1,13 @@
+<view>
+  <view class="header">
+    <view class="header-location">
+    <navigator url="../location/location" hover-class="navigator-hover">{{city}}
+      <text class="iconfont icon-xia"></text></navigator>
+    </view>
+    <text class="header-title">{{headertitle}}</text>
+    <view class="header-search">
+      <text class="iconfont icon-sousuo"></text>
+    </view>
+  </view>
+  <view class="header-height"></view>
+</view>

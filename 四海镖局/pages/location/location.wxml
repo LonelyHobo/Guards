@@ -1,0 +1,7 @@
+<!--pages/location/location.wxml-->
+<view class="location" >
+<view class="location-head" >
+  <view class="head-close"><navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator></view>
+  <text class='head-title'>选择城市</text>
+</view>
+</view>
