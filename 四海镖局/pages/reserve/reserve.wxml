@@ -1,0 +1,55 @@
+ <view class="service">
+ <!-- 轮播 -->
+  <swiper class="service-banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
+    <swiper-item>
+      <image src='/images/banner2.jpg' mode="widthFix" />
+    </swiper-item>
+    <swiper-item>
+      <image src='/images/banner2.jpg' mode="widthFix" />
+    </swiper-item>
+    <swiper-item>
+      <image src='/images/banner2.jpg' mode="widthFix" />
+    </swiper-item>
+  </swiper>
+  <!-- 列表 -->
+  <view class="service-list">
+    <view class="ul" >
+      <view class="li" >
+        <view class="img" >
+          <image src="/images/person1.png" mode="widthFix" ></image>
+        </view>
+        <view class="text" >
+          <view class="title" >隆门镖局（广州）安全服务有限公司</view>
+          <view class="describe" >全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司告诉您如何做一名专业的私人保镖。</view>
+        </view>
+      </view>
+      <view class="li" >
+        <view class="img" >
+          <image src="/images/person2.png" mode="widthFix" ></image>
+        </view>
+        <view class="text" >
+          <view class="title" >四海镖局（深圳）安全服务有限公司</view>
+          <view class="describe" >根据雇主实际情况量身制定安全防护方案，对于临时突发状况制定应急处置安全防御方案。</view>
+        </view>
+      </view>
+      <view class="li" >
+        <view class="img" >
+          <image src="/images/person3.png" mode="widthFix" ></image>
+        </view>
+        <view class="text" >
+          <view class="title" >六合镖局（杭州）安全服务有限公司</view>
+          <view class="describe" >及时分析现场状况，做出多套防范计划及安全预演，履行司机职责，对车辆进行安全检验、保养、维修等工作。</view>
+        </view>
+      </view>
+      <view class="li" >
+        <view class="img" >
+          <image src="/images/person1.png" mode="widthFix" ></image>
+        </view>
+        <view class="text" >
+          <view class="title" >八荒镖局（上海）安全服务有限公司</view>
+          <view class="describe" >私人保镖市场为何人才如此稀缺？为何私人保镖如此受欢迎？广州保镖公司告诉你答案！</view>
+        </view>
+      </view>
+    </view>
+  </view>
+ </view>

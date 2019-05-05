@@ -8,6 +8,7 @@
   background-color: white;
   box-shadow: 0 0 10rpx rgba(0, 0, 0, 0.2);
   z-index: 9999;
+  text-align:center;
 }
 
 .header .header-title {

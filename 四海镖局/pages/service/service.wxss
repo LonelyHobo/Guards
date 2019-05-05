@@ -1,1 +1,128 @@
 /* pages/service/service.wxss */
+
+/* 顶部 */
+
+.service-head {
+  display: inline-block;
+  border: 3rpx solid #5677fc;
+  border-radius: 10rpx;
+  margin-top: 25rpx;
+  overflow: hidden;
+}
+
+.service-head text {
+  padding: 0 20rpx;
+  background-color: white;
+  font-size: 30rpx;
+  line-height: 50rpx;
+  display: block;
+  height: 50rpx;
+  float: left;
+  color: #5677fc;
+}
+
+.service-head text.on {
+  background-color: #5677fc;
+  color: white;
+}
+
+/* 轮播 */
+
+.service-banner {
+  height: 300rpx;
+}
+
+.service-banner swiper-item image {
+  width: 100%;
+  min-height: 100%;
+}
+
+/* 列表 */
+
+.service-list {
+  margin: 25rpx 20rpx;
+}
+
+.service-list .ul .li {
+  border-top: 5rpx solid #ddd;
+  overflow: hidden;
+  padding: 20rpx 0;
+}
+.service-list .ul .li:last-child{
+  border-bottom: 5rpx solid #ddd;
+}
+.service-list .ul .li .img {
+  width: 150rpx;
+  height: 175rpx;
+  float: left;
+  overflow: hidden;
+}
+
+.service-list .ul .li .img image {
+  width: 100%;
+  min-height: 100%;
+}
+
+.service-list .ul .li .text {
+  margin-left: 170rpx;
+}
+
+.service-list .ul .li .title {
+  font-size: 30rpx;
+  line-height: 45rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height:45rpx;
+}
+
+.service-list .ul .li .describe {
+  font-size: 25rpx;
+  line-height: 40rpx;
+  height: 120rpx;
+  margin-top: 10rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* 顶部 */
+.service-nav{
+  position: fixed;
+  top:100rpx;
+  z-index: 9999;
+  background-color: white;
+  width:100%;
+  left:0;
+  height: 100rpx;
+}
+.service-nav .li{
+  width:50%;
+  float:left;
+  height:100rpx;
+  line-height: 100rpx;
+  text-align: center;
+}
+.service-nav .li view{
+  display: inline-block;
+}
+.service-nav .li view text{
+  font-size:30rpx;
+  float:left;
+  display: block;
+  height:100rpx;
+  line-height: 100rpx;
+}
+.service-nav .li view text.icon-xia{
+  font-size:15rpx;
+  margin-left:10rpx;
+  display: block;
+  height:100rpx;
+  line-height: 105rpx;
+  float:right;
+}
+.service-nav-height{
+  height: 100rpx;
+}

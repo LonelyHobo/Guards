@@ -8,7 +8,7 @@ Page({
   data: {
     motto: 'Hello World',
     userInfo: {},
-    route:"home",
+    route:"service",
     headertitle:"四海镖局",
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -19,6 +19,10 @@ Page({
       { name: '服务预约', code: 'reserve' },
       { name: '我的订单', code: 'orderform' },
     ],
+    servicelist:[
+      {name:'服务商',ischecked:'1'},
+      { name: '服务', ischecked: '0' }
+    ],
     province: '',
     city: '...',
     latitude: '',
@@ -27,6 +31,14 @@ Page({
   btnclick: function (obj){
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     this.setData({ route: code_ });
+  },
+  serviceclick:function(obj){
+    var code_ = obj.target.id || obj.currentTarget.id;
+    this.data.servicelist.forEach(function(value){
+      value.ischecked = '0';
+    })
+    this.data.servicelist[code_].ischecked ='1';
+    this.setData({ servicelist: this.data.servicelist });
   },
   //事件处理函数
   bindViewTap: function() {

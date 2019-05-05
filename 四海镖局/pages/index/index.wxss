@@ -2,6 +2,7 @@
 @import "../public/iconfont";
 @import "../header/header";
 @import "../footerNav/footerNav";
+@import "../service/service";
 /* 轮播 */
 .banner{
   height: 400rpx;
