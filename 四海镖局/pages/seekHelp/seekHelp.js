@@ -1,4 +1,4 @@
-// pages/seek/seek.js
+// pages/seekHelp/seekHelp.js
 Page({
 
   /**

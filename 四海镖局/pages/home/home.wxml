@@ -1,106 +1,45 @@
 <view class="home">
   <!-- 轮播 -->
-  <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
-    <swiper-item>
-      <image src='/images/banner1.jpg' />
-    </swiper-item>
-    <swiper-item>
-      <image src='/images/banner1.jpg' />
-    </swiper-item>
-    <swiper-item>
-      <image src='/images/banner1.jpg' />
-    </swiper-item>
-  </swiper>
-  <!-- 列表 -->
-  <view class="list">
-    <view class="list-head">
-      <text class="list-head-title">国内保镖服务</text>
-      <text class="list-head-open">全部18项服务 ></text>
-    </view>
-    <view class="list-content">
-      <view class="ul">
-        <view class="li">
-          <view>
-            <image src='/images/logo.png' />
-          </view>
-          <text>私人保镖服务</text>
-        </view>
-        <view class="li">
-          <view>
-            <image src='/images/logo.png' />
-          </view>
-          <text>女子保镖服务</text>
-        </view>
-        <view class="li">
-          <view>
-            <image src='/images/logo.png' />
-          </view>
-          <text>商务保镖服务</text>
-        </view>
-        <view class="li">
-          <view>
-            <image src='/images/logo.png' />
-          </view>
-          <text>明星保镖</text>
-        </view>
-        <view class="li">
-          <view>
-            <image src='/images/logo.png' />
-          </view>
-          <text>高危保镖</text>
-        </view>
-        <view class="li more">
-          <view>
-            <image src='/images/more.png' />
-          </view>
-          <text>More</text>
-        </view>
-      </view>
-    </view>
+  <view class='bannerContent'>
+    <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
+      <swiper-item>
+        <image src='/images/banner1_1.png' mode="widthFix" />
+      </swiper-item>
+      <swiper-item>
+        <image src='/images/banner1_1.png' mode="widthFix" />
+      </swiper-item>
+      <swiper-item>
+        <image src='/images/banner1_1.png' mode="widthFix" />
+      </swiper-item>
+    </swiper>
   </view>
-
-  <view class="list">
-    <view class="list-head">
-      <text class="list-head-title">海外保镖服务</text>
-      <text class="list-head-open">全部18项服务 ></text>
+  <!-- 特色服务 -->
+  <view class="tsfw">
+    <view class="top">
+      <view class="left">特色服务</view>
+      <view class="right">全部18项 <text class='iconfont icon-you1' ></text></view>
     </view>
-    <view class="list-content">
-      <view class="ul">
-        <view class="li">
-          <view>
-            <image src='/images/logo.png' />
+    <swiper class="ul"  duration="300" display-multiple-items="4">
+        <swiper-item class="li" data-code="{{item.code}}" bindtap="tsfwClick" wx:for="{{tsfwData}}" wx:for-index="index" wx:for-item="item">
+          <view class="img">
+            <image src='{{item.url}}' mode="widthFix" />
           </view>
-          <text>港澳地区保镖服务</text>
-        </view>
-        <view class="li">
-          <view>
-            <image src='/images/logo.png' />
-          </view>
-          <text>战乱地区保镖服务</text>
-        </view>
-        <view class="li">
-          <view>
-            <image src='/images/logo.png' />
-          </view>
-          <text>国际私人保镖卫队</text>
-        </view>
-        <view class="li">
-          <view>
-            <image src='/images/logo.png' />
-          </view>
-          <text>明星保镖</text>
-        </view>
-        <view class="li">
-          <view>
-            <image src='/images/logo.png' />
-          </view>
-          <text>高危保镖</text>
-        </view>
-        <view class="li more">
-          <view>
-            <image src='/images/more.png' />
-          </view>
-          <text>More</text>
+          <text class="text">{{item.title}}</text>
+        </swiper-item>
+    </swiper>
+  </view>
+<!-- 服务商 -->
+  <view class="fws">
+    <view class="top">
+      <view class="left">热推服务商</view>
+      <view class="right">全部18项 <text class='iconfont icon-you1' ></text></view>
+    </view>
+    <view class='ul' >
+      <view class="li"  data-code="{{item.code}}" bindtap="fwsClick" wx:for="{{fwsData}}" wx:for-index="index" wx:for-item="item">
+        <view class="img imgCenter" ><image src='{{item.url}}' mode="widthFix" /></view>
+        <view class="text" >
+          <view class="left">{{item.title}}</view>
+          <view class="right">查看详情 <text class='iconfont icon-you1' ></text></view>
         </view>
       </view>
     </view>

@@ -4,9 +4,9 @@
     "pages/header/header",
     "pages/location/location",
     "pages/reserve/reserve",
-    "pages/seek/seek",
     "pages/service/service",
     "pages/footerNav/footerNav",
+    "pages/seekHelp/seekHelp",
     "pages/logs/logs"
   ],
   "window": {

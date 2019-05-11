@@ -6,8 +6,8 @@
       </navigator>
     </view>
     <text class="header-title" wx:if="{{route=='home'}}">{{headertitle}}</text>
-    <view class="service-head" wx:if="{{route=='service'}}">
-      <text class="{{item.ischecked=='1'?'on':''}}" id="{{index}}" bindtap="serviceclick" wx:for="{{servicelist}}" wx:for-index="index" wx:for-item="item" >{{item.name}}</text>
+    <view class="service-head" wx:if="{{route=='service' || route=='reserve'}}">
+      <text class="{{item.ischecked=='1'?'on':''}}" id="{{item.code}}" bindtap="serviceclick" wx:for="{{servicelist}}" wx:for-index="index" wx:for-item="item" >{{item.name}}</text>
     </view>
     <view class="header-search">
       <text class="iconfont icon-sousuo"></text>
