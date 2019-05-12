@@ -1,15 +1,20 @@
-<view>
+<view wx:if="{{route!='orderform'}}">
   <view class="header">
-    <view class="header-location">
+    <view class="header-location" wx:if="{{route!='seekHelp' && route!='orderform'}}">
       <navigator url="../location/location" hover-class="navigator-hover">{{city}}
         <text class="iconfont icon-xia"></text>
       </navigator>
     </view>
     <text class="header-title" wx:if="{{route=='home'}}">{{headertitle}}</text>
+    <text class="header-title" wx:if="{{route=='seekHelp'}}">一键求助</text>
+    <text class="header-title" wx:if="{{route=='seek'}}">预约服务</text>
     <view class="service-head" wx:if="{{route=='service' || route=='reserve'}}">
       <text class="{{item.ischecked=='1'?'on':''}}" id="{{item.code}}" bindtap="serviceclick" wx:for="{{servicelist}}" wx:for-index="index" wx:for-item="item" >{{item.name}}</text>
     </view>
-    <view class="header-search">
+    <view class="header-search header-tel" wx:if="{{route=='seekHelp'}}">
+      <text class="iconfont icon-dianhua"></text>
+    </view>
+    <view class="header-search" wx:if="{{route!='seekHelp' && route!='orderform'}}">
       <text class="iconfont icon-sousuo"></text>
     </view>
   </view>

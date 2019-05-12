@@ -20,7 +20,7 @@
       <view class="right">全部18项 <text class='iconfont icon-you1' ></text></view>
     </view>
     <swiper class="ul"  duration="300" display-multiple-items="4">
-        <swiper-item class="li" data-code="{{item.code}}" bindtap="tsfwClick" wx:for="{{tsfwData}}" wx:for-index="index" wx:for-item="item">
+        <swiper-item class="li" data-code="{{item.code}}" data-title="{{item.title}}" bindtap="tsfwClick" wx:for="{{tsfwData}}" wx:for-index="index" wx:for-item="item">
           <view class="img">
             <image src='{{item.url}}' mode="widthFix" />
           </view>
@@ -35,7 +35,7 @@
       <view class="right">全部18项 <text class='iconfont icon-you1' ></text></view>
     </view>
     <view class='ul' >
-      <view class="li"  data-code="{{item.code}}" bindtap="fwsClick" wx:for="{{fwsData}}" wx:for-index="index" wx:for-item="item">
+      <view class="li"  data-code="{{item.code}}"  data-title="{{item.title}}" bindtap="fwsClick" wx:for="{{fwsData}}" wx:for-index="index" wx:for-item="item">
         <view class="img imgCenter" ><image src='{{item.url}}' mode="widthFix" /></view>
         <view class="text" >
           <view class="left">{{item.title}}</view>

@@ -1,0 +1,12 @@
+<!--pages/appointment/appointment.wxml-->
+<view class="appointement">
+  <view class="appointement-head">
+    <view class="head-close">
+      <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
+    </view>
+    <text class='head-title'>{{serviceName}}</text>
+  </view>
+  <view class="header-height"></view>
+  <image src='/images/serviceDetails.jpg' bindtap='appointmentClick' mode="widthFix" style="width:100%;" />
+
+</view>

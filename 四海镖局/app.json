@@ -6,7 +6,12 @@
     "pages/reserve/reserve",
     "pages/service/service",
     "pages/footerNav/footerNav",
+    "pages/seek/seek",
     "pages/seekHelp/seekHelp",
+    "pages/orderform/orderform",
+    "pages/serviceDetails/serviceDetails",
+    "pages/reserveDetails/reserveDetails",
+    "pages/appointment/appointment",
     "pages/logs/logs"
   ],
   "window": {

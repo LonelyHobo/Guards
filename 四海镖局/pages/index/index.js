@@ -10,7 +10,9 @@ Page({
   data: {
     motto: 'Hello World',
     userInfo: {},
-    route:"service",
+    userTopUrl:'/images/icon_top.png',
+    userName:'登陆/注册',
+    route:"home",
     headertitle:"四海镖局",
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -54,9 +56,46 @@ Page({
       { title: '特色服务', code: '2', icon: 'icon-xia1', on: '' }
     ],
     reserveListData:[
-      { title: '私人保镖服务', url: '/images/icon_list_1.png', describe:'全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何'},
-      { title: '家庭保镖服务', url: '/images/icon_list_1.png', describe: '全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何' },
-      { title: '物资押运', url: '/images/icon_list_1.png', describe: '全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何' }
+      { title: '私人保镖服务', serviceName: '香港卫安', serviceArea: '中国香港',code:'1', url: '/images/icon_list_1.png', describe:'全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何'},
+      { title: '家庭保镖服务', serviceName: '北京万家', serviceArea: '北京', code: '2', url: '/images/icon_list_1.png', describe: '全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何' },
+      { title: '物资押运', serviceName: '香港卫安', serviceArea: '中国香港', code: '3', url: '/images/icon_list_1.png', describe: '全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何' }
+    ],
+    orderNavData:[
+      {
+        title: '全部', code: '1', on: 'on', datalist: [{
+          title: '特种保镖', code: '1_1', url: '/images/orderform_list.jpg', order: '8888888', state: '服务中', describe: '处理一般突发安全威胁或安全伤害事件，进行人身安全保护', money: '面谈商议'
+        },
+          {
+            title: '私人保镖', code: '1_2', url: '/images/orderform_list.jpg', order: '8888888', state: '服务中', describe: '处理一般突发安全威胁或安全伤害事件，进行人身安全保护', money: '面谈商议'
+          },] },
+      {
+        title: '派单中', code: '2', on: '', datalist: [{
+          title: '特种保镖', code: '1_1', url: '/images/orderform_list.jpg', order: '8888888', state: '派单中', describe: '处理一般突发安全威胁或安全伤害事件，进行人身安全保护', money: '面谈商议'
+        },
+        {
+          title: '私人保镖', code: '1_2', url: '/images/orderform_list.jpg', order: '8888888', state: '派单中', describe: '处理一般突发安全威胁或安全伤害事件，进行人身安全保护', money: '面谈商议'
+        },] },
+      {
+        title: '服务中', code: '3', on: '', datalist: [{
+          title: '特种保镖', code: '1_1', url: '/images/orderform_list.jpg', order: '8888888', state: '服务中', describe: '处理一般突发安全威胁或安全伤害事件，进行人身安全保护', money: '面谈商议'
+        },
+        {
+          title: '私人保镖', code: '1_2', url: '/images/orderform_list.jpg', order: '8888888', state: '服务中', describe: '处理一般突发安全威胁或安全伤害事件，进行人身安全保护', money: '面谈商议'
+        },] },
+      {
+        title: '已完成', code: '4', on: '', datalist: [{
+          title: '特种保镖', code: '1_1', url: '/images/orderform_list.jpg', order: '8888888', state: '已完成', describe: '处理一般突发安全威胁或安全伤害事件，进行人身安全保护', money: '面谈商议'
+        },
+        {
+          title: '私人保镖', code: '1_2', url: '/images/orderform_list.jpg', order: '8888888', state: '已完成', describe: '处理一般突发安全威胁或安全伤害事件，进行人身安全保护', money: '面谈商议'
+        },] },
+    ],
+    orderData:[
+      {
+        title: '特种保镖', code: '1_1', url: '/images/orderform_list.jpg', order: '8888888', state: '服务中', describe: '处理一般突发安全威胁或安全伤害事件，进行人身安全保护', money:'面谈商议'},
+      {
+        title: '私人保镖', code: '1_2', url: '/images/orderform_list.jpg', order: '8888888', state: '服务中', describe: '处理一般突发安全威胁或安全伤害事件，进行人身安全保护', money: '面谈商议'
+      },
     ],
     reserveListHead:'国内服务列表',
     province: '',
@@ -72,9 +111,53 @@ Page({
     serviceAreaMinData:[],
     serviceAreaCheckedData:[]
   },
+  //服务商点击
+  fwsClick:function(obj){
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
+    wx.navigateTo({
+      url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + title_
+    })
+  },
+  //首页服务点击
+  tsfwClick: function (obj) {
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
+    wx.navigateTo({
+      url: '../reserveDetails/reserveDetails?code=' + code_  + '&title=' + title_
+    })
+  },
+  //订单切换
+  orderNavClick: function (obj){
+    var the = this;
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var datalist = [];
+    this.data.orderNavData.forEach(function (value, index) {
+      value.on = '';
+      if (value.code == code_) {
+        the.data.orderNavData[index].on = 'on';
+        datalist = the.data.orderNavData[index].datalist
+      }
+    })
+    this.setData({ orderNavData: this.data.orderNavData, orderData: datalist });
+  },
+  //登陆
+  orderLogin: function (obj){
+    
+  },
+  //一键求助
+  seekhelpSave: function (obj){
+
+  },
   //服务列表点击
   reserveListDataClick:function(obj){
-
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var name_ = obj.target.dataset.name || obj.currentTarget.dataset.name;
+    var area_ = obj.target.dataset.area || obj.currentTarget.dataset.area;
+    var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
+    wx.navigateTo({
+      url: '../reserveDetails/reserveDetails?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
+    })
   },
   //服务分类选择
   reserveNavDataClick: function (obj){
@@ -120,9 +203,6 @@ Page({
       }
     })
     this.setData({ serviceAreaData: this.data.serviceAreaData, serviceAreaMinData: datalist });
-  },
-  tsfwClick: function (obj){
-    console.log(obj);
   },
   //服务地区 特色服务
   serviceNavClick: function (obj){
@@ -175,6 +255,14 @@ Page({
       }
     });
     this.setData({ servicelist: this.data.servicelist, serviceRoute: code_});
+  },
+  //服务商点击
+  serviceListClick: function (obj){
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var name_ = obj.target.dataset.name || obj.currentTarget.dataset.name;
+    wx.navigateTo({
+      url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + name_
+    })
   },
   //事件处理函数
   bindViewTap: function() {
@@ -327,7 +415,6 @@ Page({
     };
   },
   getUserInfo: function(e) {
-    console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,

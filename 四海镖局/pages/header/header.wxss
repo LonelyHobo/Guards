@@ -53,3 +53,23 @@
   line-height: 50rpx;
   display: block;
 }
+
+.header-tel{
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  min-width: 90rpx;
+  height: 50rpx;
+  font-size:30rpx;
+  line-height: 50rpx;
+}
+.header-tel text.icon-dianhua{
+  font-size:40rpx;
+  float:right;
+  height: 50rpx;
+  margin-left:10rpx;
+  line-height: 50rpx;
+  display: block;
+}

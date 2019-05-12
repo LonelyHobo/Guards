@@ -4,8 +4,9 @@
   <include src="../home/home.wxml" wx:if="{{route=='home'}}"></include>
   <include src="../service/service.wxml" wx:if="{{route=='service' && serviceRoute=='service'}}"></include>
   <include src="../reserve/reserve.wxml" wx:if="{{route=='service' && serviceRoute=='reserve'}}"></include>
+  <include src="../seek/seek.wxml" wx:if="{{route=='seek'}}"></include>
   <include src="../seekHelp/seekHelp.wxml" wx:if="{{route=='seekHelp'}}"></include>
-  <include src="../orderform/orderform.wxml" wx:if="{{route=='orderform '}}"></include>
+  <include src="../orderform/orderform.wxml" wx:if="{{route=='orderform'}}"></include>
   <include src="../seek/seek.wxml" wx:if="{{route=='seek '}}"></include>
   <include src="../footerNav/footerNav.wxml"></include>
 </view>

@@ -1,2 +1,4 @@
 <!--pages/seekHelp/seekHelp.wxml-->
-<text>pages/seekHelp/seekHelp.wxml</text>
+<view class="seekhelp">
+ <view class="seekhelp-text"><textarea placeholder='请告知我们您当前的需求信息' auto-focus="true" bindconfirm="seekhelpSave" ></textarea></view>
+</view>

@@ -1,0 +1,193 @@
+/* pages/orderform/orderform.wxss */
+.orderform-head{
+  height:150rpx;
+  overflow: hidden;
+  position: relative;
+  padding:55rpx 60rpx;
+}
+.orderform-head .back{
+  position: absolute;
+  left:0;
+  top:0;
+  width:100%;
+}
+.orderform-head .back image{
+  width:100%;
+}
+.orderform-head .img{
+  float:left; 
+  width:150rpx;
+  height:150rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  z-index: 9;
+}
+.orderform-head .img image{
+  width:100%;
+  height: 100%;
+}
+.orderform-head .right{
+  padding:20rpx 0;
+  margin-left:170rpx;
+  margin-right:80rpx;
+  position: relative;
+  z-index: 9;
+}
+.orderform-head .right .username{
+  font-size:35rpx;
+  font-weight: 600;
+  line-height: 40rpx;
+  height: 40rpx;
+  color:white;
+  display: block;
+}
+.orderform-head .right .userdata{
+  display: block;
+  margin-top:10rpx;
+  color:white;
+}
+.orderform-head .right .userdata text{
+  font-size:28rpx;
+  margin-right:10rpx;
+}
+.orderform-head .btn{
+  position: absolute;
+  right:60rpx;
+  top:0;
+  height: 260rpx;
+  line-height: 260rpx;
+}
+.orderform-head .btn text{
+  font-size:30rpx;
+  color:white;
+}
+.userLogin{
+  position: absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  right:0;
+  width:100%;
+  height:100%;
+  opacity: 0;
+  z-index: 99;
+}
+
+/* 列表 */
+.orderform-list{
+  background-color:#f5f5f5;
+}
+.orderform-list .list-title{
+  font-size:35rpx;
+  padding:30rpx 20rpx;
+}
+.orderform-list .list-nav{
+  background-color:white;
+  padding:0 5%;
+  height:100rpx;
+}
+.orderform-list .list-nav .li{
+  width:25%;
+  float:left;
+  line-height: 100rpx;
+  font-size:28rpx;
+  position: relative;
+  height: 100rpx;
+  text-align: center;
+}
+.orderform-list .list-nav .li.on{
+  color:#3d4bf6;
+}
+.orderform-list .list-nav .li.on::before{
+  content:'';
+  position: absolute;
+  bottom:0;
+  left:50%;
+  transform: translateX(-50%);
+  width:40rpx;
+  height:5rpx;
+  background-color:#3d4bf6;
+}
+.orderform-list .list-content .li{
+ margin:30rpx;
+  border-radius: 10rpx;
+  background-color:white;
+  overflow: hidden;
+}
+.orderform-list .list-content .li .top{
+  height: 100rpx;
+  line-height: 100rpx;
+   padding:0 30rpx;
+  border-bottom:1px solid #eeeeee;
+}
+.orderform-list .list-content .li .top .l{
+  font-size:32rpx;
+  float:left;
+  width:50%;
+}
+.orderform-list .list-content .li .top .r{
+  font-size:25rpx;
+  color:#999999;
+  text-align: right;
+  width:50%;
+  float:right;
+}
+.orderform-list .list-content .li .center{
+  overflow: hidden;
+  padding:25rpx 30rpx;
+}
+.orderform-list .list-content .li .center .l{
+  width:250rpx;
+  height: 150rpx;
+  float:left;
+  overflow: hidden;
+  background-color:#f5f5f5;
+}
+.orderform-list .list-content .li .center .l image{
+  width:100%;
+}
+.orderform-list .list-content .li .center .r{
+  margin-left:270rpx;
+}
+.orderform-list .list-content .li .center .r .title{
+  font-size:30rpx;
+}
+.orderform-list .list-content .li .center .r .describe{
+  margin-top:15rpx;
+  color:#999999;
+  line-height: 40rpx;
+  font-size:28rpx;
+  height: 80rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.orderform-list .list-content .li .bottom{
+  height: 100rpx;
+  padding:0 30rpx;
+}
+.orderform-list .list-content .li .bottom .l{
+  width:50%;
+  float:left;
+  font-size:28rpx;
+  line-height: 70rpx;
+}
+.orderform-list .list-content .li .bottom .r{
+  float:right;
+  width:50%;
+  text-align: right;
+}
+.orderform-list .list-content .li .bottom .r .btn{
+  display: inline-block;
+  text-align: center;
+  color:white;
+  font-size:25rpx;
+  width:180rpx;
+  height:70rpx;
+  line-height: 70rpx;
+  border-radius: 35rpx;
+  background:-webkit-linear-gradient(#f69d3e, #f6b73e);
+}

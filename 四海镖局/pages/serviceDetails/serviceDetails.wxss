@@ -1,0 +1,126 @@
+/* pages/appointment/appointment.wxss */
+.header-height {
+  height: 100rpx;
+}
+.appointement-head {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100rpx;
+  background-color: white;
+  border-bottom:1px solid #eeeeee;
+  z-index: 9999;
+}
+
+.appointement-head .head-title {
+  font-size: 35rpx;
+  line-height: 100rpx;
+  display: block;
+  text-align: center;
+}
+.appointement-head .head-close {
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  min-width: 90rpx;
+  height: 50rpx;
+  font-size:35rpx;
+  line-height: 50rpx;
+}
+.appointement-content .top{
+  background-color:white;
+}
+.appointement-content .top .content-name{
+  padding:30rpx 0;
+  width:90%;
+  margin:0 auto;
+  border-bottom:1px solid #eeeeee;
+  font-size:30rpx;
+}
+.appointement-content .top .content-title{
+  overflow: hidden;
+  padding:25rpx 0;
+  width:90%;
+  margin:0 auto;
+  font-size:30rpx;
+}
+.appointement-content .top .content-title .l{
+  float:left;
+  width:50%;
+}
+.appointement-content .top .content-title .r{
+  float:right;
+  width:50%;
+  color:#999999;
+  font-size:28rpx;
+  text-align: right;
+}
+.appointement-content .center{
+  border-top:20rpx solid #f5f5f5;
+  background-color:white;
+}
+.appointement-content .center .content-name{
+  padding:30rpx 0;
+  width:90%;
+  margin:0 auto;
+  border-bottom:1px solid #eeeeee;
+  font-size:30rpx;
+  font-weight: 600;
+}
+.appointement-content .center .content-tel{
+  overflow: hidden;
+  padding:25rpx 0;
+  width:90%;
+  margin:0 auto;
+  font-size:30rpx;
+  border-bottom:1px solid #eeeeee;
+}
+.appointement-content .center .content-tel .l{
+  float:left;
+  width:50%;
+}
+.appointement-content .center .content-tel .r{
+  float:right;
+  width:50%;
+  color:#3d4bf6;
+  font-size:28rpx;
+  text-align: right;
+}
+.appointement-content .center .content-code{
+  padding:10rpx 0;
+  width:90%;
+  margin:0 auto;
+}
+.appointement-content .center .content-code input{
+  height: 80rpx;
+  font-size:30rpx;
+}
+
+.appointement-content .bottom{
+  border-top:20rpx solid #f5f5f5;
+}
+.appointement-content .bottom textarea{
+  background-color:white;
+  height:200rpx;
+  width:90%;
+  font-size:25rpx;
+  padding:20rpx 5%;
+}
+.appointement-content .bottom button{
+  margin-top:50rpx;
+ width:400rpx;
+ height: 100rpx;
+ border-radius: 50rpx;
+ text-align: center;
+ color:white;
+ font-size:30rpx;
+ line-height: 100rpx;
+ letter-spacing: 3rpx;
+ background: -webkit-linear-gradient(left, #2689f7 , #3e49f6);
+}
+page{
+  background-color:#f5f5f5;
+}

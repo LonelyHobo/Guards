@@ -28,7 +28,7 @@
   <view class="service-list">
     <view class="service-list-head" >服务商列表</view>
     <view class="ul">
-      <view class="li" data-code="{{item.code}}" bindtap="serviceClick" wx:for="{{serviceData}}" wx:for-index="index" wx:for-item="item">
+      <view class="li" data-code="{{item.code}}" data-name="{{item.title}}" bindtap="serviceListClick" wx:for="{{serviceData}}" wx:for-index="index" wx:for-item="item">
         <view class="img imgCenter">
           <image src="{{item.url}}" mode="widthFix"></image>
         </view>
