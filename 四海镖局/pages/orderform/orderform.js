@@ -7,7 +7,11 @@ Page({
   data: {
 
   },
-
+  personalClick:function(){
+    wx.navigateTo({
+      url: '../personalDetails/personalDetails'
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */

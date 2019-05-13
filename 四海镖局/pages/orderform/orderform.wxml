@@ -1,8 +1,8 @@
 <view class="orderform">
-  <view class="orderform-head">
+  <view class="orderform-head" bindtap="{{userInfo.nickName && userInfo.nickName!=''?'personalClick':''}}" >
     <view class="back" > <image src='/images/orderform_head.jpg' mode="widthFix" /></view>
     <button class="userLogin" wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
-    <view class="img" ><image bindtap="bindViewTap" mode="widthFix" class="userinfo-avatar" src="{{userInfo.avatarUrl && userInfo.avatarUrl!=''?userInfo.avatarUrl:userTopUrl}}" mode="cover"></image></view>
+    <view class="img" ><image mode="widthFix" class="userinfo-avatar" src="{{userInfo.avatarUrl && userInfo.avatarUrl!=''?userInfo.avatarUrl:userTopUrl}}" mode="cover"></image></view>
     <view class="right">
       <text class="username">{{userInfo.nickName && userInfo.nickName!=''?userInfo.nickName:userName}}</text>
       <view class="userdata">

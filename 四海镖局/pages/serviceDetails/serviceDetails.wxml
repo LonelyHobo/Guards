@@ -5,8 +5,46 @@
       <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
     </view>
     <text class='head-title'>{{serviceName}}</text>
+    <view class="header-search">
+      <text class="iconfont icon-sousuo"></text>
+    </view>
   </view>
   <view class="header-height"></view>
-  <image src='/images/serviceDetails.jpg' bindtap='appointmentClick' mode="widthFix" style="width:100%;" />
-
+  <view class="introduce" >
+      <view class="introduce-banner">
+        <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
+          <swiper-item>
+            <image src='/images/banner1_1.png' mode="widthFix" />
+          </swiper-item>
+          <swiper-item>
+            <image src='/images/banner1_1.png' mode="widthFix" />
+          </swiper-item>
+          <swiper-item>
+            <image src='/images/banner1_1.png' mode="widthFix" />
+          </swiper-item>
+        </swiper>
+      </view>
+      <view class="introduce-content" >
+        <view class="title" >服务商介绍</view>
+        <view class="describe" >处理一般突发安全威胁或安全伤害事件，进行人身安全保处理一般突发安全威胁或安全处理一般突发安全威胁或安全伤害事件，进行人身安全保护伤害事件，进行人身安全保护护</view>
+        <view class="collect-and-like" >
+          <view class="collect" ><text class="iconfont icon-shoucang" ></text><text>收藏</text></view>
+          <view class="like" ><text class="iconfont icon-dianzan" ></text><text>点赞</text></view>
+        </view>
+      </view>
+      <view class="introduce-streamer"><view><image src='/images/icon_list_banner.png' mode="widthFix" /></view></view>
+      <view class="introduce-nav" >
+        <view class="li {{item.on=='on'?'on':''}}"  data-code="{{item.code}}" bindtap="introduceNavClick" wx:for="{{introduceNavData}}" wx:for-index="index" wx:for-item="item" >{{item.title}}</view>
+      </view>
+      <view class="introduce-list" >
+        <view class="li"  data-code="{{item.code}}" data-title="{{item.title}}" bindtap="introduceListClick" wx:for="{{introduceListData}}" wx:for-index="index" wx:for-item="item" >
+          <view class="img imgCenter" ><image src='{{item.url}}' mode="widthFix" /></view>
+          <view class="text" >
+            <view class="title" >{{item.title}}</view>
+            <view class="describe" >{{item.describe}}</view>
+            <view class="btn" ><view>预约服务</view></view>
+          </view>
+        </view>
+      </view>
+  </view>
 </view>

@@ -7,20 +7,25 @@ Page({
   data: {
     serviceName: "",
     serviceArea: "",
-    serviceTitle: ""
+    serviceTitle: "",
+    fwsData: [
+      { title: '北京万家', url: '/images/icon_index_list_1.png', code: '001' },
+      { title: '香港卫安', url: '/images/icon_index_list_2.png', code: '002' },
+    ],
   },
-  appointmentClick: function () {
-    var code_ = '';
-    var name_ = this.data.serviceName;
+  //服务商点击
+  fwsClick: function (obj) {
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
     wx.navigateTo({
-      url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + name_
+      url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + title_
     })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({ serviceTitle: options.title, serviceName: options.name });
+    this.setData({ serviceName: options.name });
 
   },
 

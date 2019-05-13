@@ -9,10 +9,10 @@
   <view class="header-height"></view>
   <view class="appointement-content">
     <view class="top">
-      <view class="content-name">{{serviceArea}}</view>
+      <view class="content-name">{{serviceTitle}}</view>
       <view class="content-title">
         <text class="l">服务地区</text>
-        <text class="r">{{serviceTitle}}</text>
+        <text class="r">{{serviceArea}}</text>
       </view>
     </view>
     <view class="center" >

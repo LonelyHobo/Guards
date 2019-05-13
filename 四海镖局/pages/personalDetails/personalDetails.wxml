@@ -1,0 +1,17 @@
+<!--pages/personal/personal.wxml-->
+<view class="personal" >
+<view class="personal-head" >
+  <view class="head-close"><navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator></view>
+  <text class='head-title'>个人信息</text>
+</view>
+<view ckass="personal-content" >
+  <view class="top" >
+    <view class="l" >头像</view>
+    <view class='r' >
+      <view class="img" ><image mode="widthFix" class="userinfo-avatar" src="{{userInfo.avatarUrl && userInfo.avatarUrl!=''?userInfo.avatarUrl:userTopUrl}}" mode="cover"></image></view>
+    </view>
+  </view>
+   <text class="username">{{userInfo.nickName && userInfo.nickName!=''?userInfo.nickName:userName}}</text>
+   <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取手机号</button>
+</view>
+</view>

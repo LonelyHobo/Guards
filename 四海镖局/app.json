@@ -5,6 +5,7 @@
     "pages/location/location",
     "pages/reserve/reserve",
     "pages/service/service",
+    "pages/personalDetails/personalDetails",
     "pages/footerNav/footerNav",
     "pages/seek/seek",
     "pages/seekHelp/seekHelp",

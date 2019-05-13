@@ -111,6 +111,12 @@ Page({
     serviceAreaMinData:[],
     serviceAreaCheckedData:[]
   },
+  //个人信息
+  personalClick: function () {
+    wx.navigateTo({
+      url: '../personalDetails/personalDetails'
+    })
+  },
   //服务商点击
   fwsClick:function(obj){
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
@@ -262,12 +268,6 @@ Page({
     var name_ = obj.target.dataset.name || obj.currentTarget.dataset.name;
     wx.navigateTo({
       url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + name_
-    })
-  },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
     })
   },
   onShow: function () {
