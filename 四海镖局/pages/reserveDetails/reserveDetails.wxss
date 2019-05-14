@@ -12,7 +12,7 @@
   height: 100rpx;
   background-color: white;
   border-bottom:1px solid #eeeeee;
-  z-index: 9999;
+  z-index: 99999;
 }
 
 .appointement-head .head-title {
@@ -210,4 +210,234 @@ page{
   font-size:20rpx;
   float:right;
   margin-left:10rpx;
+}
+
+.service-nav{
+  position: fixed;
+  top:100rpx;
+  z-index: 99999;
+  background-color: white;
+  width:100%;
+  left:0;
+  height: 100rpx;
+}
+.service-nav .li{
+  width:50%;
+  float:left;
+  height:100rpx;
+  line-height: 100rpx;
+  text-align: center;
+}
+.service-nav .li.on>view{
+position: relative;
+}
+.service-nav .li.on>view::before{
+  content:'';
+  position: absolute;
+  bottom:0;
+  left:40%;
+  transform: translateX(-50%);
+  width:40rpx;
+  height:5rpx;
+  background-color:#3d4bf6;
+}
+.service-nav .li.on text{
+  color: #3d4bf6;
+}
+.service-nav .li.check>view{
+position: relative;
+}
+.service-nav .li.check>view::before{
+  content:'';
+  position: absolute;
+  bottom:0;
+  left:40%;
+  transform: translateX(-50%);
+  width:40rpx;
+  height:5rpx;
+  background-color:#3d4bf6;
+}
+.service-nav .li.check text{
+  color: #3d4bf6;
+}
+.service-nav .li view{
+  display: inline-block;
+}
+.service-nav .li view text{
+  font-size:30rpx;
+  float:left;
+  display: block;
+  height:100rpx;
+  line-height: 100rpx;
+}
+.service-nav .li view text.icon-xia1,.service-nav .li view text.icon-shang{
+  font-size:25rpx;
+  margin-left:10rpx;
+  display: block;
+  height:100rpx;
+  line-height: 100rpx;
+  float:right;
+}
+.service-nav-height{
+  height: 100rpx;
+}
+
+.service-list .service-list-head{
+  padding:25rpx 20rpx;
+  font-size:35rpx;
+  line-height: 35rpx;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.service-nav-min{
+  background-color: white;
+  width:100%;
+  height: 100rpx;
+  border-top:1px solid #eeeeee;
+}
+.service-nav-min .li{
+  width:50%;
+  float:left;
+  height:100rpx;
+  line-height: 100rpx;
+  text-align: center;
+}
+.service-nav-min .li.on{
+position: relative;
+}
+.service-nav-min .li.on>view::before{
+  content:'';
+  position: absolute;
+  bottom:0;
+  left:50%;
+  transform: translateX(-50%);
+  width:90%;
+  height:5rpx;
+  background-color:#3d4bf6;
+}
+.service-nav-min .li.on text{
+  color: #3d4bf6;
+}
+.service-nav-min .li view{
+  display: inline-block;
+}
+.service-nav-min .li view text{
+  font-size:30rpx;
+  float:left;
+  display: block;
+  height:100rpx;
+  line-height: 100rpx;
+}
+
+
+.service-nav-content{
+  position: fixed;
+  top:calc(-100% + 400rpx);
+  left:0;
+  width:100%;
+  height:calc(100% - 200rpx);
+  background-color:white;
+  z-index: 9999;
+  transition: 0.3s top;
+}
+.service-nav-content.top{
+  top:calc(-100% + 400rpx);
+}
+.service-nav-content.bottom{
+  top:200rpx;
+}
+.service-nav-content .left{
+  width:35%;
+  float:left;
+  height: calc(100% - 100rpx);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.service-nav-content .left .ul{
+  width:100%;
+}
+.service-nav-content .left .ul .li{
+  line-height: 90rpx;
+  height: 90rpx;
+  font-size:28rpx;  
+  text-align: center;
+  border-bottom:1px solid #eeeeee;
+}
+.service-nav-content .left .ul .li.on{
+  background-color:#f8f8f8;
+}
+.service-nav-content .right{
+  width:65%;
+  height:  calc(100% - 100rpx);
+  background-color:#f8f8f8;
+  float: right;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.service-nav-content .right .ul {
+  overflow: hidden;
+}
+.service-nav-content .right .ul .li{
+  width:29.33%;
+  padding:25rpx 2%;
+  display: inline-grid;
+  line-height: 50rpx;
+  font-size:28rpx;
+  text-align: center;
+}
+.service-nav-content .right .ul .li.on{
+  color:#3d4bf6;
+}
+
+.service-nav-feature{
+  position: fixed;
+  top:calc(-100% + 400rpx);
+  left:0;
+  width:100%;
+  height:calc(100% - 500rpx);
+  background-color:#f5f5f5;
+  z-index: 9999;
+  transition: 0.3s top;
+}
+.service-nav-feature.top{
+  top:calc(-100% + 400rpx);
+}
+.service-nav-feature.bottom{
+  top:200rpx;
+}
+.service-nav-feature-back{
+  position: fixed;
+  top:200rpx;
+  left:0;
+  width:100%;
+  height:calc(100% - 200rpx);
+  background-color:rgba(0,0,0,0.4);
+  z-index: 999;
+  display: none;
+}
+.service-nav-feature-back.top{
+  display: none;
+}
+.service-nav-feature-back.bottom{
+  display: block;
+}
+.service-nav-feature .ul{
+  padding:20rpx;
+  overflow: hidden;
+}
+.service-nav-feature .ul .li{
+  padding: 15rpx 0;
+  margin: 2%;
+  text-align: center;
+  background-color:white;
+  display: block;
+  float:left;
+  width:calc(86% / 3);
+  border: 1px white solid;
+  font-size:25rpx;
+}
+.service-nav-feature .ul .li.on{
+  border: 1px #0270df solid;
+  color:#0270df;
+  background-color:white;
 }

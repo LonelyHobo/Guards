@@ -51,7 +51,11 @@
   -webkit-background-clip: text; /*必需加前缀 -webkit- 才支持这个text值 */
   -webkit-text-fill-color: transparent;
 }
-
+.footerNav .ul .li.seek.on .text text{
+  background-image: -webkit-gradient(linear, left 0, right 0, from(#2689f7), to(#3e4af6));
+  -webkit-background-clip: text; /*必需加前缀 -webkit- 才支持这个text值 */
+  -webkit-text-fill-color: transparent;
+}
 .footerNav .ul .li.lis view.text text {
   font-size: 20rpx;
   display: block;

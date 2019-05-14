@@ -24,8 +24,9 @@ Component({
                 animation: true, // 过渡动画是否开启
                 search: true, // 是否开启搜索
                 searchHeight: 45, // 搜索条高度
-                suctionTop: true, // 是否开启标题吸顶
-                theCity:'深圳市',
+                suctionTop: false, // 是否开启标题吸顶
+                theCity:'',
+                history:'',
             }
         },
         /**
@@ -77,16 +78,24 @@ Component({
             if (this.data.myCity) {
               var the = this;
               the.data.data.unshift({
+                title: '最近访问城市',
+                type: 'history',
+                item: [{
+                  name: the.data.config.theCity,
+                  key: '最近访问城市'
+                }]
+              });
+              the.data.data.unshift({
                 title: '定位城市',
                 type: 'me',
                 item: [{
-                  name: the.data.config.theCity,
+                  name: the.data.config.history,
                   key: '定位城市'
                 }]
-              })
+              });
             }
             for (let i in data) {
-                rightArr.push(data[i].title.substr(0, 1));
+                rightArr.push(data[i].title.substr(0, 2));
             }
             this.setData({
                 list: data,
@@ -194,7 +203,8 @@ Component({
             let index = this.currentIndex(top)
             let list = this.data.topGroup
             let distance = top - list[this.data.listIndex]
-            let num = -(list[this.data.listIndex + 1] - top - 40)
+          let num = -(list[this.data.listIndex + 1] - top - 40);
+            
             // 渲染滚动索引
             if (index !== this.data.listIndex) {
                 // console.log(index)
@@ -209,7 +219,7 @@ Component({
             if (num < 0) num = 0
             if (num !== this.data.moveDistance) {
                 this.setData({
-                    moveDistance: num,
+                  moveDistance: num,
                 })
             }
         },
@@ -222,7 +232,11 @@ Component({
                 let height1 = listHeight[i]
                 let height2 = listHeight[i + 1]
                 if (!height2 || (y >= height1 && y < height2)) {
+                  if (!height2 && y<100){
+                    return 0
+                  }else{
                     return i
+                  }
                 }
             }
             return 0
@@ -233,7 +247,7 @@ Component({
         queryMultipleNodes() {
           let self = this 
             const query = wx.createSelectorQuery().in(this);
-            query.selectAll('.fixed-title-hock').boundingClientRect((res) => {
+          query.selectAll('.locationList').boundingClientRect((res) => {
                 res.forEach(function(rect) {
                     rect.top // 节点的上边界坐标
                 })
@@ -242,10 +256,11 @@ Component({
                 e[0].forEach((rect) => {
                     let num = 0
                     if (rect.top !== 0) {
-                      num = rect.top - (self.data.config.search ? self.data.config.searchHeight : 0)
+                      num = rect.top - 100
                     }
                     arr.push(num)
                 })
+              console.log(arr);
                 this.setData({
                     topGroup: arr
                 })

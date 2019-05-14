@@ -10,7 +10,41 @@
     </view>
   </view>
   <view class="header-height"></view>
+  <view class="service-nav">
+    <view class="li {{item.on=='on'?'on':''}} {{item.check=='check'?'check':''}}"  data-code="{{item.code}}" bindtap="serviceNavClick" wx:for="{{serviceNavData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
+      <view>
+        <text>{{item.title}}</text>
+        <text class="iconfont {{item.icon}}"></text>
+      </view>
+    </view>
+  </view>
+  <view class="service-nav-content {{serviceNavTop}}" >
+    <view class="service-nav-min">
+    <view class="li {{item.on=='on'?'on':''}}"  data-code="{{item.code}}" bindtap="serviceNavMinClick" wx:for="{{serviceNavMinData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
+      <view>
+        <text>{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+    <scroll-view scroll-y="true" class="left">
+      <view class="ul" >
+        <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="serviceAreaClick" wx:for="{{serviceAreaData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >{{item.title}}</view>
+      </view>
+    </scroll-view>
+    <scroll-view scroll-y="true" class="right" >
+      <view class="ul" >
+        <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="serviceAreaMinClick" wx:for="{{serviceAreaMinData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >{{item.title}}</view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="service-nav-feature-back {{featureTop}}" ></view>
+  <view class="service-nav-feature {{featureTop}}" >
+    <view class="ul" >
+      <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="featureClick" wx:for="{{featureData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >{{item.title}}</view>
+    </view>
+  </view>
   <view class="introduce" >
+      <view style="width: 100%;height: 1rpx;"></view>
       <view class="introduce-banner">
         <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
           <swiper-item>

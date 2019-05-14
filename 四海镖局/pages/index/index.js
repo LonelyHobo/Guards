@@ -19,7 +19,7 @@ Page({
     footerlist:[
       { name: '首页', code: 'home', icon: 'icon-xiazai45'},
       { name: '服务商列表', code: 'service', icon:'icon-liebiao' },
-      { name: '预约服务', code: 'seek', icon: 'icon-yuyuen' },
+      { name: '预约服务', code: 'reserve', icon: 'icon-yuyuen' },
       { name: '一键求助', code: 'seekHelp', icon: 'icon-dian' },
       { name: '我的订单', code: 'orderform', icon: 'icon-wode' },
     ],
@@ -50,6 +50,10 @@ Page({
     reserveNavData:[
       { title: '国内服务', code: '1', on: 'on' },
       { title: '海外服务', code: '2', on: '' }
+    ],
+    serviceNavMinData:[
+      { title: '国内', code: '1', on: 'on' },
+      { title: '海外', code: '2', on: '' }
     ],
     serviceNavData:[
       { title: '服务地区', code: '1', icon: 'icon-xia1',on:'' },
@@ -106,10 +110,23 @@ Page({
       nav:'-1'
     },
     serviceNavTop:'top',
+    featureTop:'top',
     serviceAreaData: [],
+    featureData:[
+      {title:'物资押运',code:'0',on:''},
+      { title: '私人保镖', code: '1', on: '' },
+      { title: '警卫派驻', code: '2', on: '' },
+      { title: '接送机礼遇', code: '3', on: '' },
+    ],
     loadingShow:'0',
     serviceAreaMinData:[],
     serviceAreaCheckedData:[]
+  },
+  //搜索
+  searchTop:function(){
+    wx.navigateTo({
+      url: '../searchAll/searchAll'
+    })
   },
   //个人信息
   personalClick: function () {
@@ -180,21 +197,69 @@ Page({
     })
     this.setData({ reserveNavData: this.data.reserveNavData, reserveListHead: reserveListHead });
   },
+  //服务地区是否国内选择
+  serviceNavMinClick: function (obj){
+    var the = this;
+    var serviceAreaDatas = [];
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var datalist = [];
+    this.data.serviceNavMinData.forEach(function (value, index) {
+      value.on = '';
+      if (value.code == code_) {
+        value.on = 'on';
+        var province_ = [];
+        if (code_=='1') {
+          province_=provinces.province;
+        }else{
+            province_ = [{
+              "citys": [
+                {
+                  "citysName": "1区",
+                }, {
+                  "citysName": "2区",
+                }, {
+                  "citysName": "3区",
+                },
+              ],
+              "provinceName": "海外某州"
+            }];
+        }
+        province_.forEach(function (value, index) {
+          var datalist = [];
+          var index_ = index;
+          value.citys.forEach(function (value, index) {
+            datalist.push({ title: value.citysName, code: index_ + '_' + index, on: '' });
+          })
+          serviceAreaDatas.push({ title: value.provinceName, code: index, on: (index == 0 ? 'on' : ''), datalist: datalist });
+        })
+      }
+    })
+    this.setData({ serviceNavMinData: this.data.serviceNavMinData, serviceAreaData: serviceAreaDatas, serviceAreaMinData: serviceAreaDatas[0].datalist });
+  },
   //服务地区选择
   serviceAreaMinClick: function (obj){
     var the = this;
+    var on_ = '';
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     this.data.serviceAreaMinData.forEach(function (value, index) {
-      value.on = '';
       if (value.code == code_) {
-        the.data.serviceAreaMinData[index].on = the.data.serviceAreaMinData[index].on == 'on' ? '' : 'on';
-        var on_ = the.data.serviceAreaMinData[index].on;
-        var codes = the.data.serviceAreaMinData[index].code;
+        value.on = value.on == 'on' ? '' : 'on';
+        on_ = value.on;
+        var codes = value.code;
         var judge = true;
-        the.data.serviceAreaCheckedData = the.data.serviceAreaMinData[index];
+        the.data.serviceAreaCheckedData = value;
+      }else{
+        value.on = '';
       }
     });
-    this.setData({ serviceAreaMinData: this.data.serviceAreaMinData, serviceAreaCheckedData: the.data.serviceAreaCheckedData});
+    this.data.serviceNavData.forEach(function (value, index) {
+      value.on = '';
+      value.icon = 'icon-xia1';
+      if (value.code == '1') {
+        value.check = on_ == 'on' ? 'check' : ''
+      }
+    });
+    this.setData({ serviceAreaMinData: this.data.serviceAreaMinData, serviceAreaCheckedData: the.data.serviceAreaCheckedData, serviceNavTop: 'top', serviceNavData: this.data.serviceNavData});
   },
   //服务地区省选择
   serviceAreaClick: function (obj){
@@ -204,11 +269,32 @@ Page({
     this.data.serviceAreaData.forEach(function (value, index) {
       value.on = '';
       if (value.code == code_) {
-        the.data.serviceAreaData[index].on = 'on';
+        the.data.serviceAreaData[index].on ='on';
         datalist=the.data.serviceAreaData[index].datalist;
       }
     })
     this.setData({ serviceAreaData: this.data.serviceAreaData, serviceAreaMinData: datalist });
+  },
+  featureClick: function (obj){
+    var the = this;
+    var on_ = '';
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    this.data.featureData.forEach(function (value, index) {
+      if (value.code == code_) {
+        value.on = value.on == 'on' ? '' :'on';
+        on_ = value.on;
+      }else{
+        value.on = '';
+      }
+    })
+    this.data.serviceNavData.forEach(function (value, index) {
+      value.on = '';
+      value.icon = 'icon-xia1';
+      if (value.code=='2'){
+        value.check = on_ == 'on' ? 'check' :''
+      }
+    });
+    this.setData({ featureData: this.data.featureData, featureTop: 'top', serviceNavData: this.data.serviceNavData});
   },
   //服务地区 特色服务
   serviceNavClick: function (obj){
@@ -218,13 +304,23 @@ Page({
       if (value.code == code_) {
         the.data.serviceNavData[index].on = the.data.serviceNavData[index].on=='on'?'':'on';
         the.data.serviceNavData[index].icon = the.data.serviceNavData[index].icon=='icon-xia1'?'icon-shang':'icon-xia1';
-        the.data.serviceNavTop = the.data.serviceNavData[index].on == 'on' ? 'bottom' : 'top';
+        if (code_ == '1') {
+          the.data.featureTop = 'top';
+          the.data.serviceNavTop = the.data.serviceNavData[index].on == 'on' ? 'bottom' : 'top';
+        } else {
+          the.data.serviceNavTop = 'top';
+          the.data.featureTop = the.data.serviceNavData[index].on == 'on' ? 'bottom' : 'top';
+        }
       }else{
         value.on = '';
         value.icon = 'icon-xia1';
       }
     });
-    this.setData({ serviceNavData: this.data.serviceNavData, serviceNavTop: the.data.serviceNavTop});
+    if (code_ == '1'){
+      this.setData({ serviceNavData: this.data.serviceNavData, serviceNavTop: the.data.serviceNavTop, featureTop: the.data.featureTop });
+    }else{
+      this.setData({ serviceNavData: this.data.serviceNavData, serviceNavTop: the.data.serviceNavTop, featureTop: the.data.featureTop });
+    }
   },
   /**
    * 页面上拉触底事件的处理函数
@@ -248,7 +344,7 @@ Page({
         the.data.servicelist[index].ischecked = '1';
       }
     })
-    this.setData({ servicelist: this.data.servicelist, serviceRoute: (code_ == 'service' || code_ == 'reserve') ? code_ :'service'});
+    this.setData({ servicelist: this.data.servicelist, serviceRoute: (code_ == 'service' || code_ == 'reserve') ? code_ : 'service'});
   },
   //服务商 and 服务切换
   serviceclick:function(obj){
@@ -260,7 +356,7 @@ Page({
         the.data.servicelist[index].ischecked = '1';
       }
     });
-    this.setData({ servicelist: this.data.servicelist, serviceRoute: code_});
+    this.setData({ servicelist: this.data.servicelist, serviceRoute: code_, route: code_ });
   },
   //服务商点击
   serviceListClick: function (obj){
@@ -380,6 +476,7 @@ Page({
         // console.log(JSON.stringify(res));
         let province = res.result.ad_info.province;
         let city = res.result.ad_info.city;
+        city = city.replace("市", "");
         vm.setData({
           province: province,
           city: city,

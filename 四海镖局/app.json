@@ -13,7 +13,8 @@
     "pages/serviceDetails/serviceDetails",
     "pages/reserveDetails/reserveDetails",
     "pages/appointment/appointment",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/searchAll/searchAll"
   ],
   "window": {
     "backgroundTextStyle": "light",

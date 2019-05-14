@@ -7,14 +7,13 @@
     </view>
     <text class="header-title" wx:if="{{route=='home'}}">{{headertitle}}</text>
     <text class="header-title" wx:if="{{route=='seekHelp'}}">一键求助</text>
-    <text class="header-title" wx:if="{{route=='seek'}}">预约服务</text>
     <view class="service-head" wx:if="{{route=='service' || route=='reserve'}}">
       <text class="{{item.ischecked=='1'?'on':''}}" id="{{item.code}}" bindtap="serviceclick" wx:for="{{servicelist}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >{{item.name}}</text>
     </view>
     <view class="header-search header-tel" wx:if="{{route=='seekHelp'}}">
       <text class="iconfont icon-dianhua"></text>
     </view>
-    <view class="header-search" wx:if="{{route!='seekHelp' && route!='orderform'}}">
+    <view class="header-search" bindtap="searchTop" wx:if="{{route!='seekHelp' && route!='orderform'}}">
       <text class="iconfont icon-sousuo"></text>
     </view>
   </view>

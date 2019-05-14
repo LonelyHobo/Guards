@@ -11,6 +11,7 @@
   </view>
   <view class="header-height"></view>
   <view class="introduce" >
+      <view style="width: 100%;height: 1rpx;"></view>
       <view class="introduce-banner">
         <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
           <swiper-item>
