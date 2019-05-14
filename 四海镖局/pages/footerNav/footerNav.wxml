@@ -2,10 +2,10 @@
 <view class="footer-height"></view>
 <view class="footerNav">
   <view class="ul">
-    <view class="li {{item.code=='seek'?'seek':'lis'}} {{ item.code == route?'on':'' }}" data-code="{{item.code}}" bindtap="btnclick" wx:for="{{footerlist}}" wx:for-index="index" wx:for-item="item">
+    <view class="li {{item.code=='seek'?'seek':'lis'}} {{ item.code == route?'on':'' }}" data-code="{{item.code}}" bindtap="btnclick" wx:for="{{footerlist}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
       <view class="icon"><text class="iconfont {{item.icon}}"></text></view>
       <view class="text">
-        <button wx:if="{{!hasUserInfo && canIUse && item.code=='orderform'}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">{{item.name}}</button>
+        <!-- <button wx:if="{{!hasUserInfo && canIUse && item.code=='orderform'}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">{{item.name}}</button> -->
         <text>{{item.name}}</text>
       </view>
     </view>
