@@ -372,7 +372,7 @@ Page({
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var name_ = obj.target.dataset.name || obj.currentTarget.dataset.name;
     wx.navigateTo({
-      url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + name_
+      url: '../serviceDetails/serviceDetails?state=1&code=' + code_ + '&name=' + name_
     })
   },
   onShow: function () {

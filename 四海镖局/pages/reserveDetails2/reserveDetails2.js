@@ -40,7 +40,17 @@ Page({
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var name_ = obj.target.dataset.name || obj.currentTarget.dataset.name;
     wx.navigateTo({
-      url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + name_
+      url: '../serviceDetails/serviceDetails?state=2&code=' + code_ + '&name=' + name_
+    })
+  },
+  //服务商预约点击
+  serviceListClick2: function (obj) {
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var name_ = this.data.serviceTitle;
+    var area_ = '中国/香港';
+    var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
+    wx.navigateTo({
+      url: '../appointment/appointment?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
     })
   },
   //服务地区是否国内选择

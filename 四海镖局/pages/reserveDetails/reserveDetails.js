@@ -9,6 +9,7 @@ Page({
     serviceName: "",
     serviceArea: "",
     serviceTitle: "",
+    state:1,
     fwsData: [
       { title: '北京万家', url: '/images/icon_index_list_1.png', code: '001' },
       { title: '香港卫安', url: '/images/icon_index_list_2.png', code: '002' },
@@ -176,7 +177,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({ serviceTitle: options.title });
+    this.setData({ serviceTitle: options.title, state: options.state });
     var serviceAreaDatas = [];
     provinces.province.forEach(function (value, index) {
       var datalist = [];
