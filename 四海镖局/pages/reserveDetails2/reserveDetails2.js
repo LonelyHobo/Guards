@@ -9,10 +9,11 @@ Page({
     serviceName: "",
     serviceArea: "",
     serviceTitle: "",
-    fwsData: [
-      { title: '北京万家', url: '/images/icon_index_list_1.png', code: '001' },
-      { title: '香港卫安', url: '/images/icon_index_list_2.png', code: '002' },
-    ], 
+    serviceData: [
+      { title: '香港卫安', url: '/images/icon_list_2.jpg', describe: '全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何', label: '特色标签：私人保镖', code: '001' },
+      { title: '北京万家', url: '/images/icon_list_3.jpg', describe: '全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何', label: '特色标签：私人保镖', code: '002' },
+      { title: '上海永安', url: '/images/icon_list_2.jpg', describe: '全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何', label: '特色标签：私人保镖', code: '003' }
+    ],
     reserveNavData: [
       { title: '国内服务', code: '1', on: 'on' },
       { title: '海外服务', code: '2', on: '' }
@@ -33,6 +34,14 @@ Page({
     ],
     serviceAreaData: [],
     serviceAreaMinData: [],
+  },
+  //服务商点击
+  serviceListClick: function (obj) {
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var name_ = obj.target.dataset.name || obj.currentTarget.dataset.name;
+    wx.navigateTo({
+      url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + name_
+    })
   },
   //服务地区是否国内选择
   serviceNavMinClick: function (obj) {
@@ -165,11 +174,6 @@ Page({
     var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
     wx.navigateTo({
       url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + title_
-    })
-  },
-  yuyue:function(){
-    wx.navigateTo({
-      url: '../reserveDetails2/reserveDetails2?title=' + this.data.serviceTitle
     })
   },
   /**

@@ -234,7 +234,7 @@ position: relative;
 
 .service-nav-content{
   position: fixed;
-  top:calc(-100% + 400rpx);
+  top:calc(-100% + 395rpx);
   left:0;
   width:100%;
   height:calc(100% - 200rpx);
@@ -243,7 +243,7 @@ position: relative;
   transition: 0.3s top;
 }
 .service-nav-content.top{
-  top:calc(-100% + 400rpx);
+  top:calc(-100% + 395rpx);
 }
 .service-nav-content.bottom{
   top:200rpx;

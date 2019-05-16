@@ -87,7 +87,7 @@ page{
 .introduce .collect-and-like .money{
   display: block;
   float:left;
-  width:65%;
+  width:70%;
   font-size:32rpx;
   color:#f6a23e;
   text-align: left;
@@ -440,4 +440,76 @@ position: relative;
   border: 1px #0270df solid;
   color:#0270df;
   background-color:white;
+}
+
+/* 列表 */
+
+.service-list {
+  margin: 0 20rpx 0 20rpx;
+  background-color:white;
+  padding-bottom:20rpx;
+}
+
+.service-list .ul .li {
+  border-bottom: 1px solid #eeeeee;
+  overflow: hidden;
+  padding: 20rpx 0;
+  margin:0 20rpx;
+  position: relative;
+}
+
+.service-list .ul .li .img {
+  width: 175rpx;
+  height: 175rpx;
+  float: left;
+  overflow: hidden;
+}
+
+.service-list .ul .li .text {
+  margin-left: 190rpx;
+  margin-right:80rpx;
+}
+
+.service-list .ul .li .title {
+  font-size: 30rpx;
+  line-height: 40rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height:40rpx;
+}
+
+.service-list .ul .li .describe {
+  font-size: 25rpx;
+  line-height: 40rpx;
+  height: 80rpx;
+  margin-top: 5rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  color:#999999;
+}
+.service-list .ul .li .label{
+  font-size: 22rpx;
+  line-height: 40rpx;
+  margin-top: 15rpx;
+  color:#fe9c1e;
+}
+.service-list .ul .li .right{
+  position: absolute;
+  right:0;
+  top:0;
+  height: 100%;
+  width:80rpx;
+  text-align: center;
+}
+.service-list .ul .li .right text{
+  position: relative;
+  top:50%;
+  transform: translateY(-50%);
+  display: block;
+  color:#999999;
+  font-size:25rpx;
 }

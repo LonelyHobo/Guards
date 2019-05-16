@@ -15,15 +15,15 @@
   <view class="reserve-list">
     <view class="reserve-list-head" >{{reserveListHead}}</view>
     <view class="ul" >
-      <view class="li" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" bindtap="reserveListDataClick" wx:for="{{reserveListData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
+      <view class="li" data-code="{{item.code}}" wx:for="{{reserveListData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
         <view class="img imgCenter" >
           <image src="{{item.url}}" mode="widthFix" ></image>
         </view>
-        <view class="text" >
+        <view class="text" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" bindtap="reserveListDataClick" >
           <view class="title" >{{item.title}}</view>
           <view class="describe" >{{item.describe}}</view>
         </view>
-        <view class="btn" >
+        <view class="btn" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" bindtap="reserveListDataClick2" >
           <text>预约</text>
         </view>
       </view>

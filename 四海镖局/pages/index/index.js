@@ -182,6 +182,15 @@ Page({
       url: '../reserveDetails/reserveDetails?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
     })
   },
+  reserveListDataClick2: function (obj) {
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var name_ = obj.target.dataset.name || obj.currentTarget.dataset.name;
+    var area_ = obj.target.dataset.area || obj.currentTarget.dataset.area;
+    var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
+    wx.navigateTo({
+      url: '../reserveDetails2/reserveDetails2?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
+    })
+  },
   //服务分类选择
   reserveNavDataClick: function (obj){
     var the = this;

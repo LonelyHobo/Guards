@@ -12,6 +12,7 @@
     "pages/orderform/orderform",
     "pages/serviceDetails/serviceDetails",
     "pages/reserveDetails/reserveDetails",
+    "pages/reserveDetails2/reserveDetails2",
     "pages/appointment/appointment",
     "pages/logs/logs",
     "pages/searchAll/searchAll"
