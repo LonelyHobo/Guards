@@ -60,7 +60,7 @@
               <text class="iconfont icon-diqu"></text>
               <text>{{item.city?item.city:'请选择服务地区'}}</text>
             </view>
-            <view class="btn2" data-code="{{item.code}}" data-title="{{item.title}}" bindtap="introduceListClick">预约服务</view>
+            <view class="btn2 {{item.city?'on':''}}" data-code="{{item.code}}" data-title="{{item.title}}" bindtap="introduceListClick">预约服务</view>
           </view>
         </view>
       </view>

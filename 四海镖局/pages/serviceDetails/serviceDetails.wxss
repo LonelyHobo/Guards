@@ -180,6 +180,9 @@ page{
   line-height: 65rpx;
   font-size:25rpx;
 }
+.introduce-list .li .text .btn view.btn1 text{
+  color:#316cf7;
+}
 .introduce-list .li .text .btn view.btn1 text.iconfont{
   font-size:35rpx;
   margin-right:10rpx;
@@ -194,7 +197,10 @@ page{
   height:65rpx;
   line-height: 65rpx;
   border-radius: 35rpx;
-  background:-webkit-linear-gradient(#f69d3e, #f6b73e);
+  background:#cccccc;
+}
+.introduce-list .li .text .btn view.btn2.on{
+background:-webkit-linear-gradient(#f69d3e, #f6b73e);
 }
 .service-nav-content{
   position: fixed;
