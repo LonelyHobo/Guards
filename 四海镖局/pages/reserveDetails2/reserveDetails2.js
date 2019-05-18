@@ -183,7 +183,7 @@ Page({
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
     wx.navigateTo({
-      url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + title_
+      url: '../serviceDetails/serviceDetails?state=2&code=' + code_ + '&name=' + title_
     })
   },
   /**

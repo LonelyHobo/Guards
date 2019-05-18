@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="index">
+<view class="index {{ovHidden?'hidden':''}}">
   <include src="../header/header.wxml"></include>
   <include src="../home/home.wxml" wx:if="{{route=='home'}}"></include>
   <include src="../service/service.wxml" wx:if="{{route=='service' && serviceRoute=='service'}}"></include>

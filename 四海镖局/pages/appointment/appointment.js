@@ -7,15 +7,21 @@ Page({
   data: {
     serviceName: "",
     serviceArea:"",
-    serviceTitle:""
+    serviceTitle:"",
+    agreementTop:'bottom',
+    isAgreement:false,
   },
-
+  agreementClick:function(){
+    this.setData({ agreementTop: this.data.agreementTop=='bottom'?'top':'bottom'});
+  },
+  checkClick:function(){
+    this.setData({ isAgreement: !this.data.isAgreement }); 
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     this.setData({ serviceName: options.name, serviceArea: options.area, serviceTitle: options.title });
-    
   },
 
   /**

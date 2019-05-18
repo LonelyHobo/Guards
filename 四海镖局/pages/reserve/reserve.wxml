@@ -23,7 +23,8 @@
           <view class="title" >{{item.title}}</view>
           <view class="describe" >{{item.describe}}</view>
         </view>
-        <view class="btn" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" bindtap="reserveListDataClick2" >
+        <view class="btn" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" bindtap="{{hasUserInfo?'reserveListDataClick2':''}}" >
+        <button class="userLogin" wx:if="{{!hasUserInfo && canIUse}}" data-state="{{route}}" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
           <text>预约</text>
         </view>
       </view>

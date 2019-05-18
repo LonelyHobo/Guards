@@ -8,7 +8,10 @@
 @import "../reserve/reserve";
 @import "../orderform/orderform";
 /* 轮播 */
-
+.hidden{
+  height: 100vh;
+  overflow: hidden;
+}
 .banner {
   height: 340rpx;
 }

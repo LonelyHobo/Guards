@@ -5,14 +5,21 @@ const app = getApp();
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.js');
 var citys = require('../../utils/city.js');
 var provinces = require('../../utils/province.js');
+
+//接口
+var prot = require('../../utils/prot.js');
+
 var qqmapsdk;
 Page({
   data: {
+    api:prot.api,
     motto: 'Hello World',
     userInfo: {},
+    ovHidden:false,
     userTopUrl:'/images/icon_top.png',
     userName:'登陆/注册',
     route:"home",
+    userPhone: '17512840813',
     headertitle:"四海镖局",
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -22,6 +29,9 @@ Page({
       { name: '预约服务', code: 'reserve', icon: 'icon-yuyuen' },
       { name: '一键求助', code: 'seekHelp', icon: 'icon-dian' },
       { name: '我的订单', code: 'orderform', icon: 'icon-wode' },
+    ],
+    bannerData:[
+
     ],
     tsfwData:[
       { title: '物资押运', url: '/images/icon_index_1.png', code:'001'},
@@ -134,12 +144,23 @@ Page({
       url: '../personalDetails/personalDetails'
     })
   },
+  //服务商更多
+  fwsMore: function (obj){
+    this.data.servicelist.forEach(function (value, index) {
+      value.ischecked = '0';
+      if (value.code == 'service') {
+        value.ischecked = '1';
+      }
+    })
+    this.setData({ route: 'service', serviceRoute: 'service', servicelist: this.data.servicelist, ovHidden: true });
+    this.setData({ ovHidden: false });
+  },
   //服务商点击
   fwsClick:function(obj){
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
     wx.navigateTo({
-      url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + title_
+      url: '../serviceDetails/serviceDetails?state=1&code=' + code_ + '&name=' + title_
     })
   },
   //首页服务点击
@@ -147,8 +168,19 @@ Page({
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
     wx.navigateTo({
-      url: '../reserveDetails/reserveDetails?code=' + code_  + '&title=' + title_
+      url: '../reserveDetails/reserveDetails?state=1&code=' + code_  + '&title=' + title_
     })
+  },
+  //更多服务
+  tsfwMore:function(obj){
+    this.data.servicelist.forEach(function (value, index) {
+      value.ischecked = '0';
+      if (value.code == 'reserve') {
+        value.ischecked = '1';
+      }
+    })
+    this.setData({ route: 'reserve', serviceRoute: 'reserve', servicelist: this.data.servicelist, ovHidden: true });
+    this.setData({ ovHidden: false });
   },
   //订单切换
   orderNavClick: function (obj){
@@ -179,9 +211,10 @@ Page({
     var area_ = obj.target.dataset.area || obj.currentTarget.dataset.area;
     var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
     wx.navigateTo({
-      url: '../reserveDetails/reserveDetails?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
+      url: '../reserveDetails/reserveDetails?state=1&code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
     })
   },
+  //服务预约点击
   reserveListDataClick2: function (obj) {
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var name_ = obj.target.dataset.name || obj.currentTarget.dataset.name;
@@ -265,7 +298,8 @@ Page({
       value.on = '';
       value.icon = 'icon-xia1';
       if (value.code == '1') {
-        value.check = on_ == 'on' ? 'check' : ''
+        value.check = on_ == 'on' ? 'check' : '';
+        value.title = on_ == 'on' ? the.data.serviceAreaCheckedData.title:'服务地区';
       }
     });
     this.setData({ serviceAreaMinData: this.data.serviceAreaMinData, serviceAreaCheckedData: the.data.serviceAreaCheckedData, serviceNavTop: 'top', serviceNavData: this.data.serviceNavData});
@@ -284,14 +318,16 @@ Page({
     })
     this.setData({ serviceAreaData: this.data.serviceAreaData, serviceAreaMinData: datalist });
   },
+  //特色服务选择
   featureClick: function (obj){
     var the = this;
-    var on_ = '';
+    var on_ = '',title_='';
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     this.data.featureData.forEach(function (value, index) {
       if (value.code == code_) {
         value.on = value.on == 'on' ? '' :'on';
         on_ = value.on;
+        title_= value.title;
       }else{
         value.on = '';
       }
@@ -301,6 +337,7 @@ Page({
       value.icon = 'icon-xia1';
       if (value.code=='2'){
         value.check = on_ == 'on' ? 'check' :''
+        value.title = on_ == 'on' ? title_ : '特色服务';
       }
     });
     this.setData({ featureData: this.data.featureData, featureTop: 'top', serviceNavData: this.data.serviceNavData});
@@ -510,8 +547,92 @@ Page({
       }
     });
   },
+  //图片报错处理
+  picError: function (obj){
+    var picId = obj.target.dataset.picId || obj.currentTarget.dataset.picId;
+    this.data.bannerData.forEach(function (value, index) {
+      if (value.picId == picId) {
+        value.PicUrl = '/images/banner1_1.png';
+      }
+    });
+    this.setData({ bannerData: this.data.bannerData });
+  },
+  phoneCall: function (obj){
+    wx.makePhoneCall({
+      phoneNumber: obj.target.dataset.phone || obj.currentTarget.dataset.phone,
+      success: function () {
+        console.log("成功拨打电话")
+      },
+    })
+  },
   onLoad: function () {
     var vm = this;
+    //首页轮播
+    wx.request({
+      url: prot.GetIndexBannerListPage,
+      method: 'GET',
+      data:{
+        args:{
+          start:1,
+          limit:10,
+          sort:'SortNo',
+          dir:'DESC',
+          NavCode:'IndexBanner'
+        }
+      },
+      success: function (res) {
+        if (res.statusCode==200){
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          data.forEach(function (value, index) {
+            value.PicUrl = vm.data.api + value.PicUrl;
+          });
+          vm.setData({ bannerData: data});
+        }
+      }
+    });
+    //首页服务列表
+    wx.request({
+      url: prot.GetServiceListPage,
+      method: 'GET',
+      data: {
+        args: {
+          start: 1,
+          limit: 999,
+          sort: 'SortNo',
+          dir: 'DESC',
+          IsRelease :true,
+          IsRecommend :true
+        }
+      },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          //vm.setData({ tsfwData: data });
+        }
+      }
+    });
+    //首页服务商列表
+    wx.request({
+      url: prot.GetMerchantListPage,
+      method: 'GET',
+      data: {
+        args: {
+          start: 1,
+          limit: 10,
+          sort: 'SortNo',
+          dir: 'DESC',
+          IsRelease: true,
+          IsRecommend: true
+        }
+      },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          debugger;
+          //vm.setData({ tsfwData: data });
+        }
+      }
+    });
     var serviceAreaDatas=[];
     provinces.province.forEach(function(value,index){
       var datalist = [];
@@ -530,28 +651,17 @@ Page({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
-      wx.setStorage({
-        key: 'userdata',
-        data: app.globalData.userInfo
-      });
-    } else if (app.globalData.userInfo){
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          });
-          wx.setStorage({
-            key: 'userdata',
-            data: res.userInfo
-          });
-        }
-      })
-    };
+    }else{
+      app.userInfoReadyCallback=function(res){
+        vm.setData({
+          userInfo: res.userInfo,
+          hasUserInfo: true
+        })
+      }
+    }
   },
   getUserInfo: function(e) {
+    if (!e.detail.userInfo)return;
     var vm = this;
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
@@ -562,5 +672,15 @@ Page({
       key: 'userdata',
       data: e.detail.userInfo
     });
+    var state = e.target.dataset.state || e.currentTarget.dataset.state;
+    if (state == 'reserve'){
+      var code_ = e.target.dataset.code || e.currentTarget.dataset.code;
+      var name_ = e.target.dataset.name || e.currentTarget.dataset.name;
+      var area_ = e.target.dataset.area || e.currentTarget.dataset.area;
+      var title_ = e.target.dataset.title || e.currentTarget.dataset.title;
+      wx.navigateTo({
+        url: '../reserveDetails2/reserveDetails2?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
+      })
+    }
   }
 })

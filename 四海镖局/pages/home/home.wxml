@@ -2,14 +2,8 @@
   <!-- 轮播 -->
   <view class='bannerContent'>
     <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
-      <swiper-item>
-        <image src='/images/banner1_1.png' mode="widthFix" />
-      </swiper-item>
-      <swiper-item>
-        <image src='/images/banner1_1.png' mode="widthFix" />
-      </swiper-item>
-      <swiper-item>
-        <image src='/images/banner1_1.png' mode="widthFix" />
+      <swiper-item data-picId="{{item.PicId}}"  bindtap="bannerClick" wx:for="{{bannerData}}" wx:key="{{item.PicId}}" wx:for-index="index" wx:for-item="item">
+        <image src='{{item.PicUrl}}' data-picId="{{item.PicId}}" lazy-load="true" binderror="picError" mode="widthFix" />
       </swiper-item>
     </swiper>
   </view>
@@ -17,9 +11,9 @@
   <view class="tsfw">
     <view class="top">
       <view class="left">特色服务</view>
-      <view class="right">全部18项 <text class='iconfont icon-you1' ></text></view>
+      <view class="right" bindtap="tsfwMore">全部18项 <text class='iconfont icon-you1' ></text></view>
     </view>
-    <swiper class="ul"  duration="300" display-multiple-items="4">
+    <swiper class="ul"  duration="300" autoplay="true" interval="5000" display-multiple-items="4">
         <swiper-item class="li" data-code="{{item.code}}" data-title="{{item.title}}" bindtap="tsfwClick" wx:for="{{tsfwData}}" wx:key="{{item.code}}" wx:for-index="index" wx:for-item="item">
           <view class="img">
             <image src='{{item.url}}' mode="widthFix" />
@@ -36,7 +30,7 @@
   <view class="fws">
     <view class="top">
       <view class="left">热推服务商</view>
-      <view class="right">全部18项 <text class='iconfont icon-you1' ></text></view>
+      <view class="right" bindtap="fwsMore">全部18项 <text class='iconfont icon-you1' ></text></view>
     </view>
     <view class='ul' >
       <view class="li"  data-code="{{item.code}}"  data-title="{{item.title}}" bindtap="fwsClick" wx:for="{{fwsData}}"  wx:key="{{item.code}}" wx:for-index="index" wx:for-item="item">

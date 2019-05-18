@@ -198,6 +198,7 @@ page{
   line-height: 65rpx;
   border-radius: 35rpx;
   background:#cccccc;
+  position: relative;
 }
 .introduce-list .li .text .btn view.btn2.on{
 background:-webkit-linear-gradient(#f69d3e, #f6b73e);
@@ -299,4 +300,28 @@ position: relative;
   display: block;
   height:100rpx;
   line-height: 100rpx;
+}
+
+.appointmentBtn{
+   margin:0 auto;
+    margin-top:50rpx;
+ width:100%;
+ height: 100rpx;
+ text-align: center;
+ color:white;
+ font-size:30rpx;
+ line-height: 100rpx;
+ letter-spacing: 3rpx;
+ background: -webkit-linear-gradient(left, #2689f7 , #3e49f6);
+}
+.userLogin{
+  position: absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  right:0;
+  width:100%;
+  height:100%;
+  opacity: 0;
+  z-index: 99;
 }

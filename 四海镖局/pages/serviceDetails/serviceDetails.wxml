@@ -56,17 +56,21 @@
           <view class="title">{{item.title}}</view>
           <view class="describe">{{item.describe}}</view>
           <view class="btn">
-            <view class="btn1" data-code="{{item.code}}" data-title="{{item.title}}" bindtap="introduceListClick2">
+            <view class="btn1" data-code="{{item.code}}" data-city="{{item.city}}" data-title="{{item.title}}" bindtap="introduceListClick2">
               <text class="iconfont icon-diqu"></text>
               <text>{{item.city?item.city:'请选择服务地区'}}</text>
             </view>
-            <view class="btn2 {{item.city?'on':''}}" data-code="{{item.code}}" data-title="{{item.title}}" bindtap="introduceListClick">预约服务</view>
+            <view class="btn2 {{item.city?'on':''}}" data-code="{{item.code}}" data-title="{{item.title}}" bindtap="{{hasUserInfo?'introduceListClick':'alertClick'}}">
+              <button class="userLogin" data-code="{{item.code}}" data-title="{{item.title}}" wx:if="{{!hasUserInfo && canIUse && item.city}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
+              预约服务
+            </view>
           </view>
         </view>
       </view>
     </view>
   </view>
 </view>
+<view bindtap="appointmentBtn" class="appointmentBtn"  wx:if="{{state!=1}}" >确定预约</view>
 <view class="service-nav-content {{serviceNavTop}}">
   <view class="service-nav-min">
     <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="serviceNavMinClick" wx:for="{{serviceNavMinData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.code}}">

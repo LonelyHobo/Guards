@@ -15,7 +15,8 @@
 }
 
 .service-head text {
-  padding: 0 30rpx;
+  width:150rpx;
+  text-align: center;
   background-color: white;
   font-size: 30rpx;
   line-height: 60rpx;

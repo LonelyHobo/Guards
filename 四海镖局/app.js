@@ -33,6 +33,9 @@ App({
       }
     })
   },
+  userInfoReadyCallback: function(res){
+    this.globalData.userInfo = res.userInfo
+  },
   globalData: {
     userInfo: null
   }

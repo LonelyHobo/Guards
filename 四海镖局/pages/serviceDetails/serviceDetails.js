@@ -1,5 +1,7 @@
 // pages/appointment/appointment.js
 var provinces = require('../../utils/province.js');
+//获取应用实例
+const app = getApp();
 Page({
 
   /**
@@ -9,6 +11,9 @@ Page({
     serviceName: "",
     serviceArea: "",
     serviceTitle: "",
+    hasUserInfo:false,
+    userInfo: {},
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
     state:1,
     serviceNavTop:'top',
     serviceAreaMinData: [],
@@ -35,6 +40,26 @@ Page({
       { title: "私人保镖", code: '2', describe: "处理一般突发安全威胁或安全伤害事件，进行人身安全保护", url: "/images/service_list1.jpg" }
     ],
   },
+  getUserInfo: function (e) {
+    if (!e.detail.userInfo) return;
+    var vm = this;
+    app.globalData.userInfo = e.detail.userInfo
+    this.setData({
+      userInfo: e.detail.userInfo,
+      hasUserInfo: true
+    });
+    wx.setStorage({
+      key: 'userdata',
+      data: e.detail.userInfo
+    });
+    var code_ = e.target.dataset.code || e.currentTarget.dataset.code;
+    var title_ = e.target.dataset.title || e.currentTarget.dataset.title;
+    var name_ = this.data.serviceName;
+    var area_ = '中国/香港';
+    wx.navigateTo({
+      url: '../appointment/appointment?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
+    })
+  },
   introduceListClick: function (obj){
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var name_ = this.data.serviceName;
@@ -58,9 +83,48 @@ Page({
       url: '../appointment/appointment?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
     })
   },
+  alertClick:function(){
+    var is_ = false;
+    var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
+    this.data.introduceListData.forEach(function (value) {
+      if (value.code == code_ && !value.city) {
+        is_ = true;
+      }
+    });
+    if (is_) {
+      wx.showToast({
+        title: '请先选择服务地区',
+        icon: 'none',
+        duration: 2000
+      })
+      return false;
+    }
+  },
+  appointmentBtn: function (obj){
+    var code_ = '';
+    var name_ = this.data.serviceName;
+    var area_ = '中国/香港';
+    wx.navigateTo({
+      url: '../appointment/appointment?code=' + code_ + '&name=' + name_ + '&area=' + area_
+    })
+  },
   introduceListClick2: function (obj) {
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
-    this.setData({ serviceNavTop: 'bottom', serviceCode: code_ });
+    var city_ = obj.target.dataset.city || obj.currentTarget.dataset.city;
+    if (city_){
+      this.data.serviceAreaMinData.forEach(function (value, index) {
+        if (value.title == city_) {
+          value.on = 'on';
+        } else {
+          value.on = '';
+        }
+      }); 
+    }else{
+      this.data.serviceAreaMinData.forEach(function (value, index) {
+         value.on = '';
+      }); 
+    }
+    this.setData({ serviceAreaMinData: this.data.serviceAreaMinData, serviceNavTop: 'bottom', serviceCode: code_ });
   },
   introduceNavClick: function (obj){
     var the = this;
@@ -117,14 +181,10 @@ Page({
   //服务地区选择
   serviceAreaMinClick: function (obj) {
     var the = this;
-    var on_ = '';
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     this.data.serviceAreaMinData.forEach(function (value, index) {
       if (value.code == code_) {
-        value.on = value.on == 'on' ? '' : 'on';
-        on_ = value.on;
-        var codes = value.code;
-        var judge = true;
+        value.on = 'on';
         the.data.serviceAreaCheckedData = value;
       } else {
         value.on = '';
@@ -155,6 +215,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var vm = this;
     this.setData({ serviceName: options.name, state: options.state});
     var serviceAreaDatas = [];
     provinces.province.forEach(function (value, index) {
@@ -166,6 +227,20 @@ Page({
       serviceAreaDatas.push({ title: value.provinceName, code: index, on: (index == 0 ? 'on' : ''), datalist: datalist });
     })
     this.setData({ serviceAreaData: serviceAreaDatas, serviceAreaMinData: serviceAreaDatas[0].datalist });
+
+    if (app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+        hasUserInfo: true
+      })
+    } else {
+      app.userInfoReadyCallback = function (res) {
+        vm.setData({
+          userInfo: res.userInfo,
+          hasUserInfo: true
+        })
+      }
+    }
   },
 
   /**

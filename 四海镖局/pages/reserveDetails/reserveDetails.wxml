@@ -64,7 +64,7 @@
         <view class="collect-and-like" >
           <view class="money" >¥860.<font>00</font>元/60分钟</view>
           <view class="collect" ><text class="iconfont icon-shoucang" ></text><text>收藏</text></view>
-          <view class="collect" bindtap="yuyue" ><text class="iconfont icon-yuyuen" ></text><text>预约</text></view>
+          <view class="collect" bindtap="yuyue" ><text>预约</text></view>
         </view>
       </view>
       <view class="introduce-streamer"><view><image src='/images/icon_list_banner.png' mode="widthFix" /></view></view>

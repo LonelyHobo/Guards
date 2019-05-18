@@ -4,15 +4,15 @@
     <view class="head-close">
       <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
     </view>
-    <text class='head-title'>{{serviceName}}</text>
+    <text class='head-title'>{{serviceTitle}}</text>
   </view>
   <view class="header-height"></view>
   <view class="appointement-content">
     <view class="top">
-      <view class="content-name">{{serviceTitle}}</view>
+      <view class="content-name">{{serviceName}}</view>
       <view class="content-title">
-        <text class="l">服务地区</text>
-        <text class="r">{{serviceArea}}</text>
+        <text class="l">服务地区 \ </text>
+        <text class="r"> {{serviceArea}}</text>
       </view>
     </view>
     <view class="center" >
@@ -26,8 +26,24 @@
       </view>
     </view>
     <view class="bottom" >
-      <textarea placeholder='请告知我们您当前的需求信息' bindconfirm="appointementSave" ></textarea>
-      <button>提交预约</button>
+      <textarea placeholder='请告知我们您当前的需求信息' bindconfirm="appointementSave" style="display:{{agreementTop=='top'?'none':'block'}};" ></textarea>
+      <view class="agreementBack {{agreementTop}}" ></view>
+      <view class="agreement" >
+        <view class="l" >
+          <view class="checkbox {{isAgreement?'on':''}}" bindtap="checkClick" ><text class='iconfont icon-duihao' ></text></view>
+          <view class="text" bindtap="agreementClick" >预约须知 <text class="iconfont icon-shang1" ></text></view>
+        </view>
+        <view class="r  {{agreementTop}}" >
+          <view class="r-top" >
+            <view class="close" bindtap="agreementClick" >取消</view>
+            <view class="title" >预约须知</view>
+          </view>
+          <view class="r-content" >  
+            <view>全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司告诉您如何全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司告诉您如何...全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司告诉您如何...全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司告诉您如何...全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司告诉您如何...全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司告诉您如何...全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司告诉您如何...全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司告诉您如何...全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司告诉您如何...</view>
+          </view>
+        </view>
+      </view>
+      <button class="{{isAgreement?'on':''}}" bindlongtap="{{isAgreement?'submitForm':''}}">提交预约</button>
     </view>
   </view>
 
