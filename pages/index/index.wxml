@@ -1,0 +1,10 @@
+<!--index.wxml-->
+<view class="index {{ovHidden?'hidden':''}}">
+  <include src="../header/header.wxml"></include>
+  <include src="../home/home.wxml" wx:if="{{route=='home'}}"></include>
+  <include src="../service/service.wxml" wx:if="{{route=='service' && serviceRoute=='service'}}"></include>
+  <include src="../reserve/reserve.wxml" wx:if="{{route=='reserve' && serviceRoute=='reserve'}}"></include>
+  <include src="../seekHelp/seekHelp.wxml" wx:if="{{route=='seekHelp'}}"></include>
+  <include src="../orderform/orderform.wxml" wx:if="{{route=='orderform'}}"></include>
+  <include src="../footerNav/footerNav.wxml"></include>
+</view>

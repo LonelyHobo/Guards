@@ -1,0 +1,108 @@
+/* pages/footerNav/footerNav.wxss */
+
+.footerNav {
+  position: fixed;
+  z-index: 999;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 110rpx;
+  background-color: white;
+  box-shadow: 0 -10rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.footer-height {
+  height: 130rpx;
+}
+
+.footerNav .ul {
+  padding: 10rpx 0;
+  height: 100rpx;
+}
+
+.footerNav .ul .li.lis {
+  width: 18.75%;
+  float: left;
+  font-size: 28rpx;
+  text-align: center;
+}
+.footerNav .ul .li{
+  position: relative;
+}
+.footerNav .ul .li.lis view.icon text {
+  font-size: 50rpx;
+  line-height: 60rpx;
+  color: #8c889c;
+  -webkit-text-fill-color: initial; /*text-fill-color会覆盖color所定义的字体颜色： */
+}
+
+.footerNav .ul .li.lis.on view.icon text {
+  background-image: -webkit-gradient(linear, left 0, right 0, from(#2689f7), to(#3e4af6));
+  -webkit-background-clip: text; /*必需加前缀 -webkit- 才支持这个text值 */
+  -webkit-text-fill-color: transparent;
+}
+.footerNav .ul .li.lis.on .text{
+  background-image: -webkit-gradient(linear, left 0, right 0, from(#2689f7), to(#3e4af6));
+  -webkit-background-clip: text; /*必需加前缀 -webkit- 才支持这个text值 */
+  -webkit-text-fill-color: transparent;
+}
+.footerNav .ul .li.seek.on  view.icon text {
+  background-image: -webkit-gradient(linear, left 0, right 0, from(white), to(white));
+  -webkit-background-clip: text; /*必需加前缀 -webkit- 才支持这个text值 */
+  -webkit-text-fill-color: transparent;
+}
+.footerNav .ul .li.seek.on .text text{
+  background-image: -webkit-gradient(linear, left 0, right 0, from(#2689f7), to(#3e4af6));
+  -webkit-background-clip: text; /*必需加前缀 -webkit- 才支持这个text值 */
+  -webkit-text-fill-color: transparent;
+}
+.footerNav .ul .li.lis view.text text {
+  font-size: 20rpx;
+  display: block;
+  color: #8c889c;
+  margin-top: 0;
+}
+
+.footerNav .ul .li.seek {
+  width: 25%;
+  float: left;
+}
+
+.footerNav .ul .li.seek>view.icon {
+  background: -webkit-linear-gradient(#2689f7, #3e4af6);
+  width: 100rpx;
+  height: 100rpx;
+  border: 10rpx solid white;
+  box-shadow: 0 -10rpx 10rpx rgba(0, 0, 0, 0.1);
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  border-radius: 50%;
+  top: -50rpx;
+  text-align: center;
+  line-height: 100rpx;
+}
+
+.footerNav .ul .li.seek>view.icon text {
+  color: white;
+  font-size: 50rpx;
+}
+
+.footerNav .ul .li.seek>view.text {
+  display: block;
+  position: relative;
+  top: -55rpx;
+  font-size: 20rpx;
+  color: #8c889c;
+  text-align: center;
+}
+.footerNav .ul .li button{
+  position: absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  right:0;
+  width:100%;
+  height:100%;
+  opacity: 0;
+}

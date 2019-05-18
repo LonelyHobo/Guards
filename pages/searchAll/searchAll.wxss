@@ -1,0 +1,52 @@
+/* pages/searchAll/searchAll.wxss */
+@import "../public/iconfont";
+@import "../public/public";
+@import "../reserve/reserve";
+page{
+  background-color:#f5f5f5;
+}
+.search-head{
+  position: fixed;
+  top:0;
+  left:0;
+  width:calc(100% - 40rpx);
+  height: 60rpx;
+  padding:10rpx 20rpx;
+  border-bottom:1px solid #eeeeee;
+  background-color:#f5f5f5;
+}
+.search-head .l{
+  width:85%;
+  float:left;
+  height:100%;
+  border-radius: 10rpx;
+  background-color:white;
+}
+.search-head .l .iconfont{
+  width:50rpx;
+  height: 100%;
+  line-height: 60rpx;
+  font-size:30rpx;
+  text-align: center;
+  float:left;
+}
+.search-head .l input{
+  width:calc(100% - 50rpx);
+  font-size:30rpx;
+  height: 100%;
+}
+.search-head .r{
+  width:15%;
+  float:right;
+  line-height: 60rpx;
+  height: 100%;
+  text-align: center;
+  font-size:30rpx;
+}
+.search-head-height{height:80rpx; background-color:#f5f5f5;}
+.isnull{height: calc(100vh - 80rpx); overflow: hidden; background-color:white;}
+.isnull image{width:90%; display: block; margin:0 auto;}
+
+.reserve-list {
+ padding-bottom:0;
+}

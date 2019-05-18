@@ -1,0 +1,15 @@
+/* pages/seekHelp/seekHelp.wxss */
+.seekhelp{
+  background-color:#f5f5f6;
+  height: calc(100vh - 230rpx);
+}
+.seekhelp .seekhelp-text{
+  padding:20rpx 0;
+}
+.seekhelp .seekhelp-text textarea{
+  background-color:white;
+  height:200rpx;
+  width:95%;
+  font-size:25rpx;
+  padding:2.5%;
+}

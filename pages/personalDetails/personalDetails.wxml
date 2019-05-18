@@ -1,0 +1,54 @@
+<!--pages/personal/personal.wxml-->
+<view class="personal" >
+<view class="personal-head" >
+  <view class="head-close"><navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator></view>
+  <text class='head-title'>个人信息</text>
+</view>
+<view class="personal-head-height" ></view>
+<view class="personal-content" >
+  <view class="top" >
+    <view class="l" >头像</view>
+    <view class='r' >
+      <view class="img" ><image mode="widthFix" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image></view>
+      <text class='iconfont icon-you1' ></text>
+    </view>
+  </view>
+  <view class="list name" >
+    <view class="l" >名称</view>
+    <view class='r' >
+      <view class="text">{{userInfo.nickName}}</view>
+      <text class='iconfont icon-you1' ></text>
+    </view>
+  </view>
+   <view class="list sex" >
+    <view class="l" >性别</view>
+    <view class='r' >
+      <view class="text">{{userInfo.gender=='1'?'男':userInfo.gender=='0'?'女':'...'}}</view>
+      <text class='iconfont icon-you1' ></text>
+    </view>
+  </view>
+  <view class="list sex" >
+    <view class="l" >生日</view>
+    <view class='r' >
+      <view class="text">{{userDetailsData.birthday}}</view>
+      <text class='iconfont icon-you1' ></text>
+    </view>
+  </view>
+  <view class="list sex" >
+    <view class="l" >所在城市</view>
+    <view class='r' >
+      <view class="text">{{locations}}</view>
+      <text class='iconfont icon-you1' ></text>
+    </view>
+  </view>
+  <view class="list sex" >
+    <view class="l" >手机号码</view>
+    <view class='r' >
+      <button wx:if="{{userDetailsData.tel=='待完善'}}"  open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>
+      <view class="text">{{userDetailsData.tel}}</view>
+      <text class='iconfont icon-you1' ></text>
+    </view>
+  </view>
+  <view bindtap="loginout" class="loginBtn" >退出登陆</view>
+</view>
+</view>

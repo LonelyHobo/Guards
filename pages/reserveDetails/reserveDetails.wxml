@@ -1,0 +1,86 @@
+<!--pages/appointment/appointment.wxml-->
+<view class="appointement">
+  <view class="appointement-head">
+    <view class="head-close">
+      <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
+    </view>
+    <text class='head-title'>{{serviceTitle}}</text>
+    <view class="header-search">
+      <text class="iconfont icon-sousuo"></text>
+    </view>
+  </view>
+  <view class="header-height"></view>
+  <!-- <view class="service-nav">
+    <view class="li {{item.on=='on'?'on':''}} {{item.check=='check'?'check':''}}"  data-code="{{item.code}}" bindtap="serviceNavClick" wx:for="{{serviceNavData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
+      <view>
+        <text>{{item.title}}</text>
+        <text class="iconfont {{item.icon}}"></text>
+      </view>
+    </view>
+  </view>
+  <view class="service-nav-content {{serviceNavTop}}" >
+    <view class="service-nav-min">
+    <view class="li {{item.on=='on'?'on':''}}"  data-code="{{item.code}}" bindtap="serviceNavMinClick" wx:for="{{serviceNavMinData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
+      <view>
+        <text>{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+    <scroll-view scroll-y="true" class="left">
+      <view class="ul" >
+        <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="serviceAreaClick" wx:for="{{serviceAreaData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >{{item.title}}</view>
+      </view>
+    </scroll-view>
+    <scroll-view scroll-y="true" class="right" >
+      <view class="ul" >
+        <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="serviceAreaMinClick" wx:for="{{serviceAreaMinData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >{{item.title}}</view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="service-nav-feature-back {{featureTop}}" ></view>
+  <view class="service-nav-feature {{featureTop}}" >
+    <view class="ul" >
+      <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="featureClick" wx:for="{{featureData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >{{item.title}}</view>
+    </view>
+  </view> -->
+  <view class="introduce" >
+      <view style="width: 100%;height: 1rpx;"></view>
+      <view class="introduce-banner">
+        <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
+          <swiper-item>
+            <image src='/images/banner1_1.png' mode="widthFix" />
+          </swiper-item>
+          <swiper-item>
+            <image src='/images/banner1_1.png' mode="widthFix" />
+          </swiper-item>
+          <swiper-item>
+            <image src='/images/banner1_1.png' mode="widthFix" />
+          </swiper-item>
+        </swiper>
+      </view>
+      <view class="introduce-content">
+        <view class="title" >私人保镖介绍</view>
+        <view class="describe" >处理一般突发安全威胁或安全伤害事件，进行人身安全保处理一般突发安全威胁或安全处理一般突发安全威胁或安全伤害事件，进行人身安全保护伤害事件，进行人身安全保护护</view>
+        <view class="collect-and-like" >
+          <view class="money" >¥860.<font>00</font>元/60分钟</view>
+          <view class="collect" ><text class="iconfont icon-shoucang" ></text><text>收藏</text></view>
+          <view class="collect" bindtap="yuyue" ><text>预约</text></view>
+        </view>
+      </view>
+      <view class="introduce-streamer"><view><image src='/images/icon_list_banner.png' mode="widthFix" /></view></view>
+      <view class="fws">
+        <view class="top">
+          <view class="left">热推服务商</view>
+        </view>
+        <view class='ul' >
+          <view class="li"  data-code="{{item.code}}"  data-title="{{item.title}}" bindtap="fwsClick" wx:for="{{fwsData}}" wx:for-index="index" wx:for-item="item">
+            <view class="img imgCenter" ><image src='{{item.url}}' mode="widthFix" /></view>
+            <view class="text" >
+              <view class="left">{{item.title}}</view>
+              <view class="right">查看详情 <text class='iconfont icon-you1' ></text></view>
+            </view>
+          </view>
+        </view>
+      </view>
+  </view>
+</view>

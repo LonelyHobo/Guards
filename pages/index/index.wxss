@@ -1,0 +1,192 @@
+/**index.wxss**/
+@import "../public/iconfont";
+@import "../public/public";
+@import "../header/header";
+@import "../seekHelp/seekHelp";
+@import "../footerNav/footerNav";
+@import "../service/service";
+@import "../reserve/reserve";
+@import "../orderform/orderform";
+/* 轮播 */
+.hidden{
+  height: 100vh;
+  overflow: hidden;
+}
+.banner {
+  height: 340rpx;
+}
+
+.banner swiper-item image {
+  width: 100%;
+}
+
+.bannerContent {
+  margin: 20rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+/* 列表 */
+
+/* 特色服務 */
+
+.tsfw {
+  padding: 0 25rpx;
+  border-bottom:20rpx solid #f8f8f8;
+}
+
+.tsfw .top {
+  padding-bottom: 20rpx;
+  height: 50rpx;
+  width: 100%;
+  border-bottom:1px solid #eeeeee;
+}
+
+.tsfw .top .left {
+  width: calc(60% - 20rpx);
+  float: left;
+  display: block;
+  font-size: 35rpx;
+  font-weight: 600;
+  padding-left: 20rpx;
+  position: relative;
+  height:100%;
+  line-height: 50rpx;
+}
+
+.tsfw .top .left::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5rpx;
+  height: 35rpx;
+  background: -webkit-linear-gradient(#2689f7, #3e4af6);
+}
+
+.tsfw .top .right {
+  width: 40%;
+  float: right;
+  display: block;
+  font-size: 30rpx;
+  color: #999;
+  text-align: right;
+  line-height: 50rpx;
+}
+.tsfw .top .right text{
+  font-size:20rpx;
+  float:right;
+  margin-left:10rpx;
+}
+.tsfw .ul{
+  overflow: hidden;
+  height:220rpx;
+}
+.tsfw .ul .li{
+ width:120rpx;
+ float:left;
+ padding:20rpx 0;
+}
+.tsfw .ul .li .img{
+  width:100rpx;
+  margin:0 auto;
+}
+.tsfw .ul .li .img image{
+  width:100%;
+}
+.tsfw .ul .li text{
+  display: block;
+  font-size:25rpx;
+  text-align: center;
+  margin-top:10rpx;
+}
+
+/* 服务商 */
+.fws {
+  padding: 0 25rpx;
+}
+
+.fws .top {
+  padding: 20rpx 0;
+  height: 50rpx;
+  width: 100%;
+  border-bottom:1px solid #eeeeee;
+}
+
+.fws .top .left {
+  width: calc(60% - 20rpx);
+  float: left;
+  display: block;
+  font-size: 35rpx;
+  font-weight: 600;
+  padding-left: 20rpx;
+  position: relative;
+  height:100%;
+  line-height: 50rpx;
+}
+
+.fws .top .left::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5rpx;
+  height: 35rpx;
+  background: -webkit-linear-gradient(#2689f7, #3e4af6);
+}
+.fws .top .right {
+  width: 40%;
+  float: right;
+  display: block;
+  font-size: 30rpx;
+  color: #999;
+  text-align: right;
+  line-height: 50rpx;
+}
+.fws .top .right text{
+  font-size:20rpx;
+  float:right;
+  margin-left:10rpx;
+}
+.fws .ul{
+  overflow: hidden;
+}
+.fws .ul .li{
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin:20rpx;
+  border:1px solid #eeeeee;
+}
+.fws .ul .li .img{
+  height:250rpx;
+  overflow: hidden;
+}
+.fws .ul .li .text{
+  padding:20rpx;
+  height:50rpx;
+  background-color:#f8f8f8;
+  overflow: hidden;
+  line-height: 50rpx;
+  border-top:1px solid #eeeeee;
+}
+.fws .ul .li .text .left{
+  width:50%;
+  float:left;
+  font-size:30rpx;
+}
+.fws .ul .li .text .right{
+  width:50%;
+  float:right;
+  font-size:25rpx;
+  color:#999999;
+  text-align: right;
+}
+.fws .ul .li .text .right text{
+  font-size:20rpx;
+  float:right;
+  margin-left:10rpx;
+}

@@ -1,0 +1,32 @@
+ <view class="service">
+ <view class="service-nav">
+    <view class="li {{item.on=='on'?'on':''}}"  data-code="{{item.code}}" bindtap="reserveNavDataClick" wx:for="{{reserveNavData}}" wx:for-index="index" wx:for-item="item">
+      <view>
+        <text>{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="service-nav-height"></view>
+ <!-- 橫幅 -->
+  <view class="service-banner" >
+    <image src='/images/icon_list_banner.png' mode="widthFix" />
+  </view>
+  <!-- 列表 -->
+  <view class="reserve-list">
+    <view class="reserve-list-head" >{{reserveListHead}}</view>
+    <view class="ul" >
+      <view class="li" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" bindtap="reserveListDataClick" wx:for="{{reserveListData}}" wx:for-index="index" wx:for-item="item">
+        <view class="img imgCenter" >
+          <image src="{{item.url}}" mode="widthFix" ></image>
+        </view>
+        <view class="text" >
+          <view class="title" >{{item.title}}</view>
+          <view class="describe" >{{item.describe}}</view>
+        </view>
+        <view class="btn" >
+          <text>预约</text>
+        </view>
+      </view>
+    </view>
+  </view>
+ </view>

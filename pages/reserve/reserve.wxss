@@ -1,0 +1,76 @@
+/* pages/reserve/reserve.wxss */
+
+.reserve-list {
+  margin: 0 20rpx;
+  background-color:white;
+  padding-bottom:20rpx;
+}
+.reserve-list .reserve-list-head{
+  padding:25rpx 20rpx;
+  font-size:35rpx;
+  line-height: 35rpx;
+  border-bottom: 1px solid #eeeeee;
+}
+.reserve-list .ul .li {
+  border-bottom: 1px solid #eeeeee;
+  overflow: hidden;
+  padding: 20rpx 0;
+  margin:0 20rpx;
+  position: relative;
+}
+
+.reserve-list .ul .li .img {
+  width: 175rpx;
+  height: 175rpx;
+  float: left;
+  overflow: hidden;
+}
+
+.reserve-list .ul .li .text {
+  margin-left: 190rpx;
+  margin-right:160rpx;
+}
+
+.reserve-list .ul .li .title {
+  font-size: 30rpx;
+  line-height: 40rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height:40rpx;
+}
+
+.reserve-list .ul .li .describe {
+  font-size: 25rpx;
+  line-height: 40rpx;
+  height: 120rpx;
+  margin-top: 5rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  color:#999999;
+}
+.reserve-list .ul .li .btn{
+  position: absolute;
+  right:0;
+  top:0;
+  height: 100%;
+  width:160rpx;
+  text-align: center;
+}
+.reserve-list .ul .li .btn text{
+  position: relative;
+  top:50%;
+  transform: translateY(-50%);
+  display: block;
+  float: right;
+  color:white;
+  font-size:25rpx;
+  width:130rpx;
+  height:60rpx;
+  line-height: 60rpx;
+  border-radius: 30rpx;
+  background:-webkit-linear-gradient(#f69d3e, #f6b73e);
+}

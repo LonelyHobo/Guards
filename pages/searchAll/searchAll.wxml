@@ -1,0 +1,26 @@
+<!--pages/searchAll/searchAll.wxml-->
+<view class="searchAll" >
+  <view class="search-head">
+    <view class="l" ><text class="iconfont icon-sousuo" ></text><input type="text" confirm-type="search" placeholder='找您需要的服务' auto-focus="true" bindconfirm="searchClick" bindinput="searchInput" ></input></view>
+    <view class="r" ><navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">取消</navigator></view>
+  </view>
+  <view class="search-head-height" ></view>
+  <!-- 服务 -->
+  <view class="reserve-list">
+    <view class="ul" >
+      <view class="li" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" bindtap="reserveListDataClick" wx:for="{{reserveListData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
+        <view class="img imgCenter" >
+          <image src="{{item.url}}" mode="widthFix" ></image>
+        </view>
+        <view class="text" >
+          <view class="title" >{{item.title}}</view>
+          <view class="describe" >{{item.describe}}</view>
+        </view>
+        <view class="btn" >
+          <text>预约</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{isNull}}" class="isnull"><image src="/images/no_data.png" mode="widthFix" ></image></view>
+</view>
