@@ -42,7 +42,18 @@
 .service-banner image{
   width:100%; 
 }
-
+.service-banner .banner{
+  overflow: hidden;
+  border-radius: 10rpx;
+  height: 170rpx;
+}
+.service-banner swiper-item{
+  height: 170rpx;
+}
+.service-banner swiper-item image{
+  width: 100%;
+  min-height: 100%;
+}
 /* 列表 */
 
 .service-list {

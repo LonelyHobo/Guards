@@ -1,19 +1,25 @@
 // pages/appointment/appointment.js
 var provinces = require('../../utils/province.js');
+var prot = require('../../utils/prot.js');
+var WxParse = require('../../wxParse/wxParse.js');
+const app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    api:prot.api,
     serviceName: "",
     serviceArea: "",
     serviceTitle: "",
+    serviceId:[],
+    streamerData:[],
+    areaCode:1,
+    serviceData:{
+    },
     state:1,
-    fwsData: [
-      { title: '北京万家', url: '/images/icon_index_list_1.png', code: '001' },
-      { title: '香港卫安', url: '/images/icon_index_list_2.png', code: '002' },
-    ], 
+    fwsData: [], 
     reserveNavData: [
       { title: '国内服务', code: '1', on: 'on' },
       { title: '海外服务', code: '2', on: '' }
@@ -37,46 +43,30 @@ Page({
   },
   //服务地区是否国内选择
   serviceNavMinClick: function (obj) {
-    var the = this;
+    var vm = this;
     var serviceAreaDatas = [];
-    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var regionID = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var datalist = [];
     this.data.serviceNavMinData.forEach(function (value, index) {
       value.on = '';
-      if (value.code == code_) {
+      if (value.regionID == regionID) {
         value.on = 'on';
-        var province_ = [];
-        if (code_ == '1') {
-          province_ = provinces.province;
+        if (regionID == '1') {
+          serviceAreaDatas = vm.data.serviceAreaData1;
         } else {
-          province_ = [{
-            "citys": [
-              {
-                "citysName": "1区",
-              }, {
-                "citysName": "2区",
-              }, {
-                "citysName": "3区",
-              },
-            ],
-            "provinceName": "海外某州"
-          }];
+          serviceAreaDatas = vm.data.serviceAreaData2;
         }
-        province_.forEach(function (value, index) {
-          var datalist = [];
-          var index_ = index;
-          value.citys.forEach(function (value, index) {
-            datalist.push({ title: value.citysName, code: index_ + '_' + index, on: '' });
-          })
-          serviceAreaDatas.push({ title: value.provinceName, code: index, on: (index == 0 ? 'on' : ''), datalist: datalist });
-        })
       }
-    })
-    this.setData({ serviceNavMinData: this.data.serviceNavMinData, serviceAreaData: serviceAreaDatas, serviceAreaMinData: serviceAreaDatas[0].datalist });
+    });
+    this.setData({
+      serviceNavMinData: this.data.serviceNavMinData,
+      serviceAreaData: serviceAreaDatas,
+      serviceAreaMinData: serviceAreaDatas[0].datalist
+    });
   },
   //服务地区选择
   serviceAreaMinClick: function (obj) {
-    var the = this;
+    var vm = this;
     var on_ = '';
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     this.data.serviceAreaMinData.forEach(function (value, index) {
@@ -85,7 +75,7 @@ Page({
         on_ = value.on;
         var codes = value.code;
         var judge = true;
-        the.data.serviceAreaCheckedData = value;
+        vm.data.serviceAreaCheckedData = value;
       } else {
         value.on = '';
       }
@@ -97,24 +87,24 @@ Page({
         value.check = on_ == 'on' ? 'check' : ''
       }
     });
-    this.setData({ serviceAreaMinData: this.data.serviceAreaMinData, serviceAreaCheckedData: the.data.serviceAreaCheckedData, serviceNavTop: 'top', serviceNavData: this.data.serviceNavData });
+    this.setData({ serviceAreaMinData: this.data.serviceAreaMinData, serviceAreaCheckedData: vm.data.serviceAreaCheckedData, serviceNavTop: 'top', serviceNavData: this.data.serviceNavData });
   },
   //服务地区省选择
   serviceAreaClick: function (obj) {
-    var the = this;
+    var vm = this;
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var datalist = [];
     this.data.serviceAreaData.forEach(function (value, index) {
       value.on = '';
       if (value.code == code_) {
-        the.data.serviceAreaData[index].on = 'on';
-        datalist = the.data.serviceAreaData[index].datalist;
+        vm.data.serviceAreaData[index].on = 'on';
+        datalist = vm.data.serviceAreaData[index].datalist;
       }
     })
     this.setData({ serviceAreaData: this.data.serviceAreaData, serviceAreaMinData: datalist });
   },
   featureClick: function (obj) {
-    var the = this;
+    var vm = this;
     var on_ = '';
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     this.data.featureData.forEach(function (value, index) {
@@ -136,18 +126,18 @@ Page({
   },
   //服务地区 特色服务
   serviceNavClick: function (obj) {
-    var the = this;
+    var vm = this;
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     this.data.serviceNavData.forEach(function (value, index) {
       if (value.code == code_) {
-        the.data.serviceNavData[index].on = the.data.serviceNavData[index].on == 'on' ? '' : 'on';
-        the.data.serviceNavData[index].icon = the.data.serviceNavData[index].icon == 'icon-xia1' ? 'icon-shang' : 'icon-xia1';
+        vm.data.serviceNavData[index].on = vm.data.serviceNavData[index].on == 'on' ? '' : 'on';
+        vm.data.serviceNavData[index].icon = vm.data.serviceNavData[index].icon == 'icon-xia1' ? 'icon-shang' : 'icon-xia1';
         if (code_ == '1') {
-          the.data.featureTop = 'top';
-          the.data.serviceNavTop = the.data.serviceNavData[index].on == 'on' ? 'bottom' : 'top';
+          vm.data.featureTop = 'top';
+          vm.data.serviceNavTop = vm.data.serviceNavData[index].on == 'on' ? 'bottom' : 'top';
         } else {
-          the.data.serviceNavTop = 'top';
-          the.data.featureTop = the.data.serviceNavData[index].on == 'on' ? 'bottom' : 'top';
+          vm.data.serviceNavTop = 'top';
+          vm.data.featureTop = vm.data.serviceNavData[index].on == 'on' ? 'bottom' : 'top';
         }
       } else {
         value.on = '';
@@ -155,9 +145,9 @@ Page({
       }
     });
     if (code_ == '1') {
-      this.setData({ serviceNavData: this.data.serviceNavData, serviceNavTop: the.data.serviceNavTop, featureTop: the.data.featureTop });
+      this.setData({ serviceNavData: this.data.serviceNavData, serviceNavTop: vm.data.serviceNavTop, featureTop: vm.data.featureTop });
     } else {
-      this.setData({ serviceNavData: this.data.serviceNavData, serviceNavTop: the.data.serviceNavTop, featureTop: the.data.featureTop });
+      this.setData({ serviceNavData: this.data.serviceNavData, serviceNavTop: vm.data.serviceNavTop, featureTop: vm.data.featureTop });
     }
   },
   //服务商点击
@@ -165,19 +155,20 @@ Page({
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
     wx.navigateTo({
-      url: '../serviceDetails/serviceDetails?code=' + code_ + '&name=' + title_
+      url: '../serviceDetails/serviceDetails?merchantId=' + code_ + '&merchantName=' + title_
     })
   },
   yuyue:function(){
     wx.navigateTo({
-      url: '../reserveDetails2/reserveDetails2?title=' + this.data.serviceTitle
+      url: '../reserveDetails2/reserveDetails2?title=' + this.data.serviceTitle + '&areaCode=' + this.data.areaCode + '&code=' + this.data.serviceId
     })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({ serviceTitle: options.title, state: options.state });
+    var vm = this;
+    this.setData({ serviceTitle: options.title, state: options.state, serviceId: options.code, areaCode: options.areaCode });
     var serviceAreaDatas = [];
     provinces.province.forEach(function (value, index) {
       var datalist = [];
@@ -188,6 +179,69 @@ Page({
       serviceAreaDatas.push({ title: value.provinceName, code: index, on: (index == 0 ? 'on' : ''), datalist: datalist });
     })
     this.setData({ serviceAreaData: serviceAreaDatas, serviceAreaMinData: serviceAreaDatas[0].datalist });
+    wx.request({
+      url: prot.GetServiceDetail,
+      method: 'GET',
+      data: {
+        id: options.code,
+      },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          data.Plist = data.Plist ? data.Plist : [{ PicId: '', PicUrl:'/images/banner1_1.png'}];
+          vm.setData({ serviceData:data });
+          var introduce = data.Introduce;
+          WxParse.wxParse('introduce', 'html', introduce, vm, 5);
+        }
+      }
+    }); 
+    //热推服务商
+    wx.request({
+      url: prot.GetMerchantListPageByService,
+      method: 'GET',
+      data: {
+        args: {
+          start: 0,
+          limit: 10,
+          sort: 'A.SortNo',
+          dir: 'DESC', 
+          SpecialID: options.code,
+          RegionID: options.areaCode == 1 ? 0 : 1519
+        }
+      },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          data.forEach(function (value, index) {
+            value.PicUrl = vm.data.api + value.PicUrl;
+          });
+          vm.setData({ fwsData: data });
+        }
+      }
+    });
+    //下面的轮播
+    wx.request({
+      url: prot.GetDetailBannerListPage,
+      method: 'GET',
+      data: {
+        args: {
+          start: 0,
+          limit: 10,
+          sort: 'SortNo',
+          dir: 'DESC',
+          NavCode: 'DetailBanner'
+        }
+      },
+      success: function (res) {
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          data.forEach(function (value, index) {
+            value.PicUrl = vm.data.api + value.PicUrl;
+          });
+          vm.setData({ streamerData: data });
+        }
+      }
+    });
   },
 
   /**

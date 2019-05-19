@@ -4,7 +4,7 @@
     <view class="head-close">
       <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
     </view>
-    <text class='head-title'>{{serviceTitle}}</text>
+    <text class='head-title'>{{serviceData.Name}}</text>
     <view class="header-search">
       <text class="iconfont icon-sousuo"></text>
     </view>
@@ -47,36 +47,39 @@
       <view style="width: 100%;height: 1rpx;"></view>
       <view class="introduce-banner">
         <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
-          <swiper-item>
-            <image src='/images/banner1_1.png' mode="widthFix" />
-          </swiper-item>
-          <swiper-item>
-            <image src='/images/banner1_1.png' mode="widthFix" />
-          </swiper-item>
-          <swiper-item>
-            <image src='/images/banner1_1.png' mode="widthFix" />
-          </swiper-item>
+          <swiper-item data-picId="{{item.PicId}}" wx:for="{{serviceData.Plist}}" wx:key="{{item.PicId}}" wx:for-index="index" wx:for-item="item">
+          <image src='{{item.PicUrl}}' data-picId="{{item.PicId}}" lazy-load="true" binderror="picError" mode="widthFix" />
+        </swiper-item>
         </swiper>
       </view>
       <view class="introduce-content">
-        <view class="title" >私人保镖介绍</view>
-        <view class="describe" >处理一般突发安全威胁或安全伤害事件，进行人身安全保处理一般突发安全威胁或安全处理一般突发安全威胁或安全伤害事件，进行人身安全保护伤害事件，进行人身安全保护护</view>
+        <view class="title" >{{serviceData.Name}}介绍</view>
+        <view class="describe" >
+          <import src="../../wxParse/wxParse.wxml"/>
+          <template is="wxParse" data="{{wxParseData:introduce.nodes}}"/>  
+        </view>
         <view class="collect-and-like" >
-          <view class="money" >¥860.<font>00</font>元/60分钟</view>
+          <view class="money" >{{serviceData.Price}}</view>
           <view class="collect" ><text class="iconfont icon-shoucang" ></text><text>收藏</text></view>
           <view class="collect" bindtap="yuyue" ><text>预约</text></view>
         </view>
       </view>
-      <view class="introduce-streamer"><view><image src='/images/icon_list_banner.png' mode="widthFix" /></view></view>
+      <view class="introduce-streamer"><view>
+      <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
+          <swiper-item data-picId="{{item.PicId}}" bindtap="bannerClick" wx:for="{{streamerData}}" wx:key="{{item.PicId}}" wx:for-index="index" wx:for-item="item">
+            <image src='{{item.PicUrl}}' data-picId="{{item.PicId}}" lazy-load="true" binderror="picError" mode="widthFix" />
+          </swiper-item>
+        </swiper>
+      </view></view>
       <view class="fws">
         <view class="top">
           <view class="left">热推服务商</view>
         </view>
         <view class='ul' >
-          <view class="li"  data-code="{{item.code}}"  data-title="{{item.title}}" bindtap="fwsClick" wx:for="{{fwsData}}" wx:for-index="index" wx:for-item="item">
-            <view class="img imgCenter" ><image src='{{item.url}}' mode="widthFix" /></view>
+          <view class="li"  data-code="{{item.MerchantID}}"  data-title="{{item.Name}}" bindtap="fwsClick" wx:key="{{item.MerchantID}}" wx:for="{{fwsData}}" wx:for-index="index" wx:for-item="item">
+            <view class="img imgCenter" ><image src='{{item.PicUrl}}' mode="widthFix" /></view>
             <view class="text" >
-              <view class="left">{{item.title}}</view>
+              <view class="left">{{item.Name}}</view>
               <view class="right">查看详情 <text class='iconfont icon-you1' ></text></view>
             </view>
           </view>

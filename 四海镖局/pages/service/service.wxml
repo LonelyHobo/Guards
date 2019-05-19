@@ -9,7 +9,7 @@
   </view>
   <view class="service-nav-content {{serviceNavTop}}">
     <view class="service-nav-min">
-      <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="serviceNavMinClick" wx:for="{{serviceNavMinData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.code}}">
+      <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.regionID}}" bindtap="serviceNavMinClick" wx:for="{{serviceNavMinData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.regionID}}">
         <view>
           <text>{{item.title}}</text>
         </view>
@@ -17,38 +17,45 @@
     </view>
     <scroll-view scroll-y="true" class="left">
       <view class="ul">
-        <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="serviceAreaClick" wx:for="{{serviceAreaData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.code}}">{{item.title}}</view>
+        <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.regionID}}" bindtap="serviceAreaClick" wx:for="{{serviceAreaData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.regionID}}">{{item.title}}</view>
       </view>
     </scroll-view>
     <scroll-view scroll-y="true" class="right">
       <view class="ul">
-        <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="serviceAreaMinClick" wx:for="{{serviceAreaMinData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.code}}">{{item.title}}</view>
+        <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.regionID}}" bindtap="serviceAreaMinClick" wx:for="{{serviceAreaMinData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.regionID}}">{{item.title}}</view>
       </view>
     </scroll-view>
   </view>
   <view class="service-nav-feature-back {{featureTop}}"></view>
   <view class="service-nav-feature {{featureTop}}">
     <view class="ul">
-      <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="featureClick" wx:for="{{featureData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.code}}">{{item.title}}</view>
+      <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.CategoryID}}" bindtap="featureClick" wx:for="{{featureData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.CategoryID}}">{{item.Name}}</view>
     </view>
   </view>
   <view class="service-nav-height"></view>
   <!-- 橫幅 -->
   <view class="service-banner">
-    <image src='/images/icon_list_banner.png' mode="widthFix" />
+    <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
+          <swiper-item data-picId="{{item.PicId}}" bindtap="bannerClick" wx:for="{{streamerData}}" wx:key="{{item.PicId}}" wx:for-index="index" wx:for-item="item">
+            <image src='{{item.PicUrl}}' data-picId="{{item.PicId}}" lazy-load="true" binderror="picError" mode="widthFix" />
+          </swiper-item>
+        </swiper>
   </view>
   <!-- 列表 -->
   <view class="service-list">
     <view class="service-list-head">服务商列表</view>
     <view class="ul">
-      <view class="li" data-code="{{item.code}}" data-name="{{item.title}}" bindtap="serviceListClick" wx:for="{{serviceData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.code}}">
+      <view class="li" data-code="{{item.MerchantID}}" data-name="{{item.Name}}" bindtap="serviceListClick" wx:for="{{serviceData}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.MerchantID}}">
         <view class="img imgCenter">
-          <image src="{{item.url}}" mode="widthFix"></image>
+          <image src="{{item.PicUrl}}" mode="widthFix"></image>
         </view>
         <view class="text">
-          <view class="title">{{item.title}}</view>
-          <view class="describe">{{item.describe}}</view>
-          <view class="label">{{item.label}}</view>
+          <view class="title">{{item.Name}}</view>
+          <view class="describe">
+            <import src="../../wxParse/wxParse.wxml"/>
+            <template is="wxParse" data="{{wxParseData:item.nodes.nodes}}"/>  
+          </view>
+          <view class="label">特色标签：{{item.SpecialName==null?'暂无标签':item.SpecialName}}</view>
           <view class="right">
             <text class="iconfont icon-you1"></text>
           </view>

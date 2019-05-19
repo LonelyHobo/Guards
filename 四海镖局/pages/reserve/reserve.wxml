@@ -9,22 +9,29 @@
   <view class="service-nav-height"></view>
  <!-- 橫幅 -->
   <view class="service-banner" >
-    <image src='/images/icon_list_banner.png' mode="widthFix" />
+    <swiper class="banner" indicator-dots="true" autoplay="true" interval="5000" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="white" circular="true" duration="300">
+          <swiper-item data-picId="{{item.PicId}}" bindtap="bannerClick" wx:for="{{streamerData}}" wx:key="{{item.PicId}}" wx:for-index="index" wx:for-item="item">
+            <image src='{{item.PicUrl}}' data-picId="{{item.PicId}}" lazy-load="true" binderror="picError" mode="widthFix" />
+          </swiper-item>
+        </swiper>
   </view>
   <!-- 列表 -->
   <view class="reserve-list">
     <view class="reserve-list-head" >{{reserveListHead}}</view>
     <view class="ul" >
-      <view class="li" data-code="{{item.code}}" wx:for="{{reserveListData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
+      <view class="li" data-code="{{item.ServiceID}}" wx:for="{{reserveListData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.ServiceID}}" >
         <view class="img imgCenter" >
-          <image src="{{item.url}}" mode="widthFix" ></image>
+          <image src="{{item.PicUrl}}" mode="widthFix" ></image>
         </view>
-        <view class="text" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" bindtap="reserveListDataClick" >
-          <view class="title" >{{item.title}}</view>
-          <view class="describe" >{{item.describe}}</view>
+        <view class="text" data-code="{{item.ServiceID}}" data-title="{{item.Name}}" bindtap="reserveListDataClick" >
+          <view class="title" >{{item.Name}}</view>
+          <view class="describe" >
+            <import src="../../wxParse/wxParse.wxml"/>
+            <template is="wxParse" data="{{wxParseData:item.nodes.nodes}}"/>  
+          </view>
         </view>
-        <view class="btn" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" bindtap="{{hasUserInfo?'reserveListDataClick2':''}}" >
-        <button class="userLogin" wx:if="{{!hasUserInfo && canIUse}}" data-state="{{route}}" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
+        <view class="btn" data-code="{{item.ServiceID}}" data-title="{{item.Name}}" bindtap="{{hasUserInfo?'reserveListDataClick2':''}}" >
+        <button class="userLogin" wx:if="{{!hasUserInfo && canIUse}}" data-state="{{route}}" data-code="{{item.ServiceID}}"  data-title="{{item.Name}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
           <text>预约</text>
         </view>
       </view>

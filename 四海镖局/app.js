@@ -1,6 +1,7 @@
 //app.js
+var prot = require('/utils/prot.js');
 App({
-  onLaunch: function () {
+  onLaunch: function() {
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -10,6 +11,35 @@ App({
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        var code = res.code;
+        console.log(code);
+        wx.request({
+          url: prot.WxLogin,
+          method: 'GET',
+          data: {
+            Code: res.code,
+          },
+          success: function(res) {
+            console.log(res);
+            wx.request({
+              url: prot.MemberInfo,
+              method: 'GET',
+              data: {
+                Code: code,
+              },
+              success: function(res) {
+                console.log(res);
+                if (res.statusCode == 200) {
+                  var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
+                  wx.setStorage({
+                    key: 'userlistdata',
+                    data: res.data
+                  });
+                }
+              }
+            });
+          }
+        });
       }
     })
     // 获取用户信息
@@ -33,7 +63,7 @@ App({
       }
     })
   },
-  userInfoReadyCallback: function(res){
+  userInfoReadyCallback: function(res) {
     this.globalData.userInfo = res.userInfo
   },
   globalData: {

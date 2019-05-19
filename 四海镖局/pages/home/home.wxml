@@ -11,14 +11,14 @@
   <view class="tsfw">
     <view class="top">
       <view class="left">特色服务</view>
-      <view class="right" bindtap="tsfwMore">全部18项 <text class='iconfont icon-you1' ></text></view>
+      <view class="right" bindtap="tsfwMore">全部{{tsfwDataLen}}项 <text class='iconfont icon-you1' ></text></view>
     </view>
-    <swiper class="ul"  duration="300" autoplay="true" interval="5000" display-multiple-items="4">
-        <swiper-item class="li" data-code="{{item.code}}" data-title="{{item.title}}" bindtap="tsfwClick" wx:for="{{tsfwData}}" wx:key="{{item.code}}" wx:for-index="index" wx:for-item="item">
+    <swiper class="ul"  duration="300" autoplay="true" interval="5000" display-multiple-items="{{tsfwDataLen>=4?4:tsfwDataLen}}">
+        <swiper-item class="li" data-code="{{item.ServiceID}}" data-title="{{item.Name}}" bindtap="tsfwClick" wx:for="{{tsfwData}}" wx:key="{{item.ServiceID}}" wx:for-index="index" wx:for-item="item">
           <view class="img">
-            <image src='{{item.url}}' mode="widthFix" />
+            <image src='{{item.IconUrl}}' mode="widthFix" />
           </view>
-          <text class="text">{{item.title}}</text>
+          <text class="text">{{item.Name}}</text>
         </swiper-item>
     </swiper>
   </view>
@@ -30,13 +30,13 @@
   <view class="fws">
     <view class="top">
       <view class="left">热推服务商</view>
-      <view class="right" bindtap="fwsMore">全部18项 <text class='iconfont icon-you1' ></text></view>
+      <view class="right" bindtap="fwsMore">全部{{fwsDataLen}}项 <text class='iconfont icon-you1' ></text></view>
     </view>
     <view class='ul' >
-      <view class="li"  data-code="{{item.code}}"  data-title="{{item.title}}" bindtap="fwsClick" wx:for="{{fwsData}}"  wx:key="{{item.code}}" wx:for-index="index" wx:for-item="item">
-        <view class="img imgCenter" ><image src='{{item.url}}' mode="widthFix" /></view>
+      <view class="li"  data-code="{{item.MerchantID}}"  data-title="{{item.Name}}" bindtap="fwsClick" wx:for="{{fwsData}}"  wx:key="{{item.MerchantID}}" wx:for-index="index" wx:for-item="item">
+        <view class="img imgCenter" ><image src='{{item.PicUrl}}' mode="widthFix" /></view>
         <view class="text" >
-          <view class="left">{{item.title}}</view>
+          <view class="left">{{item.Name}}</view>
           <view class="right">查看详情 <text class='iconfont icon-you1' ></text></view>
         </view>
       </view>

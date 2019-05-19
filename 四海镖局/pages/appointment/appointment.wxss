@@ -127,7 +127,7 @@
   padding: 20rpx 5%;
 }
 
-.appointement-content .bottom button {
+.appointement-content .bottom .button {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -142,7 +142,7 @@
   border-radius: 0;
    z-index: 99999;
 }
-.appointement-content .bottom button.on{
+.appointement-content .bottom .button.on{
   background:-webkit-linear-gradient(left, #2689f7, #3e49f6);
 }
  

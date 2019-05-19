@@ -1,5 +1,7 @@
 // pages/appointment/appointment.js
 var provinces = require('../../utils/province.js');
+var prot = require('../../utils/prot.js');
+var WxParse = require('../../wxParse/wxParse.js');
 //获取应用实例
 const app = getApp();
 Page({
@@ -8,39 +10,30 @@ Page({
    * 页面的初始数据
    */
   data: {
-    serviceName: "",
+    api: prot.api,
+    merchantName: "",
     serviceArea: "",
+    merchantId: '',
     serviceTitle: "",
-    hasUserInfo:false,
+    serviceId:'',
+    hasUserInfo: false,
+    bannerData: [],
+    streamerData: [],
+    serviceData: [],
     userInfo: {},
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    state:1,
-    serviceNavTop:'top',
+    state: 1,
+    serviceNavTop: 'top',
     serviceAreaMinData: [],
-    serviceAreaCheckedData: [],
-    serviceCode:'',
-    serviceNavMinData: [
-      { title: '国内', code: '1', on: 'on' },
-      { title: '海外', code: '2', on: '' }
-    ],
+    serviceAreaCheckedData: {},
+    serviceCode: '',
+    serviceNavMinData: [],
     serviceAreaData: [],
-    introduceNavData:[
-      { title:'国内服务',code:'1',on:'on',datalist:[
-        { title: "私人保镖", code: '1', describe: "处理一般突发安全威胁或安全伤害事件，进行人身安全保护", url:"/images/service_list1.jpg"},
-        { title: "私人保镖", code: '2', describe: "处理一般突发安全威胁或安全伤害事件，进行人身安全保护", url: "/images/service_list1.jpg" }
-      ]},
-      {
-        title: '海外服务', code: '2', on: '', datalist: [
-          { title: "海外保镖", code: '1', describe: "处理一般突发安全威胁或安全伤害事件，进行人身安全保护", url: "/images/service_list1.jpg" },
-          { title: "海外保镖", code: '2', describe: "处理一般突发安全威胁或安全伤害事件，进行人身安全保护", url: "/images/service_list1.jpg" }
-        ]},
-    ],
-    introduceListData:[
-      { title: "私人保镖", code: '1', describe: "处理一般突发安全威胁或安全伤害事件，进行人身安全保护", url: "/images/service_list1.jpg" },
-      { title: "私人保镖", code: '2', describe: "处理一般突发安全威胁或安全伤害事件，进行人身安全保护", url: "/images/service_list1.jpg" }
-    ],
+    introduceNavData: [],
+    introduceListData: [],
   },
-  getUserInfo: function (e) {
+  //登录
+  getUserInfo: function(e) {
     if (!e.detail.userInfo) return;
     var vm = this;
     app.globalData.userInfo = e.detail.userInfo
@@ -52,42 +45,27 @@ Page({
       key: 'userdata',
       data: e.detail.userInfo
     });
-    var code_ = e.target.dataset.code || e.currentTarget.dataset.code;
-    var title_ = e.target.dataset.title || e.currentTarget.dataset.title;
-    var name_ = this.data.serviceName;
-    var area_ = '中国/香港';
+    var serviceId = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var merchantName = this.data.merchantName;//服务商名称
+    var merchantId = this.data.merchantId;//服务商id
+    var areaCode = this.data.serviceAreaCheckedData[serviceId].regionID;
+    var areaName = this.data.serviceAreaCheckedData[serviceId].title;
+    var serviceName = obj.target.dataset.title || obj.currentTarget.dataset.title;
     wx.navigateTo({
-      url: '../appointment/appointment?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
+      url: '../appointment/appointment?serviceId=' + serviceId + '&merchantName=' + merchantName + '&merchantId=' + merchantId + '&areaCode=' + areaCode + '&areaName=' + areaName + '&serviceName=' + serviceName
     })
   },
-  introduceListClick: function (obj){
-    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
-    var name_ = this.data.serviceName;
-    var area_ = '中国/香港';
+  //预约服务点击
+  introduceListClick: function(obj) {
+    var serviceId = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var merchantName = this.data.merchantName;//服务商名称
+    var merchantId = this.data.merchantId;//服务商id
+    var areaCode = this.data.serviceAreaCheckedData[serviceId].regionID;
+    var areaName = this.data.serviceAreaCheckedData[serviceId].title;
     var is_ = false;
-    var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
-    this.data.introduceListData.forEach(function (value) {
-      if (value.code == code_ && !value.city) {
-        is_=true;
-      }
-    });
-    if (is_){
-      wx.showToast({
-        title: '请先选择服务地区',
-        icon: 'none',
-        duration: 2000
-      })
-      return false;
-    }
-    wx.navigateTo({
-      url: '../appointment/appointment?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
-    })
-  },
-  alertClick:function(){
-    var is_ = false;
-    var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
-    this.data.introduceListData.forEach(function (value) {
-      if (value.code == code_ && !value.city) {
+    var serviceName = obj.target.dataset.title || obj.currentTarget.dataset.title;
+    this.data.introduceListData.forEach(function(value) {
+      if (value.ServiceID == serviceId && !value.city) {
         is_ = true;
       }
     });
@@ -99,196 +77,438 @@ Page({
       })
       return false;
     }
-  },
-  appointmentBtn: function (obj){
-    var code_ = '';
-    var name_ = this.data.serviceName;
-    var area_ = '中国/香港';
     wx.navigateTo({
-      url: '../appointment/appointment?code=' + code_ + '&name=' + name_ + '&area=' + area_
+      url: '../appointment/appointment?serviceId=' + serviceId + '&merchantName=' + merchantName + '&merchantId=' + merchantId + '&areaCode=' + areaCode + '&areaName=' + areaName + '&serviceName=' + serviceName
     })
   },
-  introduceListClick2: function (obj) {
+  //无状态点击
+  alertClick: function() {
+    wx.showToast({
+      title: '请先选择服务地区',
+      icon: 'none',
+      duration: 2000
+    })
+    return;
+  },
+  //直接预约点击
+  appointmentBtn: function(obj) {
+    var serviceId = this.data.serviceName;
+    var merchantName = this.data.merchantName;//服务商名称
+    var merchantId = this.data.merchantId;//服务商id
+    var areaCode = this.data.areaCode;
+    var areaName = this.data.areaName;
+    var serviceName = this.data.serviceName;
+    wx.navigateTo({
+      url: '../appointment/appointment?serviceId=' + serviceId + '&merchantName=' + merchantName + '&merchantId=' + merchantId + '&areaCode=' + areaCode + '&areaName=' + areaName + '&serviceName=' + serviceName
+    });
+  },
+  //选择服务地区
+  introduceListClick2: function(obj) {
+    var vm = this;
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var city_ = obj.target.dataset.city || obj.currentTarget.dataset.city;
-    if (city_){
-      this.data.serviceAreaMinData.forEach(function (value, index) {
+    if (city_) {
+      this.data.serviceAreaMinData.forEach(function(value, index) {
         if (value.title == city_) {
           value.on = 'on';
         } else {
           value.on = '';
         }
-      }); 
+      });
+    } else {
+      this.data.serviceAreaMinData.forEach(function(value, index) {
+        value.on = '';
+      });
+    };
+    var serviceAreaDatas=[];
+    if (this.data.introduceNavData[0].on == 'on'){
+      var data = [];
+      this.data.serviceNavMinData1.forEach(function(value,index){
+        if (index==0){
+          data.push(value);
+        }
+      })
+      this.data.serviceNavMinData = data;
+      serviceAreaDatas = vm.data.serviceAreaData1;
     }else{
-      this.data.serviceAreaMinData.forEach(function (value, index) {
-         value.on = '';
-      }); 
+      var data = [];
+      this.data.serviceNavMinData1.forEach(function (value, index) {
+        if (index == 1) {
+          data.push(value);
+        }
+      })
+      this.data.serviceNavMinData = data;
+      serviceAreaDatas = vm.data.serviceAreaData2;
     }
-    this.setData({ serviceAreaMinData: this.data.serviceAreaMinData, serviceNavTop: 'bottom', serviceCode: code_ });
+    this.setData({
+      serviceAreaMinData: this.data.serviceAreaMinData,
+      serviceNavTop: 'bottom',
+      serviceCode: code_,
+      serviceNavMinData: this.data.serviceNavMinData,
+      serviceAreaData: serviceAreaDatas,
+      serviceAreaMinData: serviceAreaDatas[0].datalist
+    });
   },
-  introduceNavClick: function (obj){
-    var the = this;
-    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
-    var datalist = [];
-    this.data.introduceNavData.forEach(function (value, index) {
+  //服务地区切换
+  introduceNavClick: function(obj) {
+    var vm = this;
+    var regionID = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    this.data.introduceNavData.forEach(function(value, index) {
       value.on = '';
-      if (value.code == code_) {
-        the.data.introduceNavData[index].on = 'on';
-        datalist = the.data.introduceNavData[index].datalist
+      if (value.regionID == regionID) {
+        wx.showToast({
+          title: '加载中...',
+          mask: true,
+          icon: 'loading'
+        });
+        value.on = 'on';
+        wx.request({
+          url: prot.GetServiceListPageByMerchant,
+          method: 'GET',
+          data: {
+            args: {
+              start: 0,
+              limit: 10,
+              sort: 'SortNo',
+              dir: 'DESC',
+              RegionID: index==0?0:1519
+            }
+          },
+          success: function(res) {
+            if (res.statusCode == 200) {
+              var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
+              data.forEach(function(value, index) {
+                value.PicUrl = vm.data.api + value.PicUrl;
+                var introduce = value.Introduce;
+                var nodes = WxParse.wxParse('introduce' + index, 'html', introduce, vm, 5);
+                data[index]['nodes'] = nodes;
+              });
+              vm.setData({
+                introduceListData: data,
+              });
+            }
+          }
+        });
       }
     })
-    this.setData({ introduceNavData: this.data.introduceNavData, introduceListData: datalist });
+    this.setData({
+      introduceNavData: this.data.introduceNavData
+    });
   },
   //服务地区是否国内选择
-  serviceNavMinClick: function (obj) {
-    var the = this;
+  serviceNavMinClick: function(obj) {
+    var vm = this;
     var serviceAreaDatas = [];
-    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var regionID = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var datalist = [];
-    this.data.serviceNavMinData.forEach(function (value, index) {
+    this.data.serviceNavMinData.forEach(function(value, index) {
       value.on = '';
-      if (value.code == code_) {
+      if (value.regionID == regionID) {
         value.on = 'on';
-        var province_ = [];
-        if (code_ == '1') {
-          province_ = provinces.province;
+        if (regionID == '1') {
+          serviceAreaDatas = vm.data.serviceAreaData1;
         } else {
-          province_ = [{
-            "citys": [
-              {
-                "citysName": "1区",
-              }, {
-                "citysName": "2区",
-              }, {
-                "citysName": "3区",
-              },
-            ],
-            "provinceName": "海外某州"
-          }];
+          serviceAreaDatas = vm.data.serviceAreaData2;
         }
-        province_.forEach(function (value, index) {
-          var datalist = [];
-          var index_ = index;
-          value.citys.forEach(function (value, index) {
-            datalist.push({ title: value.citysName, code: index_ + '_' + index, on: '' });
-          })
-          serviceAreaDatas.push({ title: value.provinceName, code: index, on: (index == 0 ? 'on' : ''), datalist: datalist });
-        })
       }
-    })
-    this.setData({ serviceNavMinData: this.data.serviceNavMinData, serviceAreaData: serviceAreaDatas, serviceAreaMinData: serviceAreaDatas[0].datalist });
+    });
+    this.setData({
+      serviceNavMinData: this.data.serviceNavMinData,
+      serviceAreaData: serviceAreaDatas,
+      serviceAreaMinData: serviceAreaDatas[0].datalist
+    });
   },
   //服务地区选择
-  serviceAreaMinClick: function (obj) {
+  serviceAreaMinClick: function(obj) {
     var the = this;
+    var title_ = '';
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
-    this.data.serviceAreaMinData.forEach(function (value, index) {
-      if (value.code == code_) {
+    this.data.serviceAreaMinData.forEach(function(value, index) {
+      if (value.regionID == code_) {
         value.on = 'on';
-        the.data.serviceAreaCheckedData = value;
+        the.data.serviceAreaCheckedData[the.data.serviceCode] = value;
+        title_=value.title;
       } else {
         value.on = '';
       }
-    }); 
-    this.data.introduceListData.forEach(function(value){
-      if (value.code == the.data.serviceCode){
-        value.city = the.data.serviceAreaCheckedData.title;
+    });
+    this.data.introduceListData.forEach(function(value) {
+      if (value.ServiceID == the.data.serviceCode) {
+        value.city = title_;
       }
     });
-    this.setData({ serviceAreaMinData: this.data.serviceAreaMinData, serviceAreaCheckedData: the.data.serviceAreaCheckedData, serviceNavTop: 'top', introduceListData:this.data.introduceListData});
+    this.setData({
+      serviceAreaMinData: this.data.serviceAreaMinData,
+      serviceAreaCheckedData: the.data.serviceAreaCheckedData,
+      serviceNavTop: 'top',
+      introduceListData: this.data.introduceListData
+    });
   },
   //服务地区省选择
-  serviceAreaClick: function (obj) {
-    var the = this;
+  serviceAreaClick: function(obj) {
+    var vm = this;
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var datalist = [];
-    this.data.serviceAreaData.forEach(function (value, index) {
+    this.data.serviceAreaData.forEach(function(value, index) {
       value.on = '';
-      if (value.code == code_) {
-        the.data.serviceAreaData[index].on = 'on';
-        datalist = the.data.serviceAreaData[index].datalist;
+      if (value.regionID == code_) {
+        vm.data.serviceAreaData[index].on = 'on';
+        datalist = vm.data.serviceAreaData[index].datalist;
       }
     })
-    this.setData({ serviceAreaData: this.data.serviceAreaData, serviceAreaMinData: datalist });
+    this.setData({
+      serviceAreaData: this.data.serviceAreaData,
+      serviceAreaMinData: datalist
+    });
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     var vm = this;
-    this.setData({ serviceName: options.name, state: options.state});
-    var serviceAreaDatas = [];
-    provinces.province.forEach(function (value, index) {
-      var datalist = [];
-      var index_ = index;
-      value.citys.forEach(function (value, index) {
-        datalist.push({ title: value.citysName, code: index_ + '_' + index, on: '' });
-      })
-      serviceAreaDatas.push({ title: value.provinceName, code: index, on: (index == 0 ? 'on' : ''), datalist: datalist });
-    })
-    this.setData({ serviceAreaData: serviceAreaDatas, serviceAreaMinData: serviceAreaDatas[0].datalist });
-
+    this.setData({
+      merchantName: options.merchantName,
+      state: options.state,
+      merchantId: options.merchantId,
+      serviceId: options.serviceId,
+      serviceName: options.serviceName,
+      areaCode: options.areaCode,
+      areaName: options.areaName,
+    });
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
     } else {
-      app.userInfoReadyCallback = function (res) {
+      app.userInfoReadyCallback = function(res) {
         vm.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
         })
       }
     }
+    wx.showToast({
+      title: '加载中...',
+      mask: true,
+      icon: 'loading'
+    })
+    //详情
+    wx.request({
+      url: prot.GetMerchantDetail,
+      method: 'GET',
+      data: {
+        id: options.merchantId,
+      },
+      success: function(res) {
+        if (res.statusCode == 200) {
+          var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          data.Plist = data.Plist ? data.Plist : [{
+            PicId: '',
+            PicUrl: '/images/banner1_1.png'
+          }];
+          vm.setData({
+            serviceData: data
+          });
+          var introduce = data.Introduce;
+          WxParse.wxParse('introduce', 'html', introduce, vm, 5);
+        }
+      }
+    });
+    //下面的轮播
+    wx.request({
+      url: prot.GetDetailBannerListPage,
+      method: 'GET',
+      data: {
+        args: {
+          start: 0,
+          limit: 10,
+          sort: 'SortNo',
+          dir: 'DESC',
+          NavCode: 'DetailBanner'
+        }
+      },
+      success: function(res) {
+        if (res.statusCode == 200) {
+          var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          data.forEach(function(value, index) {
+            value.PicUrl = vm.data.api + value.PicUrl;
+          });
+          vm.setData({
+            streamerData: data
+          });
+        }
+      }
+    });
+    //服务列表
+    wx.request({
+      url: prot.GetServiceListPageByMerchant,
+      method: 'GET',
+      data: {
+        args: {
+          start: 0,
+          limit: 10,
+          sort: 'SortNo',
+          dir: 'DESC',
+          RegionID: 0
+        }
+      },
+      success: function(res) {
+        if (res.statusCode == 200) {
+          var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          data.forEach(function(value, index) {
+            value.PicUrl = vm.data.api + value.PicUrl;
+            var introduce = value.Introduce;
+            var nodes = WxParse.wxParse('introduce' + index, 'html', introduce, vm, 5);
+            data[index]['nodes'] = nodes;
+          });
+          vm.setData({
+            introduceListData: data,
+          });
+        }
+      }
+    });
+    //服务地区
+    wx.request({
+      url: prot.GetRegionListAll,
+      method: 'GET',
+      success: function(res) {
+        if (res.statusCode == 200) {
+          var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          var city0 = [],
+            city1 = [],
+            city2 = {},
+            city3 = [];
+          data.forEach(function(value, index) {
+            var index_ = index;
+            if (value.ParentID == 0) {
+              //国家
+              city0.push({
+                title: value.Name,
+                regionID: value.RegionID,
+                code: value.Code,
+                on: (value.RegionID == 1 ? 'on' : ''),
+                parentId: value.ParentID,
+                datalist: []
+              });
+            } else if (value.ParentID == 1) {
+              //省
+              city1.push({
+                title: value.Name,
+                regionID: value.RegionID,
+                code: value.Code,
+                on: (value.RegionID == 2 ? 'on' : ''),
+                parentId: value.ParentID,
+                datalist: []
+              });
+            } else if (value.ParentID == 1519) {
+              //国外
+              city3.push({
+                title: value.Name,
+                regionID: value.RegionID,
+                code: value.Code,
+                on: (value.RegionID == 534 ? 'on' : ''),
+                parentId: value.ParentID,
+                datalist: []
+              });
+            } else {
+              //市
+              if (city2[value.ParentID]) {
+                city2[value.ParentID].push({
+                  title: value.Name,
+                  regionID: value.RegionID,
+                  code: value.Code,
+                  on: '',
+                  parentId: value.ParentID
+                });
+              } else {
+                city2[value.ParentID] = [{
+                  title: value.Name,
+                  regionID: value.RegionID,
+                  code: value.Code,
+                  on: '',
+                  parentId: value.ParentID
+                }];
+              }
+            }
+          });
+          city1.forEach(function(value) {
+            value.datalist = city2[value.regionID];
+          });
+          city3.forEach(function(value) {
+            if (city2[value.regionID]) {
+              value.datalist = city2[value.regionID];
+            } else {
+              value.datalist.push({
+                title: value.title,
+                regionID: value.regionID,
+                code: value.code,
+                on: '',
+                parentId: value.parentId
+              });
+            }
+          });
+          vm.setData({
+            serviceNavMinData: city0,
+            serviceNavMinData1: city0,
+            introduceNavData: city0,
+            serviceAreaData: city1,
+            serviceAreaData1: city1,
+            serviceAreaMinData: city1[0].datalist,
+            serviceAreaData2: city3,
+            serviceAreaMinData2: city3[0].datalist,
+          });
+        }
+      }
+    });
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   }
 })

@@ -4,7 +4,7 @@
     <view class="head-close">
       <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
     </view>
-    <text class='head-title'>{{serviceTitle}}</text>
+    <text class='head-title'>{{merchantName}}</text>
   </view>
   <view class="header-height"></view>
   <view class="appointement-content">
@@ -12,21 +12,21 @@
       <view class="content-name">{{serviceName}}</view>
       <view class="content-title">
         <text class="l">服务地区 \ </text>
-        <text class="r"> {{serviceArea}}</text>
+        <text class="r"> {{areaName}}</text>
       </view>
     </view>
     <view class="center" >
       <view class="content-name">手机号码</view>
       <view class="content-tel">
-        <text class="l">150 7323 1615</text>
-        <text class="r">获取验证码</text>
+        <text class="l">{{phoneCode}}</text>
+        <text class="r" bindtap="getCode" >获取验证码</text>
       </view>
       <view class="content-code">
         <input type='text' placeholder='请输入验证码'></input>
       </view>
     </view>
     <view class="bottom" >
-      <textarea placeholder='请告知我们您当前的需求信息' bindconfirm="appointementSave" style="display:{{agreementTop=='top'?'none':'block'}};" ></textarea>
+      <textarea placeholder='请告知我们您当前的需求信息' bindinput="appointementSave" bindconfirm="appointementSave" style="display:{{agreementTop=='top'?'none':'block'}};" ></textarea>
       <view class="agreementBack {{agreementTop}}" ></view>
       <view class="agreement" >
         <view class="l" >
@@ -43,7 +43,7 @@
           </view>
         </view>
       </view>
-      <button class="{{isAgreement?'on':''}}" bindlongtap="{{isAgreement?'submitForm':''}}">提交预约</button>
+      <view class="button {{isAgreement?'on':''}}" bindtap="{{isAgreement?'submitForm':''}}">提交预约</view>
     </view>
   </view>
 

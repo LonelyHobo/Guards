@@ -35,7 +35,7 @@
           <view class="bottom" >
             <view class="l" >金额：{{item.money}}</view>
             <view class="r" >
-              <view class="btn" >电话预约</view>
+              <view class="btn"  data-phone="{{userPhone}}" bindtap="phoneCall" >电话预约</view>
             </view>
           </view>
         </view>
