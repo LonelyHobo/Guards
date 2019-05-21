@@ -12,6 +12,7 @@ Page({
     userInfo: {
       gender: '-1',
       nickName: '...',
+      winShow:'',
       avatarUrl: '/images/icon_top.png',
       city: '...',
       province: '...',
@@ -53,11 +54,8 @@ Page({
     wx.getStorage({      
       key: 'userdata',
         success: function(res) {
-        var province_ = wxLocation.wxLocation[res.data.province.toLowerCase()].cn;
-        var city_ = wxLocation.wxLocation[res.data.province.toLowerCase()].data[res.data.city.toLowerCase()];
         vw.setData({
-          userInfo: res.data,
-          locations: province_ + ' ' + city_
+          userInfo: res.data
         })      
       }    
     });

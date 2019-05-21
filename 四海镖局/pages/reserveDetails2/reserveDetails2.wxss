@@ -300,8 +300,7 @@ position: relative;
   border-top:1px solid #eeeeee;
 }
 .service-nav-min .li{
-  /* width:50%;
-  float:left; */
+  float:left; 
   height:100rpx;
   line-height: 100rpx;
   text-align: center;

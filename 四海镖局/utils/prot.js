@@ -19,4 +19,16 @@ module.exports = {
   OrderSave: api_ + '/Member/OrderSave',///订单提交
   LoginOut: api_ + '/Member/LoginOut',///退出登录
   GetOrderListPage: api_ + '/Member/GetOrderListPage',///订单列表
+  GetAuthCode: api_ + '/Member/GetAuthCode',///发送验证码
+  Help: api_ + '/Member/Help',///一键求助
+  MemberInfoSave: api_ + '/Member/MemberInfoSave',///保存用户信息
+  CreatedDate: api_ + '/Member/CreatedDate',///全部订单数据
+  GetIsCollect: api_ + '/Member/GetIsCollect',///判断是否收藏
+  GetIsLike: api_ + '/Member/GetIsLike',///判断是否点赞
+  GetCollectListPage: api_ + '/Member/GetCollectListPage',///收藏数据
+  CollectSave: api_ + '/Member/CollectSave',///添加收藏
+  CollectDel: api_ + '/Member/CollectDel',///取消收藏
+  GetLikeListPage: api_ + '/Member/GetLikeListPage',///点赞列表
+  LikeSave: api_ + '/Member/LikeSave',///添加点赞
+  LikeDel: api_ + '/Member/LikeDel',///取消点赞
 };

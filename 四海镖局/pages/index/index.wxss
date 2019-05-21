@@ -191,3 +191,6 @@
   float:right;
   margin-left:10rpx;
 }
+
+.isnull{height: 50vh; overflow: hidden; background-color:white;}
+.isnull image{width:50%; display: block; margin:0 auto;}

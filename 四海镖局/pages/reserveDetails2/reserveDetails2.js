@@ -32,6 +32,12 @@ Page({
     serviceNavMinData1:[],
     serviceAreaCheckedData:{},
   },
+  //搜索
+  searchTop: function () {
+    wx.navigateTo({
+      url: '../searchAll/searchAll'
+    })
+  },
   //服务商点击
   serviceListClick: function (obj) {
     if (!this.data.serviceAreaCheckedData.regionID) {
@@ -101,6 +107,20 @@ Page({
     var on_ = '';
     var obj_ = {};
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    vm.data.serviceAreaData1.forEach(function (value, index) {
+      value.datalist.forEach(function (value) {
+        if (value.regionID != code_){
+           value.on = '';
+        }
+      })
+    });
+    vm.data.serviceAreaData2.forEach(function (value, index) {
+      value.datalist.forEach(function (value) {
+        if (value.regionID != code_) {
+          value.on = '';
+        }
+      })
+    });
     this.data.serviceAreaMinData.forEach(function (value, index) {
       if (value.regionID == code_) {
         value.on = value.on == 'on' ? '' : 'on';
@@ -121,10 +141,8 @@ Page({
         value.check = on_ == 'on' ? 'check' : '';
         value.title = on_ == 'on' ? obj_.title : '服务地区';
         value.regionID = on_ == 'on' ? obj_.regionID : areacode_;
-        wx.showToast({
+        wx.showLoading({
           title: '加载中...',
-          mask: true,
-          icon: 'loading'
         })
         var args = {
           start: 0,
@@ -147,6 +165,7 @@ Page({
             args: args
           },
           success: function (res) {
+            wx.hideLoading();
             if (res.statusCode == 200) {
               var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
               data.forEach(function (value, index) {
@@ -164,6 +183,8 @@ Page({
     });
     this.setData({
       serviceAreaMinData: this.data.serviceAreaMinData,
+      serviceAreaData1:vm.data.serviceAreaData1,
+      serviceAreaData2:vm.data.serviceAreaData2,
       serviceAreaCheckedData: vm.data.serviceAreaCheckedData,
       serviceNavTop: 'top',
       serviceNavData: this.data.serviceNavData
@@ -208,11 +229,9 @@ Page({
         value.check = on_ == 'on' ? 'check' : ''
         value.title = on_ == 'on' ? data_.Name : '特色服务';
         value.ServiceID = on_ == 'on' ? data_.CategoryID : '';
-        wx.showToast({
+        wx.showLoading({
           title: '加载中...',
-          mask: true,
-          icon: 'loading'
-        });
+        })
         var areacode_ = vm.data.areaCode == 1 ? 0 : 1519;
         var args = {
           start: 0,
@@ -235,6 +254,7 @@ Page({
             args: args
           },
           success: function (res) {
+            wx.hideLoading();
             if (res.statusCode == 200) {
               var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
               data.forEach(function (value, index) {
@@ -448,7 +468,7 @@ Page({
             })
             vm.data.serviceNavMinData = data;
             serviceAreaDatas = vm.data.serviceAreaData1;
-          } else {
+          } else if(options.areaCode == 2) {
             var data = [];
             vm.data.serviceNavMinData1.forEach(function (value, index) {
               if (index == 1) {
@@ -458,6 +478,16 @@ Page({
             })
             vm.data.serviceNavMinData = data;
             serviceAreaDatas = vm.data.serviceAreaData2;
+          } else if (options.areaCode == 0){
+            var data = [];
+            vm.data.serviceNavMinData1.forEach(function (value, index) {
+              if (index == 0) {
+                value.on = 'on';
+              }
+              data.push(value);
+            })
+            vm.data.serviceNavMinData = data;
+            serviceAreaDatas = vm.data.serviceAreaData1;
           }
           vm.setData({
             serviceNavMinData: vm.data.serviceNavMinData,

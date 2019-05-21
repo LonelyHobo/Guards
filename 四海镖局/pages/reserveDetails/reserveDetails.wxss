@@ -84,11 +84,12 @@ page{
   line-height: 50rpx;
   height: 50rpx;
   padding-bottom:10rpx;
+  position: relative;
 }
 .introduce .collect-and-like .money{
   display: block;
   float:left;
-  width:60%;
+  width:55%;
   font-size:32rpx;
   color:#f6a23e;
   text-align: left;
@@ -105,6 +106,7 @@ page{
   height: 50rpx;
   color:#316cf7;
   font-size:28rpx;
+  position: relative;
 }
 .introduce .collect-and-like view text{
   float:left;

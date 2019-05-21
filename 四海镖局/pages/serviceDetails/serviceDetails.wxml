@@ -5,7 +5,7 @@
       <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
     </view>
     <text class='head-title'>{{merchantName}}</text>
-    <view class="header-search">
+    <view class="header-search" bindtap="searchTop">
       <text class="iconfont icon-sousuo"></text>
     </view>
   </view>
@@ -26,13 +26,15 @@
         <template is="wxParse" data="{{wxParseData:introduce.nodes}}"/>  
       </view>
       <view class="collect-and-like">
-        <view class="collect">
+        <view class="collect"  data-btn="collect" bindtap="{{hasUserInfo?'collectClick':''}}">
+        <button class="userLogin" wx:if="{{!hasUserInfo && canIUse}}" data-btn="collect" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
           <text class="iconfont icon-shoucang"></text>
-          <text>收藏</text>
+          <text>{{!collectState?'收藏':'已收藏'}}</text>
         </view>
-        <view class="like">
+        <view class="like"  data-btn="like" bindtap="{{hasUserInfo?'collectClick':''}}">
+        <button class="userLogin" wx:if="{{!hasUserInfo && canIUse}}" data-btn="like" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
           <text class="iconfont icon-dianzan"></text>
-          <text>点赞</text>
+          <text>{{!likeState?'点赞':'已点赞'}}</text>
         </view>
       </view>
     </view>
@@ -46,10 +48,10 @@
       </view>
     </view>
     <view class="introduce-nav" wx:if="{{state==1}}">
-      <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.regionID}}" bindtap="introduceNavClick" wx:for="{{introduceNavData}}" wx:for-index="index" wx:for-item="item">{{item.title}}</view>
+      <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.regionID}}" bindtap="introduceNavClick"  wx:key="{{item.regionID}}" wx:for="{{introduceNavData}}" wx:for-index="index" wx:for-item="item">{{item.title}}</view>
     </view>
     <view class="introduce-list" wx:if="{{state==1}}">
-      <view class="li" data-code="{{item.ServiceID}}" data-title="{{item.Name}}" wx:for="{{introduceListData}}" wx:for-index="index" wx:for-item="item">
+      <view class="li" data-code="{{item.ServiceID}}" data-title="{{item.Name}}" wx:key="{{item.ServiceID}}" wx:for="{{introduceListData}}" wx:for-index="index" wx:for-item="item">
         <view class="img imgCenter">
           <image src='{{item.PicUrl}}' mode="widthFix" />
         </view>

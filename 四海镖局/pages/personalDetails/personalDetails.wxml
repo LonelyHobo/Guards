@@ -9,21 +9,21 @@
   <view class="top" >
     <view class="l" >头像</view>
     <view class='r' >
-      <view class="img" ><image mode="widthFix" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image></view>
+      <view class="img" ><image mode="widthFix" class="userinfo-avatar" src="{{userInfo.HeadImg}}" mode="cover"></image></view>
       <text class='iconfont icon-you1' ></text>
     </view>
   </view>
   <view class="list name" >
     <view class="l" >名称</view>
     <view class='r' >
-      <view class="text">{{userInfo.nickName}}</view>
+      <view class="text">{{userInfo.Nickname}}</view>
       <text class='iconfont icon-you1' ></text>
     </view>
   </view>
    <view class="list sex" >
     <view class="l" >性别</view>
     <view class='r' >
-      <view class="text">{{userInfo.gender=='1'?'男':userInfo.gender=='0'?'女':'...'}}</view>
+      <view class="text">{{userInfo.Sex=='1'?'男':userInfo.Sex=='2'?'女':'保密'}}</view>
       <text class='iconfont icon-you1' ></text>
     </view>
   </view>
@@ -37,18 +37,25 @@
   <view class="list sex" >
     <view class="l" >所在城市</view>
     <view class='r' >
-      <view class="text">{{locations}}</view>
+      <view class="text">{{userInfo.City}}</view>
       <text class='iconfont icon-you1' ></text>
     </view>
   </view>
   <view class="list sex" >
     <view class="l" >手机号码</view>
     <view class='r' >
-      <button wx:if="{{userDetailsData.tel=='待完善'}}"  open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>
+      <!-- <button wx:if="{{userDetailsData.tel=='待完善'}}"  open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> -->
       <view class="text">{{userDetailsData.tel}}</view>
       <text class='iconfont icon-you1' ></text>
     </view>
   </view>
   <view bindtap="loginout" class="loginBtn" >退出登陆</view>
 </view>
+</view>
+<view class="win {{winShow}} " >
+  <view class="back" ></view>
+  <view class="content">
+    <view class="top"><text>{{winName}}：</text><input type="text" confirm-type="done" value="{{winValue}}" ></input></view>
+    <view class="bottom">确定</view>
+  </view>
 </view>

@@ -5,7 +5,7 @@
       <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
     </view>
     <text class='head-title'>{{serviceData.Name}}</text>
-    <view class="header-search">
+    <view class="header-search" bindtap="searchTop">
       <text class="iconfont icon-sousuo"></text>
     </view>
   </view>
@@ -60,7 +60,11 @@
         </view>
         <view class="collect-and-like" >
           <view class="money" >{{serviceData.Price}}</view>
-          <view class="collect" ><text class="iconfont icon-shoucang" ></text><text>收藏</text></view>
+          <view class="collect"  data-btn="collect" bindtap="{{hasUserInfo?'collectClick':''}}">
+        <button class="userLogin" wx:if="{{!hasUserInfo && canIUse}}" data-btn="collect" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
+          <text class="iconfont icon-shoucang"></text>
+          <text>{{!collectState?'收藏':'已收藏'}}</text>
+        </view>
           <view class="collect" bindtap="yuyue" ><text>预约</text></view>
         </view>
       </view>

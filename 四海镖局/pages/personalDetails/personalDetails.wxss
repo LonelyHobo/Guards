@@ -130,3 +130,10 @@
  letter-spacing: 3rpx;
  background: -webkit-linear-gradient(left, #2689f7 , #3e49f6);
 }
+
+.win{
+  display: none;
+}
+.win.on{
+ display: block;
+}

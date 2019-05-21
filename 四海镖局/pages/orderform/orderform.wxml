@@ -1,44 +1,54 @@
 <view class="orderform">
-  <view class="orderform-head" bindtap="{{userInfo.nickName && userInfo.nickName!=''?'personalClick':''}}" >
-    <view class="back" > <image src='/images/orderform_head.jpg' mode="widthFix" /></view>
+  <view class="orderform-head" bindtap="{{userInfo.Nickname && userInfo.Nickname!=''?'personalClick':''}}">
+    <view class="back">
+      <image src='/images/orderform_head.jpg' mode="widthFix" />
+    </view>
     <button class="userLogin" wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
-    <view class="img" ><image mode="widthFix" class="userinfo-avatar" src="{{userInfo.avatarUrl && userInfo.avatarUrl!=''?userInfo.avatarUrl:userTopUrl}}" mode="cover"></image></view>
+    <view class="img">
+      <image mode="widthFix" class="userinfo-avatar" src="{{userInfo.HeadImg && userInfo.HeadImg!=''?userInfo.HeadImg:userTopUrl}}" mode="cover"></image>
+    </view>
     <view class="right">
-      <text class="username">{{userInfo.nickName && userInfo.nickName!=''?userInfo.nickName:userName}}</text>
+      <text class="username">{{userInfo.Nickname && userInfo.Nickname!=''?userInfo.Nickname:userName}}</text>
       <view class="userdata">
-        <text>收藏 18</text>
-        <text>点赞 18</text>
+        <text>收藏 {{userCollectData.length}}</text>
+        <text>点赞 {{userLikeData.length}}</text>
       </view>
-    </view> 
+    </view>
     <view class="btn">
-      <text class="iconfont icon-you1" ></text>
+      <text class="iconfont icon-you1"></text>
     </view>
   </view>
-  <view class="orderform-list" >
-      <view class='list-title' >我的订单</view>
-      <view class="list-nav" >
-        <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="orderNavClick"  wx:key="{{item.code}}" wx:for="{{orderNavData}}" wx:for-index="index" wx:for-item="item">{{item.title}}</view>
-      </view>
-      <view class="list-content" >
-        <view class="li" data-code="{{item.code}}" bindtap="orderClick" wx:for="{{orderData}}"  wx:key="{{item.code}}" wx:for-index="index" wx:for-item="item">
-          <view class="top" >
-            <view class="l" >订单号：{{item.order}}</view>
-            <view class="r" >订单状态：{{item.state}}</view>
+  <view class="orderform-list">
+    <view class='list-title'>我的订单</view>
+    <view class="list-nav">
+      <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="orderNavClick" wx:key="{{item.code}}" wx:for="{{orderNavData}}" wx:for-index="index" wx:for-item="item">{{item.title}}</view>
+    </view>
+    <view class="list-content">
+      <view class="li" wx:if="{{formState==0 || (formState==1 && item.state=='派单中') || (formState==2 && item.state=='服务中') || (formState==3 && item.state=='已完成' && item.state=='已过时')}}" data-code="{{item.code}}" bindtap="orderClick" wx:for="{{orderData}}" wx:key="{{item.code}}"
+        wx:for-index="index" wx:for-item="item">
+        <view class="top">
+          <view class="l">订单号：{{item.order}}</view>
+          <view class="r">订单状态：{{item.state}}</view>
+        </view>
+        <view class="center">
+          <view class='l'>
+            <image src='{{item.url}}' mode="widthFix" />
           </view>
-          <view class="center">
-            <view class='l'><image src='{{item.url}}' mode="widthFix" /></view>
-            <view class='r'>
-              <view class="title">{{item.title}}</view>
-              <view class="describe">{{item.describe}}</view>
-            </view>
+          <view class='r'>
+            <view class="title">{{item.title}}</view>
+            <view class="describe">{{item.describe}}</view>
           </view>
-          <view class="bottom" >
-            <view class="l" >金额：{{item.money}}</view>
-            <view class="r" >
-              <view class="btn"  data-phone="{{userPhone}}" bindtap="phoneCall" >电话预约</view>
-            </view>
+        </view>
+        <view class="bottom">
+          <view class="l">金额：{{item.money}}</view>
+          <view class="r">
+            <view class="btn" data-phone="{{userPhone}}" bindtap="phoneCall">电话预约</view>
           </view>
         </view>
       </view>
+      <view wx:if="{{orderData.length==0}}" >
+        <view class="isnull"><image src="/images/no_data.png" mode="widthFix" ></image></view>
+      </view>
+    </view>
   </view>
 </view>

@@ -1,47 +1,13 @@
 //app.js
 var prot = require('/utils/prot.js');
+var wxLocation = require('/utils/wxLocation.js');
 App({
   onLaunch: function() {
+    var vm = this;
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        var code = res.code;
-        console.log(code);
-        wx.request({
-          url: prot.WxLogin,
-          method: 'GET',
-          data: {
-            Code: res.code,
-          },
-          success: function(res) {
-            console.log(res);
-            wx.request({
-              url: prot.MemberInfo,
-              method: 'GET',
-              data: {
-                Code: code,
-              },
-              success: function(res) {
-                console.log(res);
-                if (res.statusCode == 200) {
-                  var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
-                  wx.setStorage({
-                    key: 'userlistdata',
-                    data: res.data
-                  });
-                }
-              }
-            });
-          }
-        });
-      }
-    })
+    wx.setStorageSync('logs', logs);
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -50,18 +16,133 @@ App({
           wx.getUserInfo({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
-
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
+              try {
+                var data = wx.getStorageSync("userKey");
+                if (!data || data == '') {
+                  vm.loginRequest(res.userInfo);
+                }
+              } catch (err) {
+                vm.loginRequest(res.userInfo);
               }
             }
           })
         }
       }
+    });
+  },
+  loginRequest: function(userdata,fn) {
+    wx.showLoading({
+      title: '登录中...',
     })
+    var vm = this;
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        var code = res.code;
+        //后台登录
+        wx.request({
+          url: prot.WxLogin,
+          method: 'GET',
+          data: {
+            Code: code,
+          },
+          success: function(res) {
+            //登录成功
+            var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
+            var key = '91ce3fe0896408cf0b3893002de7c00b' || data.result;
+            //保存用户id
+            wx.setStorage({
+              key: 'userKey',
+              data: {
+                key: key,
+                code: code
+              }
+            });
+            //获取个人信息
+            wx.request({
+              url: prot.MemberInfo,
+              method: 'GET',
+              data: {
+                Code: code,
+                WeSessionKey: key
+              },
+              success: function(res) {
+                if (res.statusCode == 200) {
+                  var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
+                  //初步保存用户信息
+                  wx.setStorage({
+                    key: 'userlistdata',
+                    data: data.result
+                  });
+                  //判断用户是否注册过
+                  if (data.result.Nickname == '' || data.result.Nickname == null) {
+                    //新用户 保存微信数据
+                    var province_ = wxLocation.wxLocation[userdata.province.toLowerCase()].cn;
+                    var city_ = wxLocation.wxLocation[userdata.province.toLowerCase()].data[userdata.city.toLowerCase()];
+                    wx.getStorage({
+                      key: 'locations',
+                      success: function (res) {
+                        debugger;
+                        var data_ = {
+                          Nickname: userdata.nickName,
+                          Sex: userdata.gender == 1 ? 1 : userdata.gender == 0 ? 2 : 0,
+                          City: province_ + ' ' + city_,
+                          Position: res.data.city,
+                          ImgUrl: userdata.avatarUrl
+                        };
+                        wx.request({
+                          url: prot.MemberInfoSave + '?WeSessionKey=' + key,
+                          method: 'POST',
+                          data: JSON.stringify(data_),
+                          success: function (res) {
+                            if (res.statusCode == 200) {
+                              var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+                              wx.hideLoading();
+                              typeof fn === 'function' ? fn(data_, key) : null;
+                              if (vm.userInfoReadyCallback) {
+                                vm.userInfoReadyCallback(data_,key)
+                              }
+                            }
+                          }
+                        });
+                        data_.HeadImg = userdata.avatarUrl;
+                        vm.globalData.userInfo = data_;
+                        wx.setStorage({
+                          key: 'userdata',
+                          data: data_
+                        });
+                      }
+                    });
+                  } else {
+                    //已注册
+                    if (data.result.HeadImg == '' || data.result.HeadImg==null){
+                      data.result.HeadImg = userdata.avatarUrl;
+                    }
+                    vm.globalData.userInfo = data.result;
+                    wx.setStorage({
+                      key: 'userdata',
+                      data: data.result
+                    });
+                    wx.hideLoading();
+                    typeof fn === 'function' ? fn(data.result, key) : null;
+                    if (vm.userInfoReadyCallback) {
+                      vm.userInfoReadyCallback(data.result, key)
+                    }
+                  }
+                }
+              }
+            });
+          }
+        });
+      }
+    })
+  },
+  userCallBack:function(data){
+    console.log(data);
+  },
+  loginSuccess: function(data) {
+    console.log(data);
   },
   userInfoReadyCallback: function(res) {
     this.globalData.userInfo = res.userInfo

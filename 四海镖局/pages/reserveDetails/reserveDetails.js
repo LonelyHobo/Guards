@@ -3,6 +3,7 @@ var provinces = require('../../utils/province.js');
 var prot = require('../../utils/prot.js');
 var WxParse = require('../../wxParse/wxParse.js');
 const app = getApp();
+var wxLocation = require('../../utils/wxLocation.js');
 Page({
 
   /**
@@ -13,9 +14,11 @@ Page({
     serviceName: "",
     serviceArea: "",
     serviceTitle: "",
-    serviceId:[],
+    serviceId:'',
     streamerData:[],
     areaCode:1,
+    userInfo:{},
+    hasUserInfo:false,
     serviceData:{
     },
     state:1,
@@ -32,14 +35,73 @@ Page({
       { title: '服务地区', code: '1', icon: 'icon-xia1', on: '' },
       { title: '特色服务', code: '2', icon: 'icon-xia1', on: '' }
     ],
-    featureData: [
-      { title: '物资押运', code: '0', on: '' },
-      { title: '私人保镖', code: '1', on: '' },
-      { title: '警卫派驻', code: '2', on: '' },
-      { title: '接送机礼遇', code: '3', on: '' },
-    ],
+    featureData: [],
     serviceAreaData: [],
     serviceAreaMinData: [],
+    collectState:false,
+  },
+  //搜索
+  searchTop: function () {
+    wx.navigateTo({
+      url: '../searchAll/searchAll'
+    })
+  },
+  //收藏 点赞
+  collectClick: function (e) {
+    var vm = this;
+    //点赞  收藏
+    wx.showLoading({
+      title: '加载中...',
+    })
+    var btn = e.target.dataset.btn || e.currentTarget.dataset.btn;
+    wx.request({
+      url: (btn == 'collect' ? vm.data.collectState ? prot.CollectDel : prot.CollectSave : vm.data.likeState ? prot.LikeDel : prot.LikeSave) + '?WeSessionKey=' + vm.data.userKey,
+      method: 'POST',
+      data: JSON.stringify({
+        SourceCode: 'Service',
+        SourceID: vm.data.serviceId
+      }),
+      success: function (res) {
+        wx.hideLoading();
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          var is = vm.data[btn == 'collect' ? 'collectState' : 'likeState'];
+          is = !is;
+          if (btn == 'collect') {
+            vm.setData({
+              collectState: is
+            })
+          } else {
+            vm.setData({
+              likeState: is
+            })
+          }
+          wx.showToast({
+            title: btn == 'collect' ? is ? '已收藏' : '已取消收藏' : is ? '已点赞' : '已取消点赞',
+            icon: 'success',
+            duration: 1000
+          })
+        }
+      }
+    });
+  },
+  //登录
+  getUserInfo: function (e) {
+    if (!e.detail.userInfo) return;
+    var vm = this;
+    var userInfo_ = e.detail.userInfo;
+    app.loginRequest(userInfo_, function () {
+      //登录成功回调
+      wx.showToast({
+        title: '登录成功！',
+        mask: true,
+        icon: 'success',
+        duration: 1000,
+        success: function () {
+          vm.collectClick(e);
+        }
+      });
+    });
   },
   //服务地区是否国内选择
   serviceNavMinClick: function (obj) {
@@ -69,6 +131,20 @@ Page({
     var vm = this;
     var on_ = '';
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    vm.data.serviceAreaData1.forEach(function (value, index) {
+      value.datalist.forEach(function (value) {
+        if (value.regionID != code_) {
+          value.on = '';
+        }
+      })
+    });
+    vm.data.serviceAreaData2.forEach(function (value, index) {
+      value.datalist.forEach(function (value) {
+        if (value.regionID != code_) {
+          value.on = '';
+        }
+      })
+    });
     this.data.serviceAreaMinData.forEach(function (value, index) {
       if (value.code == code_) {
         value.on = value.on == 'on' ? '' : 'on';
@@ -87,7 +163,7 @@ Page({
         value.check = on_ == 'on' ? 'check' : ''
       }
     });
-    this.setData({ serviceAreaMinData: this.data.serviceAreaMinData, serviceAreaCheckedData: vm.data.serviceAreaCheckedData, serviceNavTop: 'top', serviceNavData: this.data.serviceNavData });
+    this.setData({ serviceAreaMinData: this.data.serviceAreaMinData, serviceAreaCheckedData: vm.data.serviceAreaCheckedData, serviceNavTop: 'top', serviceNavData: this.data.serviceNavData, serviceAreaData1: vm.data.serviceAreaData1, serviceAreaData2: vm.data.serviceAreaData2 });
   },
   //服务地区省选择
   serviceAreaClick: function (obj) {
@@ -163,22 +239,94 @@ Page({
       url: '../reserveDetails2/reserveDetails2?title=' + this.data.serviceTitle + '&areaCode=' + this.data.areaCode + '&code=' + this.data.serviceId
     })
   },
+  backShow: function (key) {
+    var vm = this;
+    if (key) {
+      vm.backShowBefore(key);
+    } else {
+      wx.getStorage({
+        key: 'userKey',
+        success: function (res) {
+          vm.setData({
+            userKey: res.data.key
+          });
+          vm.backShowBefore(res.data.key);
+        }
+      });
+    }
+  },
+  backShowBefore: function (key) {
+    var vm = this;
+    //是否点赞收藏过
+    wx.request({
+      url: prot.GetIsCollect,
+      method: 'GET',
+      data: {
+        args: {
+          SourceCode: 'Service',
+          SourceID: vm.data.serviceId
+        },
+        WeSessionKey: key
+      },
+      success: function (res) {
+        wx.hideLoading();
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          vm.setData({
+            collectState: data.result,
+          })
+        }
+      }
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     var vm = this;
     this.setData({ serviceTitle: options.title, state: options.state, serviceId: options.code, areaCode: options.areaCode });
-    var serviceAreaDatas = [];
-    provinces.province.forEach(function (value, index) {
-      var datalist = [];
-      var index_ = index;
-      value.citys.forEach(function (value, index) {
-        datalist.push({ title: value.citysName, code: index_ + '_' + index, on: '' });
-      })
-      serviceAreaDatas.push({ title: value.provinceName, code: index, on: (index == 0 ? 'on' : ''), datalist: datalist });
-    })
-    this.setData({ serviceAreaData: serviceAreaDatas, serviceAreaMinData: serviceAreaDatas[0].datalist });
+    try {
+      var data = wx.getStorageSync("userdata");
+      if (!data || data == '') {
+        app.userInfoReadyCallback = function (res, key) {
+          vm.setData({
+            userInfo: res,
+            hasUserInfo: true,
+            userKey: key
+          });
+          vm.backShow(key);
+        };
+      } else {
+        wx.getStorage({
+          key: 'userdata',
+          success: function (res) {
+            vm.setData({
+              userInfo: res.data,
+              hasUserInfo: true,
+            });
+          }
+        });
+        wx.getStorage({
+          key: 'userKey',
+          success: function (res) {
+            vm.setData({
+              userKey: res.data.key
+            });
+            vm.backShow(res.data.key);
+          }
+        });
+      }
+    } catch (err) {
+      app.userInfoReadyCallback = function (res, key) {
+        vm.setData({
+          userInfo: res,
+          hasUserInfo: true,
+          userKey: key
+        });
+        vm.backShow(key);
+      };
+    }
+    //详情
     wx.request({
       url: prot.GetServiceDetail,
       method: 'GET',
@@ -243,53 +391,4 @@ Page({
       }
     });
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })

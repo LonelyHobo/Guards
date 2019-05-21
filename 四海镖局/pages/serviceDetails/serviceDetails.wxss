@@ -87,6 +87,10 @@ page{
 .introduce .collect-and-like view{
   display: inline-block;
   margin-left:25rpx;
+  position: relative;
+}
+.introduce .collect-and-like view button{
+  
 }
 .introduce .collect-and-like view text{
   color:#316cf7;

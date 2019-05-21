@@ -15,31 +15,29 @@ Page({
     codei:0,
     agreementTop: 'bottom',
     isAgreement: false,
+    userKey:''
   },
   submitForm:function(){
     var vm = this;
-    var args={
+    var data={
       ServiceID: vm.data.serviceId,
       MerchantID: vm.data.merchantId,
       RegionID: vm.data.areaCode,
       Phone: vm.data.phoneCode,
-      Content: vm.data.remark
+      Content: vm.data.remark,
     }
-    wx.showToast({
+    wx.showLoading({
       title: '正在提交...',
-      mask: true,
-      icon: 'loading'
-    })
+    });
     wx.request({
-      url: prot.OrderSave,
+      url: prot.OrderSave + '?WeSessionKey=' + vm.data.userKey,
       method: 'POST',
-      data: {
-        args: args
-      },
+      data: JSON.stringify(data),
       header: {
         'content-type': 'application/json' // 默认值
       },
       success: function (res) {
+        wx.hideLoading();
         if (res.statusCode == 200) {
           var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
           wx.showToast({
@@ -52,6 +50,13 @@ Page({
                 url: '../index/index?route=orderform'
               });
             }
+          });
+        }else{
+          wx.showToast({
+            title: '提交失败！',
+            mask: true,
+            icon: 'none',
+            duration: 2000,
           });
         }
       }
@@ -85,6 +90,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    var vm = this;
     this.setData({
       serviceId: options.serviceId,//服务id
       merchantName: options.merchantName,//服务商名称
@@ -92,6 +98,14 @@ Page({
       areaCode: options.areaCode,//地区id
       areaName: options.areaName,//地区名称
       serviceName: options.serviceName,//服务名称
+    });
+    wx.getStorage({
+      key: 'userKey',
+      success: function (res) {
+        vm.setData({
+          userKey: res.data.key,//用户key
+        });
+      }
     });
   },
 

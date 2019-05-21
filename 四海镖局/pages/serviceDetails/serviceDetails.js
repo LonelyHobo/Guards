@@ -2,6 +2,7 @@
 var provinces = require('../../utils/province.js');
 var prot = require('../../utils/prot.js');
 var WxParse = require('../../wxParse/wxParse.js');
+var wxLocation = require('../../utils/wxLocation.js');
 //获取应用实例
 const app = getApp();
 Page({
@@ -15,7 +16,8 @@ Page({
     serviceArea: "",
     merchantId: '',
     serviceTitle: "",
-    serviceId:'',
+    serviceId: '',
+    userKey:'',
     hasUserInfo: false,
     bannerData: [],
     streamerData: [],
@@ -31,35 +33,89 @@ Page({
     serviceAreaData: [],
     introduceNavData: [],
     introduceListData: [],
+    collectState: false,
+    likeState: false,
+  },
+  //搜索
+  searchTop: function () {
+    wx.navigateTo({
+      url: '../searchAll/searchAll'
+    })
+  },
+  //收藏 点赞
+  collectClick: function(e) {
+    var vm = this;
+    //点赞  收藏
+    wx.showLoading({
+      title: '加载中...',
+    })
+    var btn = e.target.dataset.btn || e.currentTarget.dataset.btn;
+    wx.request({
+      url: (btn == 'collect' ? vm.data.collectState ? prot.CollectDel : prot.CollectSave : vm.data.likeState ? prot.LikeDel : prot.LikeSave) + '?WeSessionKey=' + vm.data.userKey,
+      method: 'POST',
+      data: JSON.stringify({
+        SourceCode: 'MerChant',
+        SourceID: vm.data.merchantId
+      }),
+      success: function(res) {
+        wx.hideLoading();
+        if (res.statusCode == 200) {
+          var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          var is = vm.data[btn == 'collect' ? 'collectState' : 'likeState'];
+          is = !is;
+          if (btn == 'collect'){
+            vm.setData({
+              collectState: is
+            })
+          }else{
+            vm.setData({
+              likeState: is
+            })
+          }
+          wx.showToast({
+            title: btn == 'collect' ? is ? '已收藏' : '已取消收藏' : is ? '已点赞' : '已取消点赞',
+            icon: 'success',
+            duration: 1000
+          })
+        }
+      }
+    });
   },
   //登录
   getUserInfo: function(e) {
     if (!e.detail.userInfo) return;
     var vm = this;
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
+    var userInfo_ = e.detail.userInfo;
+    app.loginRequest(userInfo_,function(){
+      //登录成功回调
+      wx.showToast({
+        title: '登录成功！',
+        mask: true,
+        icon: 'success',
+        duration: 1000,
+        success: function () {
+          var serviceId = e.target.dataset.code || e.currentTarget.dataset.code;
+          if (serviceId) {
+            var merchantName = this.data.merchantName; //服务商名称
+            var merchantId = this.data.merchantId; //服务商id
+            var areaCode = this.data.serviceAreaCheckedData[serviceId].regionID;
+            var areaName = this.data.serviceAreaCheckedData[serviceId].title;
+            var serviceName = e.target.dataset.title || e.currentTarget.dataset.title;
+            wx.navigateTo({
+              url: '../appointment/appointment?serviceId=' + serviceId + '&merchantName=' + merchantName + '&merchantId=' + merchantId + '&areaCode=' + areaCode + '&areaName=' + areaName + '&serviceName=' + serviceName
+            })
+          } else {
+            vm.collectClick(e);
+          }
+        }
+      });
     });
-    wx.setStorage({
-      key: 'userdata',
-      data: e.detail.userInfo
-    });
-    var serviceId = obj.target.dataset.code || obj.currentTarget.dataset.code;
-    var merchantName = this.data.merchantName;//服务商名称
-    var merchantId = this.data.merchantId;//服务商id
-    var areaCode = this.data.serviceAreaCheckedData[serviceId].regionID;
-    var areaName = this.data.serviceAreaCheckedData[serviceId].title;
-    var serviceName = obj.target.dataset.title || obj.currentTarget.dataset.title;
-    wx.navigateTo({
-      url: '../appointment/appointment?serviceId=' + serviceId + '&merchantName=' + merchantName + '&merchantId=' + merchantId + '&areaCode=' + areaCode + '&areaName=' + areaName + '&serviceName=' + serviceName
-    })
   },
   //预约服务点击
   introduceListClick: function(obj) {
     var serviceId = obj.target.dataset.code || obj.currentTarget.dataset.code;
-    var merchantName = this.data.merchantName;//服务商名称
-    var merchantId = this.data.merchantId;//服务商id
+    var merchantName = this.data.merchantName; //服务商名称
+    var merchantId = this.data.merchantId; //服务商id
     var areaCode = this.data.serviceAreaCheckedData[serviceId].regionID;
     var areaName = this.data.serviceAreaCheckedData[serviceId].title;
     var is_ = false;
@@ -93,8 +149,8 @@ Page({
   //直接预约点击
   appointmentBtn: function(obj) {
     var serviceId = this.data.serviceName;
-    var merchantName = this.data.merchantName;//服务商名称
-    var merchantId = this.data.merchantId;//服务商id
+    var merchantName = this.data.merchantName; //服务商名称
+    var merchantId = this.data.merchantId; //服务商id
     var areaCode = this.data.areaCode;
     var areaName = this.data.areaName;
     var serviceName = this.data.serviceName;
@@ -120,19 +176,19 @@ Page({
         value.on = '';
       });
     };
-    var serviceAreaDatas=[];
-    if (this.data.introduceNavData[0].on == 'on'){
+    var serviceAreaDatas = [];
+    if (this.data.introduceNavData[0].on == 'on') {
       var data = [];
-      this.data.serviceNavMinData1.forEach(function(value,index){
-        if (index==0){
+      this.data.serviceNavMinData1.forEach(function(value, index) {
+        if (index == 0) {
           data.push(value);
         }
       })
       this.data.serviceNavMinData = data;
       serviceAreaDatas = vm.data.serviceAreaData1;
-    }else{
+    } else {
       var data = [];
-      this.data.serviceNavMinData1.forEach(function (value, index) {
+      this.data.serviceNavMinData1.forEach(function(value, index) {
         if (index == 1) {
           data.push(value);
         }
@@ -156,11 +212,9 @@ Page({
     this.data.introduceNavData.forEach(function(value, index) {
       value.on = '';
       if (value.regionID == regionID) {
-        wx.showToast({
+        wx.showLoading({
           title: '加载中...',
-          mask: true,
-          icon: 'loading'
-        });
+        })
         value.on = 'on';
         wx.request({
           url: prot.GetServiceListPageByMerchant,
@@ -171,10 +225,12 @@ Page({
               limit: 10,
               sort: 'SortNo',
               dir: 'DESC',
-              RegionID: index==0?0:1519
+              RegionID: index == 0 ? 0 : 1519,
+              MerchantID: vm.data.merchantId,
             }
           },
           success: function(res) {
+            wx.hideLoading();
             if (res.statusCode == 200) {
               var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
               data.forEach(function(value, index) {
@@ -220,28 +276,44 @@ Page({
   },
   //服务地区选择
   serviceAreaMinClick: function(obj) {
-    var the = this;
+    var vm = this;
     var title_ = '';
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    vm.data.serviceAreaData1.forEach(function (value, index) {
+      value.datalist.forEach(function (value) {
+        if (value.regionID != code_) {
+          value.on = '';
+        }
+      })
+    });
+    vm.data.serviceAreaData2.forEach(function (value, index) {
+      value.datalist.forEach(function (value) {
+        if (value.regionID != code_) {
+          value.on = '';
+        }
+      })
+    });
     this.data.serviceAreaMinData.forEach(function(value, index) {
       if (value.regionID == code_) {
         value.on = 'on';
-        the.data.serviceAreaCheckedData[the.data.serviceCode] = value;
-        title_=value.title;
+        vm.data.serviceAreaCheckedData[vm.data.serviceCode] = value;
+        title_ = value.title;
       } else {
         value.on = '';
       }
     });
     this.data.introduceListData.forEach(function(value) {
-      if (value.ServiceID == the.data.serviceCode) {
+      if (value.ServiceID == vm.data.serviceCode) {
         value.city = title_;
       }
     });
     this.setData({
       serviceAreaMinData: this.data.serviceAreaMinData,
-      serviceAreaCheckedData: the.data.serviceAreaCheckedData,
+      serviceAreaCheckedData: vm.data.serviceAreaCheckedData,
       serviceNavTop: 'top',
-      introduceListData: this.data.introduceListData
+      introduceListData: this.data.introduceListData,
+      serviceAreaData1: vm.data.serviceAreaData1, 
+      serviceAreaData2: vm.data.serviceAreaData2
     });
   },
   //服务地区省选择
@@ -261,38 +333,124 @@ Page({
       serviceAreaMinData: datalist
     });
   },
+  backShow: function (key){
+    var vm = this;
+    if (key){
+      vm.backShowBefore(key);
+    }else{
+      wx.getStorage({
+        key: 'userKey',
+        success: function (res) {
+          vm.setData({
+            userKey: res.data.key
+          });
+          vm.backShowBefore(res.data.key);
+        }
+      });
+    }
+  },
+  backShowBefore:function(key){
+    var vm = this;
+    //是否点赞收藏过
+    wx.request({
+      url: prot.GetIsCollect,
+      method: 'GET',
+      data: {
+        args: {
+          SourceCode: 'MerChant',
+          SourceID: vm.data.merchantId
+        },
+        WeSessionKey: key
+      },
+      success: function (res) {
+        wx.hideLoading();
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          vm.setData({
+            collectState: data.result,
+          })
+        }
+      }
+    });
+    wx.request({
+      url: prot.GetIsLike,
+      method: 'GET',
+      data: {
+        args: {
+          SourceCode: 'Merchant',
+          SourceID: vm.data.merchantId
+        },
+        WeSessionKey: key
+      },
+      success: function (res) {
+        wx.hideLoading();
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          vm.setData({
+            likeState: data.result,
+          })
+        }
+      }
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
     var vm = this;
     this.setData({
-      merchantName: options.merchantName,
-      state: options.state,
-      merchantId: options.merchantId,
-      serviceId: options.serviceId,
-      serviceName: options.serviceName,
-      areaCode: options.areaCode,
-      areaName: options.areaName,
+      merchantName: options.merchantName || '',
+      state: options.state || '',
+      merchantId: options.merchantId || '',
+      serviceId: options.serviceId || '',
+      serviceName: options.serviceName || '',
+      areaCode: options.areaCode || '',
+      areaName: options.areaName || '',
     });
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else {
-      app.userInfoReadyCallback = function(res) {
-        vm.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
+    try {
+      var data = wx.getStorageSync("userdata");
+      if (!data || data == '') {
+        app.userInfoReadyCallback = function (res, key) {
+          vm.setData({
+            userInfo: res,
+            hasUserInfo: true,
+            userKey: key
+          });
+          vm.backShow(key);
+        };
+      } else {
+        wx.getStorage({
+          key: 'userdata',
+          success: function (res) {
+            vm.setData({
+              userInfo: res.data,
+              hasUserInfo: true
+            });
+          }
+        });
+        wx.getStorage({
+          key: 'userKey',
+          success: function (res) {
+            vm.setData({
+              userKey: res.data.key
+            });
+            vm.backShow(res.data.key);
+          }
+        });
       }
+    } catch (err) {
+      app.userInfoReadyCallback = function (res, key) {
+        vm.setData({
+          userInfo: res,
+          hasUserInfo: true,
+          userKey: key
+        });
+        vm.backShow(key);
+      };
     }
-    wx.showToast({
+    wx.showLoading({
       title: '加载中...',
-      mask: true,
-      icon: 'loading'
-    })
+    });
     //详情
     wx.request({
       url: prot.GetMerchantDetail,
@@ -350,14 +508,20 @@ Page({
           limit: 10,
           sort: 'SortNo',
           dir: 'DESC',
-          RegionID: 0
+          RegionID: 0,
+          MerchantID: options.merchantId,
         }
       },
       success: function(res) {
+        wx.hideLoading();
         if (res.statusCode == 200) {
           var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
           data.forEach(function(value, index) {
-            value.PicUrl = vm.data.api + value.PicUrl;
+            if (value.PicUrl && value.PicUrl != null) {
+              value.PicUrl = vm.data.api + value.PicUrl;
+            } else {
+              value.PicUrl = '/images/imgNull.png';
+            }
             var introduce = value.Introduce;
             var nodes = WxParse.wxParse('introduce' + index, 'html', introduce, vm, 5);
             data[index]['nodes'] = nodes;
