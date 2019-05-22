@@ -48,91 +48,118 @@ App({
             Code: code,
           },
           success: function(res) {
-            //登录成功
-            var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
-            var key = '91ce3fe0896408cf0b3893002de7c00b' || data.result;
-            //保存用户id
-            wx.setStorage({
-              key: 'userKey',
-              data: {
-                key: key,
-                code: code
-              }
-            });
-            //获取个人信息
-            wx.request({
-              url: prot.MemberInfo,
-              method: 'GET',
-              data: {
-                Code: code,
-                WeSessionKey: key
-              },
-              success: function(res) {
-                if (res.statusCode == 200) {
-                  var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
-                  //初步保存用户信息
-                  wx.setStorage({
-                    key: 'userlistdata',
-                    data: data.result
-                  });
-                  //判断用户是否注册过
-                  if (data.result.Nickname == '' || data.result.Nickname == null) {
-                    //新用户 保存微信数据
-                    var province_ = wxLocation.wxLocation[userdata.province.toLowerCase()].cn;
-                    var city_ = wxLocation.wxLocation[userdata.province.toLowerCase()].data[userdata.city.toLowerCase()];
-                    wx.getStorage({
-                      key: 'locations',
-                      success: function (res) {
-                        debugger;
-                        var data_ = {
-                          Nickname: userdata.nickName,
-                          Sex: userdata.gender == 1 ? 1 : userdata.gender == 0 ? 2 : 0,
-                          City: province_ + ' ' + city_,
-                          Position: res.data.city,
-                          ImgUrl: userdata.avatarUrl
-                        };
-                        wx.request({
-                          url: prot.MemberInfoSave + '?WeSessionKey=' + key,
-                          method: 'POST',
-                          data: JSON.stringify(data_),
-                          success: function (res) {
-                            if (res.statusCode == 200) {
-                              var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
-                              wx.hideLoading();
-                              typeof fn === 'function' ? fn(data_, key) : null;
-                              if (vm.userInfoReadyCallback) {
-                                vm.userInfoReadyCallback(data_,key)
-                              }
-                            }
-                          }
-                        });
-                        data_.HeadImg = userdata.avatarUrl;
-                        vm.globalData.userInfo = data_;
-                        wx.setStorage({
-                          key: 'userdata',
-                          data: data_
-                        });
-                      }
-                    });
-                  } else {
-                    //已注册
-                    if (data.result.HeadImg == '' || data.result.HeadImg==null){
-                      data.result.HeadImg = userdata.avatarUrl;
-                    }
-                    vm.globalData.userInfo = data.result;
+            if (res.statusCode == 200){
+              //登录成功
+              var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+              //'91ce3fe0896408cf0b3893002de7c00b' || 
+              var key = data.result;
+              //保存用户id
+              wx.setStorage({
+                key: 'userKey',
+                data: {
+                  key: key,
+                  code: code
+                }
+              });
+              //获取个人信息
+              wx.request({
+                url: prot.MemberInfo,
+                method: 'GET',
+                data: {
+                  Code: code,
+                  WeSessionKey: key
+                },
+                success: function (res) {
+                  if (res.statusCode == 200) {
+                    var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+                    //初步保存用户信息
                     wx.setStorage({
-                      key: 'userdata',
+                      key: 'userlistdata',
                       data: data.result
                     });
-                    wx.hideLoading();
-                    typeof fn === 'function' ? fn(data.result, key) : null;
-                    if (vm.userInfoReadyCallback) {
-                      vm.userInfoReadyCallback(data.result, key)
+                    //判断用户是否注册过
+                    if (data.result.Nickname == '' || data.result.Nickname == null) {
+                      //新用户 保存微信数据
+                      var province_ = wxLocation.wxLocation[userdata.province.toLowerCase()].cn;
+                      var city_ = wxLocation.wxLocation[userdata.province.toLowerCase()].data[userdata.city.toLowerCase()];
+                      wx.getStorage({
+                        key: 'locations',
+                        success: function (res) {
+                          debugger;
+                          var data_ = {
+                            Nickname: userdata.nickName,
+                            Sex: userdata.gender == 1 ? 1 : userdata.gender == 0 ? 2 : 0,
+                            City: province_ + ' ' + city_,
+                            Position: res.data.city,
+                            ImgUrl: userdata.avatarUrl
+                          };
+                          wx.request({
+                            url: prot.MemberInfoSave + '?WeSessionKey=' + key,
+                            method: 'POST',
+                            data: JSON.stringify(data_),
+                            success: function (res) {
+                              if (res.statusCode == 200) {
+                                var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+                                wx.hideLoading();
+                                typeof fn === 'function' ? fn(data_, key) : null;
+                                if (vm.userInfoReadyCallback) {
+                                  vm.userInfoReadyCallback(data_, key)
+                                }
+                              }else{
+                                wx.hideLoading();
+                                wx.showToast({
+                                  title: '个人信息获取失败',
+                                  mask: true,
+                                  icon: 'none',
+                                  duration: 2000,
+                                });
+                              }
+                            }
+                          });
+                          data_.HeadImg = userdata.avatarUrl;
+                          vm.globalData.userInfo = data_;
+                          wx.setStorage({
+                            key: 'userdata',
+                            data: data_
+                          });
+                        }
+                      });
+                    } else {
+                      //已注册
+                      if (data.result.HeadImg == '' || data.result.HeadImg == null) {
+                        data.result.HeadImg = userdata.avatarUrl;
+                      }
+                      vm.globalData.userInfo = data.result;
+                      wx.setStorage({
+                        key: 'userdata',
+                        data: data.result
+                      });
+                      wx.hideLoading();
+                      typeof fn === 'function' ? fn(data.result, key) : null;
+                      if (vm.userInfoReadyCallback) {
+                        vm.userInfoReadyCallback(data.result, key)
+                      }
                     }
+                  }else{
+                    wx.hideLoading();
+                    wx.showToast({
+                      title: '个人信息获取失败',
+                      mask: true,
+                      icon: 'none',
+                      duration: 2000,
+                    });
                   }
                 }
-              }
-            });
+              });
+            }else{
+              wx.hideLoading();
+              wx.showToast({
+                title: '登录失败',
+                mask: true,
+                icon: 'none',
+                duration: 2000,
+              });
+            }
           }
         });
       }
