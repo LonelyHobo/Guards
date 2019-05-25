@@ -21,7 +21,7 @@ Page({
     userTopUrl: '/images/icon_top.png',
     userName: '登陆/注册',
     route: "home",
-    userPhone: '17512840813',
+    userPhone: '',
     headertitle: "四海镖局",
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -236,24 +236,24 @@ Page({
   //一键求助
   seekhelpSave: function(obj) {
     var vm = this;
-    var val = obj.detail.value;
+    var val = obj.detail.value || '无数据';
     wx.showLoading({
       title: '正在提交...',
     })
     var data = {
-      args: {
+      args:{
         Address: vm.data.province + vm.data.city,
         Content: val,
-      },
-      WeSessionKey: vm.data.userKey
+      }
     };
     wx.request({
-      url: prot.Help,
+      url: prot.Help +'?WeSessionKey='+vm.data.userKey,
       method: 'POST',
       data: JSON.stringify(data),
       success: function (res) {
         wx.hideLoading();
         if (res.statusCode == 200) {
+          debugger;
           var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
           wx.showToast({
             title: '提交成功！',
@@ -605,7 +605,10 @@ Page({
       if (value.code == code_) {
         vm.data.servicelist[index].ischecked = '1';
       }
-    })
+    });
+    if (code_ =='orderform'){
+      vm.getUserData();
+    }
     this.setData({
       servicelist: this.data.servicelist,
       serviceRoute: (code_ == 'service' || code_ == 'reserve') ? code_ : 'service'
@@ -643,12 +646,7 @@ Page({
       });
       if (options.route == 'orderform'){
         //订单页
-        wx.getStorage({
-          key: 'userKey',
-          success: function (res) {
-            vm.getformData(res.data.key);
-          }
-        });
+        vm.getUserData();
       }
     }
     //首页轮播
@@ -969,6 +967,20 @@ Page({
         }
       }
     });
+    //客服电话
+    wx.request({
+      url: prot.GetInfo,
+      method: 'GET',
+      success: function (res) {
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          vm.setData({
+            userPhone: data.tel
+          });
+        }
+      }
+    });
+    
     qqmapsdk = new QQMapWX({
       key: 'POWBZ-6G5K3-TOV32-3SMJ3-V2HLO-ENBXC'
     });
@@ -1086,7 +1098,18 @@ Page({
       success: function (res) {
         if (res.statusCode == 200) {
           var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
-          console.log(data);
+          data.result.forEach(function (value, index) {
+            if (value.ServiceInfo.PicUrl && value.ServiceInfo.PicUrl != null) {
+              value.ServiceInfo.PicUrl = vm.data.api + value.ServiceInfo.PicUrl;
+            } else {
+              value.ServiceInfo.PicUrl = '/images/imgNull.png';
+            }
+            var introduce = value.ServiceInfo.Introduce;
+            var nodes = WxParse.wxParse('introduce' + index, 'html', introduce, vm, 5);
+            data.result[index]['nodes'] = nodes;
+            var jsons = { '未读':'派单中','未处理':'派单中'};
+            value.StatuStr = jsons[value.StatuStr] ? jsons[value.StatuStr] : value.StatuStr;
+          });
           vm.setData({
             orderData: data.result
           });
@@ -1126,6 +1149,19 @@ Page({
   },
   onShow: function () {
     let vm = this;
+    app.locationsBack=function(){
+      wx.getStorage({
+        key: 'locations',
+        success: function (res) {
+          vm.setData({
+            province: res.data.province,
+            city: res.data.city,
+            latitude: res.data.latitude,
+            longitude: res.data.longitude
+          });
+        }
+      });
+    }
     try {
       var data = wx.getStorageSync("locations");
       if (data == '') {
@@ -1143,7 +1179,6 @@ Page({
                 latitude: res.data.latitude,
                 longitude: res.data.longitude
               });
-              vm.getUserData();
             }
           }
         });
@@ -1248,8 +1283,6 @@ Page({
             city: city,
             latitude: latitude,
             longitude: longitude
-          },success:function(){
-            vm.getUserData();
           }
         });
       },

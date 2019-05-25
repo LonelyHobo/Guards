@@ -31,4 +31,9 @@ module.exports = {
   GetLikeListPage: api_ + '/Member/GetLikeListPage',///点赞列表
   LikeSave: api_ + '/Member/LikeSave',///添加点赞
   LikeDel: api_ + '/Member/LikeDel',///取消点赞
-};
+  GetInfo: api_ + '/Service/GetInfo',///客服电话
+  UploadImage: api_ + '/Member/UploadImage',///上传头像
+  PositionChange: api_ + '/Member/PositionChange',///修改定位
+  PhoneChange: api_ + '/Member/PhoneChange',///修改手机号
+  GetAuthCode: api_ + '/Member/GetAuthCode',///获取验证码
+}; 

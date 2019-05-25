@@ -231,7 +231,7 @@ Page({
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
     wx.navigateTo({
-      url: '../serviceDetails/serviceDetails?merchantId=' + code_ + '&merchantName=' + title_
+      url: '../serviceDetails/serviceDetails?state=1&merchantId=' + code_ + '&merchantName=' + title_
     })
   },
   yuyue:function(){
@@ -344,19 +344,32 @@ Page({
       }
     }); 
     //热推服务商
-    wx.request({
-      url: prot.GetMerchantListPageByService,
-      method: 'GET',
-      data: {
+    if (options.areaCode!=0){
+      var data = {
         args: {
           start: 0,
           limit: 10,
           sort: 'A.SortNo',
-          dir: 'DESC', 
+          dir: 'DESC',
           SpecialID: options.code,
           RegionID: options.areaCode == 1 ? 0 : 1519
         }
-      },
+      };
+    }else{
+      var data = {
+        args: {
+          start: 0,
+          limit: 10,
+          sort: 'A.SortNo',
+          dir: 'DESC',
+          SpecialID: options.code
+        }
+      };
+    }
+    wx.request({
+      url: prot.GetMerchantListPageByService,
+      method: 'GET',
+      data: data,
       success: function (res) {
         if (res.statusCode == 200) {
           var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;

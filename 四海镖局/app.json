@@ -15,7 +15,10 @@
     "pages/reserveDetails2/reserveDetails2",
     "pages/appointment/appointment",
     "pages/logs/logs",
-    "pages/searchAll/searchAll"
+    "pages/searchAll/searchAll",
+    "pages/changePhone/changePhone",
+    "pages/collectList/collectList",
+    "pages/likeList/likeList"
   ],
   "window": {
     "backgroundTextStyle": "light",

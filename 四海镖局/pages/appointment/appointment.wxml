@@ -18,11 +18,11 @@
     <view class="center" >
       <view class="content-name">手机号码</view>
       <view class="content-tel">
-        <text class="l">{{phoneCode}}</text>
-        <text class="r" bindtap="getCode" >获取验证码</text>
+        <text class="l" bindtap="{{userInfo.Phone==null?'phoneChange':''}}" >{{userInfo.Phone==null?'去绑定手机号':userInfo.Phone}}</text>
+        <text class="r" bindtap="getCode" style="color:{{getcodenamecolor}};" >{{getcodename}}</text>
       </view>
       <view class="content-code">
-        <input type='text' placeholder='请输入验证码'></input>
+        <input type='text' placeholder='请输入验证码' bindinput="firmCode"></input>
       </view>
     </view>
     <view class="bottom" >

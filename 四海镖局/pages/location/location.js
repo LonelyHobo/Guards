@@ -14,7 +14,8 @@ Page({
       suctionTop: false, // 是否开启标题吸顶
       theCity: '',
       history:'',
-    }
+    },
+    stateCode:2,
   },
   onShow: function () {
     qqmapsdk = new QQMapWX({
@@ -30,7 +31,8 @@ Page({
         searchHeight: 45, // 搜索条高度
         suctionTop: true, // 是否开启标题吸顶
         theCity: '获取中...',
-        history: '定位中...'
+        history: '定位中...',
+        stateCode: vm.data.stateCode,
       },
       city: City,
     })
@@ -131,7 +133,8 @@ Page({
                 searchHeight: 45, // 搜索条高度
                 suctionTop: true, // 是否开启标题吸顶
                 theCity: theCity_,
-                history: city_
+                history: city_,
+                stateCode: vm.data.stateCode,
               },
               city: City,
             })
@@ -146,8 +149,10 @@ Page({
       }
     });
   },
-  onLoad() {
-   
+  onLoad:function(options) {
+    this.setData({
+      stateCode: options.state || 2
+    });
   },
   bindtap(e) {
     console.log(e.detail)

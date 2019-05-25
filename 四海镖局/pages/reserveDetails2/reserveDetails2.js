@@ -135,7 +135,7 @@ Page({
     });
     this.data.serviceNavData.forEach(function (value, index) {
       value.on = '';
-      var areacode_ = vm.data.areaCode == 1 ? 0 : 1519;
+      var areacode_ = vm.data.areaCode == 1 ? 0 : vm.data.areaCode == 2 ? 1519:'';
       value.icon = 'icon-xia1';
       if (value.code == '1') {
         value.check = on_ == 'on' ? 'check' : '';
@@ -149,8 +149,10 @@ Page({
           limit: 10,
           sort: 'SortNo',
           dir: 'DESC',
-          SpecialID: vm.data.serviceId,
-          RegionID: areacode_
+          SpecialID: vm.data.serviceId
+        }
+        if (areacode_!=''){
+          args.RegionID = areacode_;
         }
         if (value.regionID && value.regionID != '') {
           args.RegionID = obj_.regionID;
@@ -232,14 +234,16 @@ Page({
         wx.showLoading({
           title: '加载中...',
         })
-        var areacode_ = vm.data.areaCode == 1 ? 0 : 1519;
+        var areacode_ = vm.data.areaCode == 1 ? 0 : vm.data.areaCode == 2 ? 1519 : '';
         var args = {
           start: 0,
           limit: 10,
           sort: 'SortNo',
           dir: 'DESC',
           SpecialID: vm.data.serviceId,
-          RegionID: areacode_
+        }
+        if (areacode_ != '') {
+          args.RegionID = areacode_;
         }
         if (value.ServiceID && value.ServiceID != '') {
           args.ServiceID = data_.CategoryID;
@@ -488,6 +492,7 @@ Page({
             })
             vm.data.serviceNavMinData = data;
             serviceAreaDatas = vm.data.serviceAreaData1;
+            debugger;
           }
           vm.setData({
             serviceNavMinData: vm.data.serviceNavMinData,

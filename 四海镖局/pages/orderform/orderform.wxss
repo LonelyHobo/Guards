@@ -122,15 +122,15 @@
   border-bottom:1px solid #eeeeee;
 }
 .orderform-list .list-content .li .top .l{
-  font-size:32rpx;
+  font-size:28rpx;
   float:left;
-  width:50%;
+  width:65%;
 }
 .orderform-list .list-content .li .top .r{
   font-size:25rpx;
   color:#999999;
   text-align: right;
-  width:50%;
+  width:35%;
   float:right;
 }
 .orderform-list .list-content .li .center{
@@ -138,8 +138,8 @@
   padding:25rpx 30rpx;
 }
 .orderform-list .list-content .li .center .l{
-  width:250rpx;
-  height: 150rpx;
+  width:200rpx;
+  height: 200rpx;
   float:left;
   overflow: hidden;
   background-color:#f5f5f5;
@@ -148,21 +148,23 @@
   width:100%;
 }
 .orderform-list .list-content .li .center .r{
-  margin-left:270rpx;
+  margin-left:220rpx;
+  padding-top:10rpx;
 }
 .orderform-list .list-content .li .center .r .title{
   font-size:30rpx;
+  line-height: 50rpx;
 }
 .orderform-list .list-content .li .center .r .describe{
   margin-top:15rpx;
   color:#999999;
   line-height: 40rpx;
   font-size:28rpx;
-  height: 80rpx;
+  height: 120rpx;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 .orderform-list .list-content .li .bottom{

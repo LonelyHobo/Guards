@@ -1,0 +1,50 @@
+ <view class="service">
+ <view class="personal-head">
+    <view class="head-close">
+      <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
+    </view>
+    <text class='head-title'>我的收藏</text>
+  </view>
+ <view class="service-nav">
+    <view class="li {{item.on=='on'?'on':''}}"  data-code="{{item.code}}" bindtap="reserveNavDataClick" wx:for="{{reserveNavData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
+      <view>
+        <text>{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="service-nav-height"></view>
+  <view class="service-nav-height"></view>
+  <!-- 列表 -->
+  <view class="reserve-list">
+    <view class="ul" >
+      <view class="li" wx:if="{{reserveNavData[0].on=='on'}}" data-code="{{item.Merchant.MerchantID}}" wx:for="{{userCollectData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.Merchant.MerchantID}}" >
+        <view class="img imgCenter" >
+          <image src="{{item.Merchant.PicUrl}}" mode="widthFix" ></image>
+        </view>
+        <view class="text" data-code="{{item.Merchant.MerchantID}}" data-name="{{item.Merchant.Name}}" bindtap="serviceListClick" >
+          <view class="title" >{{item.Merchant.Name}}</view>
+          <view class="describe" >
+            <import src="../../wxParse/wxParse.wxml"/>
+            <template is="wxParse" data="{{wxParseData:item.Merchant.nodes.nodes}}"/>  
+          </view>
+        </view>
+      </view>
+      <view class="li" wx:if="{{reserveNavData[1].on=='on'}}" data-code="{{item.Service.ServiceID}}" wx:for="{{userCollectData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.Service.ServiceID}}" >
+        <view class="img imgCenter" >
+          <image src="{{item.Service.PicUrl}}" mode="widthFix" ></image>
+        </view>
+        <view class="text" data-code="{{item.Service.ServiceID}}" data-name="{{item.Service.Name}}" data-title="{{item.Service.Name}}" bindtap="reserveListDataClick" >
+          <view class="title" >{{item.Service.Name}}</view>
+          <view class="describe" >
+            <import src="../../wxParse/wxParse.wxml"/>
+            <template is="wxParse" data="{{wxParseData:item.Service.nodes.nodes}}"/>  
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view wx:if="{{userCollectData.length==0}}" >
+        <view class="isnull"><image src="/images/no_data.png" mode="widthFix" ></image></view>
+      </view>
+  </view>
+ </view>

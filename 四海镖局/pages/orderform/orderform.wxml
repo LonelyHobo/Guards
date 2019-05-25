@@ -5,7 +5,7 @@
     </view>
     <button class="userLogin" wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"></button>
     <view class="img">
-      <image mode="widthFix" class="userinfo-avatar" src="{{userInfo.HeadImg && userInfo.HeadImg!=''?userInfo.HeadImg:userTopUrl}}" mode="cover"></image>
+      <image mode="widthFix" class="userinfo-avatar" src="{{userInfo.ImgUrl && userInfo.ImgUrl!=''?userInfo.ImgUrl:userTopUrl}}" mode="cover"></image>
     </view>
     <view class="right">
       <text class="username">{{userInfo.Nickname && userInfo.Nickname!=''?userInfo.Nickname:userName}}</text>
@@ -24,23 +24,26 @@
       <view class="li {{item.on=='on'?'on':''}}" data-code="{{item.code}}" bindtap="orderNavClick" wx:key="{{item.code}}" wx:for="{{orderNavData}}" wx:for-index="index" wx:for-item="item">{{item.title}}</view>
     </view>
     <view class="list-content">
-      <view class="li" wx:if="{{formState==0 || (formState==1 && item.state=='派单中') || (formState==2 && item.state=='服务中') || (formState==3 && item.state=='已完成' && item.state=='已过时')}}" data-code="{{item.code}}" bindtap="orderClick" wx:for="{{orderData}}" wx:key="{{item.code}}"
+      <view class="li" wx:if="{{formState==0 || (formState==1 && item.StatuStr=='派单中') || (formState==2 && item.StatuStr=='服务中') || (formState==3 && item.StatuStr=='已完成' && item.StatuStr=='已过时')}}" data-code="{{item.SourceID}}" bindtap="orderClick" wx:for="{{orderData}}" wx:key="{{item.SourceID}}"
         wx:for-index="index" wx:for-item="item">
         <view class="top">
-          <view class="l">订单号：{{item.order}}</view>
-          <view class="r">订单状态：{{item.state}}</view>
+          <view class="l">订单号：{{item.OrderNo}}</view>
+          <view class="r">订单状态：{{item.StatuStr}}</view>
         </view>
         <view class="center">
           <view class='l'>
-            <image src='{{item.url}}' mode="widthFix" />
+            <image src='{{item.ServiceInfo.PicUrl}}' mode="widthFix" />
           </view>
           <view class='r'>
-            <view class="title">{{item.title}}</view>
-            <view class="describe">{{item.describe}}</view>
+            <view class="title">{{item.ServiceInfo.Name}}</view>
+            <view class="describe">
+              <import src="../../wxParse/wxParse.wxml"/>
+              <template is="wxParse" data="{{wxParseData:item.nodes.nodes}}"/>  
+            </view>
           </view>
         </view>
         <view class="bottom">
-          <view class="l">金额：{{item.money}}</view>
+          <view class="l">金额：{{item.ServicePrice}}</view>
           <view class="r">
             <view class="btn" data-phone="{{userPhone}}" bindtap="phoneCall">电话预约</view>
           </view>

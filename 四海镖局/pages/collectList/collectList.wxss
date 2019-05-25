@@ -1,0 +1,182 @@
+@import "../public/iconfont";
+@import "../public/public";
+.personal-head {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100rpx;
+  background-color: white;
+  box-shadow: 0 0 10rpx rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
+
+.personal-head .head-title {
+  font-size: 35rpx;
+  line-height: 100rpx;
+  display: block;
+  text-align: center;
+}
+.personal-head .head-close {
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  min-width: 90rpx;
+  height: 50rpx;
+  font-size:35rpx;
+  line-height: 50rpx;
+}
+.personal-head-height{
+  height: 100rpx;
+}
+
+/* pages/reserve/reserve.wxss */
+
+.reserve-list {
+  margin: 0 20rpx;
+  background-color:white;
+  padding-bottom:20rpx;
+}
+.reserve-list .reserve-list-head{
+  padding:25rpx 20rpx;
+  font-size:35rpx;
+  line-height: 35rpx;
+  border-bottom: 1px solid #eeeeee;
+}
+.reserve-list .ul .li {
+  border-bottom: 1px solid #eeeeee;
+  overflow: hidden;
+  padding: 20rpx 0;
+  margin:0 20rpx;
+  position: relative;
+}
+
+.reserve-list .ul .li .img {
+  width: 175rpx;
+  height: 175rpx;
+  float: left;
+  overflow: hidden;
+}
+.reserve-list .ul .li .text {
+  margin-left: 190rpx;
+}
+
+.reserve-list .ul .li .title {
+  font-size: 30rpx;
+  line-height: 40rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height:40rpx;
+}
+
+.reserve-list .ul .li .describe {
+  font-size: 25rpx;
+  line-height: 40rpx;
+  height: 120rpx;
+  margin-top: 5rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  color:#999999;
+}
+.reserve-list .ul .li .btn{
+  position: absolute;
+  right:0;
+  top:0;
+  height: 100%;
+  width:160rpx;
+  text-align: center;
+}
+.reserve-list .ul .li .btn text{
+  position: relative;
+  top:50%;
+  transform: translateY(-50%);
+  display: block;
+  float: right;
+  color:white;
+  font-size:25rpx;
+  width:130rpx;
+  height:60rpx;
+  line-height: 60rpx;
+  border-radius: 30rpx;
+  background:-webkit-linear-gradient(#f69d3e, #f6b73e);
+}
+
+/* 顶部 */
+.service-nav{
+  position: fixed;
+  top:100rpx;
+  z-index: 99999;
+  background-color: white;
+  width:100%;
+  left:0;
+  height: 100rpx;
+}
+.service-nav .li{
+  width:50%;
+  float:left;
+  height:100rpx;
+  line-height: 100rpx;
+  text-align: center;
+}
+.service-nav .li.on>view{
+position: relative;
+}
+.service-nav .li.on>view::before{
+  content:'';
+  position: absolute;
+  bottom:0;
+  left:40%;
+  transform: translateX(-50%);
+  width:40rpx;
+  height:5rpx;
+  background-color:#3d4bf6;
+}
+.service-nav .li.on text{
+  color: #3d4bf6;
+}
+.service-nav .li.check>view{
+position: relative;
+}
+.service-nav .li.check>view::before{
+  content:'';
+  position: absolute;
+  bottom:0;
+  left:40%;
+  transform: translateX(-50%);
+  width:40rpx;
+  height:5rpx;
+  background-color:#3d4bf6;
+}
+.service-nav .li.check text{
+  color: #3d4bf6;
+}
+.service-nav .li view{
+  display: inline-block;
+}
+.service-nav .li view text{
+  font-size:30rpx;
+  float:left;
+  display: block;
+  height:100rpx;
+  line-height: 100rpx;
+}
+.service-nav .li view text.icon-xia1,.service-nav .li view text.icon-shang{
+  font-size:25rpx;
+  margin-left:10rpx;
+  display: block;
+  height:100rpx;
+  line-height: 100rpx;
+  float:right;
+}
+.service-nav-height{
+  height: 100rpx;
+}
+
+.isnull{height: 50vh; overflow: hidden; background-color:white;}
+.isnull image{width:50%; display: block; margin:0 auto;}

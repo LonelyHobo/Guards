@@ -72,52 +72,60 @@
   margin-left:20rpx;
 }
 
-.personal-content .list{}
+ .center {
+   margin-top:20rpx;
+  background-color: white;
+}
 
-.personal-content .list{
-  border-bottom:1px solid #dddddd;
-  padding:20rpx 40rpx;
+ .center .content-name {
+  padding: 30rpx 0;
+  width: 90%;
+  margin: 0 auto;
+  border-bottom: 1px solid #eee;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+ .center .content-tel {
   overflow: hidden;
-}
-.personal-content .list .l{
-  width:30%;
-  float:left;
-  font-size:32rpx;
-  height: 70rpx;
-  line-height: 70rpx;
-}
-.personal-content .list .r{
-  width:70%;
-  float:right;
-  text-align: right;
-  position: relative;
-}
-.personal-content .list .r .text{
-  font-size:32rpx;
-  color:#888888;
-  height: 70rpx;
-  line-height: 70rpx;
-  display: inline-block;
-}
-.personal-content .list .r .iconfont{
-  display: block;
-  font-size:25rpx;
-  height: 70rpx;
-  line-height: 70rpx;
-  float:right;
-  margin-left:20rpx;
-}
-.personal-content .list .r button{
-  position: absolute;
-  top:0;
-  left: 0;
-  height: 70rpx;
-  width:100%;
-  z-index: 99;
-  opacity: 0;
+  width: 90%;
+  margin: 0 auto;
+  font-size: 30rpx;
+  border-bottom: 1px solid #eee;
 }
 
-.loginBtn{
+ .center .content-tel .l {
+  float: left;
+  width: 70%;
+  height: 80rpx;
+}
+ .center .content-tel .l input {
+  height: 80rpx;
+  font-size: 30rpx;
+  width:100%;
+}
+ .center .content-tel .r {
+  float: right;
+  width: 30%;
+  color: #3d4bf6;
+  font-size: 28rpx;
+  text-align: right;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+
+ .center .content-code {
+  padding: 10rpx 0;
+  width: 90%;
+  margin: 0 auto;
+  border-bottom: 1px solid #eee;
+}
+
+ .center .content-code input {
+  height: 80rpx;
+  font-size: 30rpx;
+}
+.editBtn{
    margin:50rpx auto;
  width:400rpx;
  height: 100rpx;
@@ -128,27 +136,4 @@
  line-height: 100rpx;
  letter-spacing: 3rpx;
  background: -webkit-linear-gradient(left, #2689f7 , #3e49f6);
-}
-
-.win{
-  display: none;
-}
-.win.on{
- display: block;
-}
-.win .back{
-  position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height: 100%;
-  z-index: 999;
-  background-color: rgba(0,0,0,0.4);
-}
-.win .content{
-  background-color: white;
-}
-.win .content .top{
-  height: 100rpx;
-  border-bottom:1px solid #eeeeee;
 }

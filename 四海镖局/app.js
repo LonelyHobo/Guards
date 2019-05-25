@@ -16,24 +16,31 @@ App({
           wx.getUserInfo({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
-              try {
-                var data = wx.getStorageSync("userKey");
-                if (!data || data == '') {
-                  vm.loginRequest(res.userInfo);
-                }
-              } catch (err) {
-                vm.loginRequest(res.userInfo);
-              }
+              // try {
+              //   var data = wx.getStorageSync("userKey");
+              //   if (!data || data == '') {
+              //     vm.loginRequest(res.userInfo,'',true);
+              //   }
+              // } catch (err) {
+              //   vm.loginRequest(res.userInfo, '', true);
+              // }
+              vm.loginRequest(res.userInfo, '', true);
             }
           })
         }
       }
     });
   },
-  loginRequest: function(userdata,fn) {
-    wx.showLoading({
-      title: '登录中...',
-    })
+  loginRequest: function(userdata, fn, is) {
+    if (!is) {
+      wx.showLoading({
+        title: '登录中...',
+      })
+    } else {
+      wx.showLoading({
+        title: '加载中...',
+      })
+    }
     var vm = this;
     // 登录
     wx.login({
@@ -48,9 +55,9 @@ App({
             Code: code,
           },
           success: function(res) {
-            if (res.statusCode == 200){
+            if (res.statusCode == 200) {
               //登录成功
-              var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+              var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
               //'91ce3fe0896408cf0b3893002de7c00b' || 
               var key = data.result;
               //保存用户id
@@ -69,78 +76,68 @@ App({
                   Code: code,
                   WeSessionKey: key
                 },
-                success: function (res) {
+                success: function(res) {
                   if (res.statusCode == 200) {
-                    var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+                    var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
+                    var data_ = data.result;
+                    console.log('用户信息:', data);
                     //初步保存用户信息
                     wx.setStorage({
                       key: 'userlistdata',
-                      data: data.result
+                      data: data_
                     });
-                    //判断用户是否注册过
-                    if (data.result.Nickname == '' || data.result.Nickname == null) {
-                      //新用户 保存微信数据
-                      var province_ = wxLocation.wxLocation[userdata.province.toLowerCase()].cn;
-                      var city_ = wxLocation.wxLocation[userdata.province.toLowerCase()].data[userdata.city.toLowerCase()];
-                      wx.getStorage({
-                        key: 'locations',
-                        success: function (res) {
-                          debugger;
-                          var data_ = {
-                            Nickname: userdata.nickName,
-                            Sex: userdata.gender == 1 ? 1 : userdata.gender == 0 ? 2 : 0,
-                            City: province_ + ' ' + city_,
-                            Position: res.data.city,
-                            ImgUrl: userdata.avatarUrl
-                          };
-                          wx.request({
-                            url: prot.MemberInfoSave + '?WeSessionKey=' + key,
-                            method: 'POST',
-                            data: JSON.stringify(data_),
-                            success: function (res) {
-                              if (res.statusCode == 200) {
-                                var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
-                                wx.hideLoading();
-                                typeof fn === 'function' ? fn(data_, key) : null;
-                                if (vm.userInfoReadyCallback) {
-                                  vm.userInfoReadyCallback(data_, key)
-                                }
-                              }else{
-                                wx.hideLoading();
-                                wx.showToast({
-                                  title: '个人信息获取失败',
-                                  mask: true,
-                                  icon: 'none',
-                                  duration: 2000,
-                                });
-                              }
-                            }
-                          });
-                          data_.HeadImg = userdata.avatarUrl;
-                          vm.globalData.userInfo = data_;
-                          wx.setStorage({
-                            key: 'userdata',
-                            data: data_
-                          });
-                        }
-                      });
-                    } else {
-                      //已注册
-                      if (data.result.HeadImg == '' || data.result.HeadImg == null) {
-                        data.result.HeadImg = userdata.avatarUrl;
-                      }
-                      vm.globalData.userInfo = data.result;
+                    var province_ = wxLocation.wxLocation[userdata.province.toLowerCase()].cn;
+                    var city_ = wxLocation.wxLocation[userdata.province.toLowerCase()].data[userdata.city.toLowerCase()];
+                    var locations = wx.getStorageSync("locations");
+                    data_.Nickname = vm.isNull(data_.Nickname, userdata.nickName);
+                    data_.Sex = vm.isNull(data_.Sex, userdata.gender == 1 ? 1 : userdata.gender == 0 ? 2 : 0);
+                    data_.Position = vm.isNull(data_.Position, locations.city);
+                    if (locations.city != data_.Position){
+                      locations.city = data_.Position
                       wx.setStorage({
-                        key: 'userdata',
-                        data: data.result
+                        key: 'locations',
+                        data: locations
                       });
-                      wx.hideLoading();
-                      typeof fn === 'function' ? fn(data.result, key) : null;
-                      if (vm.userInfoReadyCallback) {
-                        vm.userInfoReadyCallback(data.result, key)
+                      if (vm.locationsBack) {
+                        vm.locationsBack()
                       }
                     }
-                  }else{
+                    var url_ = data_.ImgUrl;
+                    data_.ImgUrl = vm.isNull(data_.ImgUrl, userdata.avatarUrl);
+                    if (url_ == data_.ImgUrl && url_.indexOf(prot.api)==-1){
+                      data_.ImgUrl = prot.api + data_.ImgUrl;
+                    }
+                    data_.City = vm.isNull(data_.City, province_ + ' ' + city_);
+                    //重新保存
+                    wx.request({
+                      url: prot.MemberInfoSave + '?WeSessionKey=' + key,
+                      method: 'POST',
+                      data: JSON.stringify(data_),
+                      success: function (res) {
+                        if (res.statusCode == 200) {
+                          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+                          wx.hideLoading();
+                          typeof fn === 'function' ? fn(data_, key) : null;
+                          if (vm.userInfoReadyCallback) {
+                            vm.userInfoReadyCallback(data_, key)
+                          }
+                        } else {
+                          wx.hideLoading();
+                          wx.showToast({
+                            title: '个人信息获取失败',
+                            mask: true,
+                            icon: 'none',
+                            duration: 2000,
+                          });
+                        }
+                      }
+                    });
+                    vm.globalData.userInfo = data_;
+                    wx.setStorage({
+                      key: 'userdata',
+                      data: data_
+                    });
+                  } else {
                     wx.hideLoading();
                     wx.showToast({
                       title: '个人信息获取失败',
@@ -151,7 +148,7 @@ App({
                   }
                 }
               });
-            }else{
+            } else {
               wx.hideLoading();
               wx.showToast({
                 title: '登录失败',
@@ -165,7 +162,7 @@ App({
       }
     })
   },
-  userCallBack:function(data){
+  userCallBack: function(data) {
     console.log(data);
   },
   loginSuccess: function(data) {
@@ -176,5 +173,13 @@ App({
   },
   globalData: {
     userInfo: null
-  }
+  },
+  isNull: function(obj, objs) {
+    if (obj == '' || obj == null) {
+      return objs;
+    } else {
+      return obj;
+    }
+  },
+  locationsBack:function(){}
 })

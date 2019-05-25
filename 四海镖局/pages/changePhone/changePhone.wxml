@@ -1,0 +1,21 @@
+<view class="changePhone">
+  <view class="personal-head">
+    <view class="head-close">
+      <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
+    </view>
+    <text class='head-title'>绑定手机号码</text>
+  </view>
+  <view class="personal-head-height"></view>
+  <view class="center">
+    <view class="content-tel">
+      <view class="l">
+        <input type='text' placeholder='请输入新的手机号码' value="" bindinput="firmInput" ></input>
+      </view>
+      <view class="r" bindtap="getCode" style="color:{{getcodenamecolor}};">{{getcodename}}</view>
+    </view>
+    <view class="content-code">
+      <input type='text' placeholder='请输入验证码' bindinput="firmCode" ></input>
+    </view>
+  </view>
+  <view bindtap="editPhone" class="editBtn">修改</view>
+</view>

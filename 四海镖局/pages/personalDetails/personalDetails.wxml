@@ -1,61 +1,96 @@
 <!--pages/personal/personal.wxml-->
-<view class="personal" >
-<view class="personal-head" >
-  <view class="head-close"><navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator></view>
-  <text class='head-title'>个人信息</text>
+<view class="personal">
+  <view class="personal-head">
+    <view class="head-close">
+      <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
+    </view>
+    <text class='head-title'>个人信息</text>
+  </view>
+  <view class="personal-head-height"></view>
+  <view class="personal-content">
+    <view class="top">
+      <view class="l">头像</view>
+      <view class='r' bindtap="clickImage">
+        <view class="img">
+          <image mode="widthFix" class="userinfo-avatar" src="{{userInfo.ImgUrl}}" mode="cover"></image>
+        </view>
+        <text class='iconfont icon-you1'></text>
+      </view>
+    </view>
+    <view class="list name">
+      <view class="l">名称</view>
+      <view class='r' data-name="请输入名称" data-code="Nickname" data-value="{{userInfo.Nickname}}" bindtap="modalinput">
+        <view class="text">{{userInfo.Nickname}}</view>
+        <text class='iconfont icon-you1'></text>
+      </view>
+    </view>
+    <view class="list sex">
+      <view class="l">性别</view>
+      <view class='r'>
+        <picker mode="selector" bindchange="sexChange" bindcolumnchange="sexChanges" value="{{multiIndex}}" range="{{multiArray}}">
+          <view class="picker">
+            <view class="text">{{userInfo.Sex=='1'?'男':userInfo.Sex=='2'?'女':'保密'}}</view>
+            <text class='iconfont icon-you1'></text>
+          </view>
+        </picker>
+      </view>
+    </view>
+    <view class="list sex">
+      <view class="l">生日</view>
+      <view class='r'>
+        <picker class="weui-btn" mode="date" value="{{userInfo.Birthday}}" start="" end="" bindchange="bindTimeChange">
+          <view class="picker">
+            <view class="text">{{userInfo.Birthday=='0001-01-01 00:00:00'?'待完善':userInfo.Birthday}}</view>
+            <text class='iconfont icon-you1'></text>
+          </view>
+        </picker>
+      </view>
+    </view>
+    <view class="list sex">
+      <view class="l">所在城市</view>
+      <view class='r' data-name="请输入城市地址" data-code="City" data-value="{{userInfo.City}}" bindtap="modalinput">
+        <view class="text">{{userInfo.City}}</view>
+        <text class='iconfont icon-you1'></text>
+      </view>
+    </view>
+    <view class="list sex">
+      <view class="l">手机号码</view>
+      <view class='r' bindtap="changePhone">
+        <!-- <button wx:if="{{userDetailsData.tel=='待完善'}}"  open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> -->
+        <view class="text">{{userInfo.Phone==null?'待完善':userInfo.Phone}}</view>
+        <text class='iconfont icon-you1'></text>
+      </view>
+    </view>
+    <view class="list sc">
+      <view class="l">我的收藏</view>
+      <view class='r' bindtap="collectList">
+        <view class="text">{{userCollectData.length}}个</view>
+        <text class='iconfont icon-you1'></text>
+      </view>
+    </view>
+    <view class="list dz">
+      <view class="l">我点赞的商家</view>
+      <view class='r' bindtap="likeList">
+        <view class="text">{{userLikeData.length}}个</view>
+        <text class='iconfont icon-you1'></text>
+      </view>
+    </view>
+    <view bindtap="loginout" class="loginBtn">退出登陆</view>
+  </view>
 </view>
-<view class="personal-head-height" ></view>
-<view class="personal-content" >
-  <view class="top" >
-    <view class="l" >头像</view>
-    <view class='r' >
-      <view class="img" ><image mode="widthFix" class="userinfo-avatar" src="{{userInfo.HeadImg}}" mode="cover"></image></view>
-      <text class='iconfont icon-you1' ></text>
-    </view>
-  </view>
-  <view class="list name" >
-    <view class="l" >名称</view>
-    <view class='r' >
-      <view class="text">{{userInfo.Nickname}}</view>
-      <text class='iconfont icon-you1' ></text>
-    </view>
-  </view>
-   <view class="list sex" >
-    <view class="l" >性别</view>
-    <view class='r' >
-      <view class="text">{{userInfo.Sex=='1'?'男':userInfo.Sex=='2'?'女':'保密'}}</view>
-      <text class='iconfont icon-you1' ></text>
-    </view>
-  </view>
-  <view class="list sex" >
-    <view class="l" >生日</view>
-    <view class='r' >
-      <view class="text">{{userDetailsData.birthday}}</view>
-      <text class='iconfont icon-you1' ></text>
-    </view>
-  </view>
-  <view class="list sex" >
-    <view class="l" >所在城市</view>
-    <view class='r' >
-      <view class="text">{{userInfo.City}}</view>
-      <text class='iconfont icon-you1' ></text>
-    </view>
-  </view>
-  <view class="list sex" >
-    <view class="l" >手机号码</view>
-    <view class='r' >
-      <!-- <button wx:if="{{userDetailsData.tel=='待完善'}}"  open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button> -->
-      <view class="text">{{userDetailsData.tel}}</view>
-      <text class='iconfont icon-you1' ></text>
-    </view>
-  </view>
-  <view bindtap="loginout" class="loginBtn" >退出登陆</view>
-</view>
-</view>
-<view class="win {{winShow}} " >
-  <view class="back" ></view>
+<view class="win {{winShow}} ">
+  <view class="back"></view>
   <view class="content">
-    <view class="top"><text>{{winName}}：</text><input type="text" confirm-type="done" value="{{winValue}}" ></input></view>
+    <view class="top">
+      <text>{{winName}}：</text>
+      <input type="text" confirm-type="done" value="{{winValue}}"></input>
+    </view>
     <view class="bottom">确定</view>
   </view>
 </view>
+
+<modal hidden="{{hiddenmodalput}}" title="{{firmName}}" confirm-text="提交" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">
+
+  <input type='text' placeholder="请输入内容" bindinput="firmInput" value="{{firmValue}}" auto-focus/>
+
+</modal>

@@ -54,7 +54,7 @@ Page({
       url: (btn == 'collect' ? vm.data.collectState ? prot.CollectDel : prot.CollectSave : vm.data.likeState ? prot.LikeDel : prot.LikeSave) + '?WeSessionKey=' + vm.data.userKey,
       method: 'POST',
       data: JSON.stringify({
-        SourceCode: 'MerChant',
+        SourceCode: 'Merchant',
         SourceID: vm.data.merchantId
       }),
       success: function(res) {
@@ -177,7 +177,7 @@ Page({
       });
     };
     var serviceAreaDatas = [];
-    if (this.data.introduceNavData[0].on == 'on') {
+    if (this.data.introduceNavData.length>0 && this.data.introduceNavData[0].on == 'on') {
       var data = [];
       this.data.serviceNavMinData1.forEach(function(value, index) {
         if (index == 0) {
@@ -357,7 +357,7 @@ Page({
       method: 'GET',
       data: {
         args: {
-          SourceCode: 'MerChant',
+          SourceCode: 'Merchant',
           SourceID: vm.data.merchantId
         },
         WeSessionKey: key
@@ -513,7 +513,6 @@ Page({
         }
       },
       success: function(res) {
-        wx.hideLoading();
         if (res.statusCode == 200) {
           var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
           data.forEach(function(value, index) {
@@ -537,6 +536,7 @@ Page({
       url: prot.GetRegionListAll,
       method: 'GET',
       success: function(res) {
+        wx.hideLoading();
         if (res.statusCode == 200) {
           var data = typeof(res.data) === 'string' ? JSON.parse(res.data) : res.data;
           var city0 = [],
