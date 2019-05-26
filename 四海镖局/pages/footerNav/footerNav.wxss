@@ -14,7 +14,9 @@
 .footer-height {
   height: 130rpx;
 }
-
+.footer-height .gray{
+  background-color:#f8f8f8;
+}
 .footerNav .ul {
   padding: 10rpx 0;
   height: 100rpx;

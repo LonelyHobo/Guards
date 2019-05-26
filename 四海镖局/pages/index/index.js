@@ -30,6 +30,7 @@ Page({
     streamerData: [],
     userCollectData:[],
     userLikeData:[],
+    regionIndex:0,
     footerlist: [{
         name: '首页',
         code: 'home',
@@ -150,6 +151,38 @@ Page({
     serviceAreaMinData2:[],
     serviceAreaCheckedData: []
   },
+  // 事件触发，调用接口
+  nearby_search: function () {
+    var _this = this;
+    // 调用接口
+    qqmapsdk.search({
+      keyword: 'kfc',  //搜索关键词
+      location: '39.980014,116.313972',  //设置周边搜索中心点
+      success: function (res) { //搜索成功后的回调
+        var mks = []
+        for (var i = 0; i < res.data.length; i++) {
+          mks.push({ // 获取返回结果，放到mks数组中
+            title: res.data[i].title,
+            id: res.data[i].id,
+            latitude: res.data[i].location.lat,
+            longitude: res.data[i].location.lng,
+            iconPath: "/resources/my_marker.png", //图标路径
+            width: 20,
+            height: 20
+          })
+        }
+        _this.setData({ //设置markers属性，将搜索结果显示在地图中
+          markers: mks
+        })
+      },
+      fail: function (res) {
+        console.log(res);
+      },
+      complete: function (res) {
+        console.log(res);
+      }
+    });
+  },
   //搜索
   searchTop: function() {
     wx.navigateTo({
@@ -242,7 +275,7 @@ Page({
     })
     var data = {
       args:{
-        Address: vm.data.province + vm.data.city,
+        Address: vm.data.address,
         Content: val,
       }
     };
@@ -609,6 +642,9 @@ Page({
     if (code_ =='orderform'){
       vm.getUserData();
     }
+    if (code_ == 'seekHelp'){
+      vm.getUserLocation(true);
+    }
     this.setData({
       servicelist: this.data.servicelist,
       serviceRoute: (code_ == 'service' || code_ == 'reserve') ? code_ : 'service'
@@ -648,6 +684,44 @@ Page({
         //订单页
         vm.getUserData();
       }
+    }
+    try {
+      var data = wx.getStorageSync("userdata");
+      if (!data || data == '') {
+        app.userInfoReadyCallback = function (res, key) {
+          vm.setData({
+            userInfo: res,
+            hasUserInfo: true,
+            userKey: key
+          })
+        };
+      } else {
+        wx.getStorage({
+          key: 'userdata',
+          success: function (res) {
+            vm.setData({
+              userInfo: res.data,
+              hasUserInfo: true
+            });
+          }
+        });
+        wx.getStorage({
+          key: 'userKey',
+          success: function (res) {
+            vm.setData({
+              userKey: res.data.key
+            });
+          }
+        });
+      }
+    } catch (err) {
+      app.userInfoReadyCallback = function (res, key) {
+        vm.setData({
+          userInfo: res,
+          hasUserInfo: true,
+          userKey: key
+        });
+      };
     }
     //首页轮播
     wx.request({
@@ -1187,7 +1261,7 @@ Page({
       vm.getUserLocation();
     }
   },
-  getUserLocation: function () {
+  getUserLocation: function (judge) {
     let vm = this;
     wx.getSetting({
       success: (res) => {
@@ -1216,7 +1290,7 @@ Page({
                         duration: 1000
                       })
                       //再次授权，调用wx.getLocation的API
-                      vm.getLocation();
+                      vm.getLocation(judge);
                     } else {
                       wx.showToast({
                         title: '授权失败',
@@ -1231,16 +1305,16 @@ Page({
           })
         } else if (res.authSetting['scope.userLocation'] == undefined) {
           //调用wx.getLocation的API
-          vm.getLocation();
+          vm.getLocation(judge);
         } else {
           //调用wx.getLocation的API
-          vm.getLocation();
+          vm.getLocation(judge);
         }
       }
     })
   },
   // 微信获得经纬度
-  getLocation: function () {
+  getLocation: function (judge) {
     let vm = this;
     wx.getLocation({
       type: 'wgs84',
@@ -1250,7 +1324,7 @@ Page({
         var longitude = res.longitude
         var speed = res.speed
         var accuracy = res.accuracy;
-        vm.getLocal(latitude, longitude)
+        vm.getLocal(latitude, longitude, judge)
       },
       fail: function (res) {
         console.log('fail' + JSON.stringify(res))
@@ -1258,7 +1332,7 @@ Page({
     })
   },
   // 获取当前地理位置
-  getLocal: function (latitude, longitude) {
+  getLocal: function (latitude, longitude, judge) {
     let vm = this;
     qqmapsdk.reverseGeocoder({
       location: {
@@ -1270,29 +1344,72 @@ Page({
         let province = res.result.ad_info.province;
         let city = res.result.ad_info.city;
         city = city.replace("市", "");
-        vm.setData({
-          province: province,
-          city: city,
-          latitude: latitude,
-          longitude: longitude
-        });
-        wx.setStorage({
-          key: 'locations',
-          data: {
+        if (!judge){
+          vm.setData({
             province: province,
             city: city,
             latitude: latitude,
             longitude: longitude
-          }
-        });
+          });
+          wx.setStorage({
+            key: 'locations',
+            data: {
+              province: province,
+              city: city,
+              latitude: latitude,
+              longitude: longitude
+            }
+          });
+        }else{
+          wx.hideLoading();
+          vm.setData({
+            address: res.result.address,
+            circles: [{
+              latitude: latitude,
+              longitude: longitude,
+              color: '#d1edff88',
+              fillColor: '#d1edff88',
+              radius: 100,//定位点半径
+              strokeWidth: 1
+            }],
+            regionIndex:0
+          });
+        }
       },
       fail: function (res) {
         console.log(res);
+        wx.hideLoading();
       },
       complete: function (res) {
-        // console.log(res);
       }
     });
+  },
+  regionchange(e) {
+    // 地图发生变化的时候，获取中间点，也就是用户选择的位置toFixed
+    console.log(e)
+    var vm = this;
+    if (e.type == 'end' && vm.data.regionIndex==0) {
+      vm.setData({
+        regionIndex: vm.data.regionIndex + 1
+      });
+      this.mapCtx = wx.createMapContext("map4select");
+      this.mapCtx.getCenterLocation({
+        type: 'gcj02',
+        success: function (res) {
+          console.log(res)
+          vm.setData({
+            latitude: res.latitude,
+            longitude: res.longitude
+          });
+          vm.getLocal(res.latitude, res.longitude,true);
+        }
+      });
+    }
+  },
+  //定位到自己的位置事件
+  my_location: function (e) {
+    var that = this;
+    that.onShow();
   },
   //图片报错处理
   picError: function (obj) {

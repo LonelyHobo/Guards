@@ -6,10 +6,34 @@
 .seekhelp .seekhelp-text{
   padding:20rpx 0;
 }
+.seekhelp-text .title{
+  font-size:30rpx;
+  padding:0 2.5% 10rpx 2.5%;
+}
+.seekhelp-text .import{
+  padding:10rpx 0 0 0;
+}
+.seekhelp-text .import input{
+  font-size:30rpx;
+  border-radius: 10rpx;
+  height:80rpx;
+  border:1px solid #eeeeee;
+  background-color:white;
+  padding:0 2.5%;
+  width: 95%;
+}
 .seekhelp .seekhelp-text textarea{
   background-color:white;
   height:200rpx;
   width:95%;
-  font-size:25rpx;
+  font-size:30rpx;
   padding:2.5%;
+}
+.cover-image{
+  width:40rpx;
+  height:40rpx;
+  position: relative;
+  top:50%;
+  transform: translate(-50%,-50%);
+  left:50%;
 }

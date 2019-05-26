@@ -1,5 +1,11 @@
 <!--pages/seekHelp/seekHelp.wxml-->
 <view class="seekhelp">
- <view class="seekhelp-text"><textarea placeholder='请告知我们您当前的需求信息' auto-focus="true" bindconfirm="seekhelpSave" ></textarea></view>
+<map id="map4select" longitude="{{longitude}}" latitude="{{latitude}}" scale="20" markers="{{markers}}" show-location bindcontroltap="controltap" bindmarkertap="markertap" circles="{{circles}}" bindregionchange="regionchange" style="width: 100%; height: 300px;" >
+        <cover-image class="cover-image" bindtap="my_location" src="/images/icon-location.png" />
+      </map>
+ <view class="seekhelp-text">
+ <view class="title" >当前定位地址</view>
+ <view class="import" ><input type="search" placeholder="请输入所在地址" value="{{address}}" ></input></view>
+ <textarea placeholder='请告知我们您当前的需求信息' bindconfirm="seekhelpSave" ></textarea></view>
  <!-- <view bindtap='seekhelpSave' >提交</view> -->
 </view>
