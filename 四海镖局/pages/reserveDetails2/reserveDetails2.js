@@ -376,64 +376,73 @@ Page({
     });
     //服务地区
     wx.request({
-      url: prot.GetRegionListAll,
+      url: prot.GetRegionListByService,
       method: 'GET',
+      data:{
+        args:{
+          ServiceID: options.code
+        }
+      },
       success: function (res) {
         if (res.statusCode == 200) {
           var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          data = data.result;
           var city0 = [], city1 = [], city2 = {}, city3 = [];
-          data.forEach(function (value, index) {
-            var index_ = index;
-            if (value.ParentID == 0) {
-              //国家
-              city0.push({
-                title: value.Name,
-                regionID: value.RegionID,
-                code: value.Code,
-                on: (value.RegionID == 1 ? 'on' : ''),
-                parentId: value.ParentID,
-                datalist: []
-              });
-            } else if (value.ParentID == 1) {
-              //省
-              city1.push({
-                title: value.Name,
-                regionID: value.RegionID,
-                code: value.Code,
-                on: (value.RegionID == 2 ? 'on' : ''),
-                parentId: value.ParentID,
-                datalist: []
-              });
-            } else if (value.ParentID == 1519) {
-              //国外
-              city3.push({
-                title: value.Name,
-                regionID: value.RegionID,
-                code: value.Code,
-                on: (value.RegionID == 534 ? 'on' : ''),
-                parentId: value.ParentID,
-                datalist: []
-              });
-            } else {
-              //市
-              if (city2[value.ParentID]) {
-                city2[value.ParentID].push({
+          data.forEach(function(value){
+            city0.push({
+              title: value.Name,
+              regionID: value.RegionID,
+              code: value.Code,
+              on: (value.RegionID == 1 ? 'on' : ''),
+              parentId: value.ParentID,
+              datalist: []
+            });
+            value.Children = value.Children ? value.Children : [];
+            value.Children.forEach(function (value, index) {
+              var index_ = index;
+                if (value.ParentID == 1) {
+                //省
+                city1.push({
                   title: value.Name,
                   regionID: value.RegionID,
                   code: value.Code,
-                  on: '',
-                  parentId: value.ParentID
+                  on: (value.RegionID == 2 ? 'on' : ''),
+                  parentId: value.ParentID,
+                  datalist: []
                 });
-              } else {
-                city2[value.ParentID] = [{
+              } else if (value.ParentID == 1519) {
+                //国外
+                city3.push({
                   title: value.Name,
                   regionID: value.RegionID,
                   code: value.Code,
-                  on: '',
-                  parentId: value.ParentID
-                }];
+                  on: (value.RegionID == 534 ? 'on' : ''),
+                  parentId: value.ParentID,
+                  datalist: []
+                });
               }
-            }
+              value.Children = value.Children ? value.Children:[];
+              value.Children.forEach(function(value){
+                //市
+                if (city2[value.ParentID]) {
+                  city2[value.ParentID].push({
+                    title: value.Name,
+                    regionID: value.RegionID,
+                    code: value.Code,
+                    on: '',
+                    parentId: value.ParentID
+                  });
+                } else {
+                  city2[value.ParentID] = [{
+                    title: value.Name,
+                    regionID: value.RegionID,
+                    code: value.Code,
+                    on: '',
+                    parentId: value.ParentID
+                  }];
+                }
+              })
+            });
           });
           city1.forEach(function (value) {
             value.datalist = city2[value.regionID];
@@ -456,9 +465,9 @@ Page({
             serviceNavMinData1:city0,
             serviceAreaData: city1,
             serviceAreaData1: city1,
-            serviceAreaMinData: city1[0].datalist,
+            serviceAreaMinData: city1.length>0?city1[0].datalist:[],
             serviceAreaData2: city3,
-            serviceAreaMinData2: city3[0].datalist,
+            serviceAreaMinData2: city3.length > 0 ?city3[0].datalist:[],
           });
           var serviceAreaDatas = [];
           if (options.areaCode == 1) {
@@ -491,7 +500,6 @@ Page({
             })
             vm.data.serviceNavMinData = data;
             serviceAreaDatas = vm.data.serviceAreaData1;
-            debugger;
           }
           vm.setData({
             serviceNavMinData: vm.data.serviceNavMinData,

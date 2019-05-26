@@ -50,3 +50,78 @@ page{
 .reserve-list {
  padding-bottom:0;
 }
+
+/* 顶部 */
+.service-nav{
+  position: fixed;
+  top:80rpx;
+  z-index: 99999;
+  background-color: white;
+  width:100%;
+  left:0;
+  height: 100rpx;
+  border-bottom:1px solid #eeeeee;
+}
+.service-nav .li{
+  width:50%;
+  float:left;
+  height:100rpx;
+  line-height: 100rpx;
+  text-align: center;
+}
+.service-nav .li.on>view{
+position: relative;
+}
+.service-nav .li.on>view::before{
+  content:'';
+  position: absolute;
+  bottom:0;
+  left:40%;
+  transform: translateX(-50%);
+  width:40rpx;
+  height:5rpx;
+  background-color:#3d4bf6;
+}
+.service-nav .li.on text{
+  color: #3d4bf6;
+}
+.service-nav .li.check>view{
+position: relative;
+}
+.service-nav .li.check>view::before{
+  content:'';
+  position: absolute;
+  bottom:0;
+  left:40%;
+  transform: translateX(-50%);
+  width:40rpx;
+  height:5rpx;
+  background-color:#3d4bf6;
+}
+.service-nav .li.check text{
+  color: #3d4bf6;
+}
+.service-nav .li view{
+  display: inline-block;
+}
+.service-nav .li view text{
+  font-size:30rpx;
+  float:left;
+  display: block;
+  height:100rpx;
+  line-height: 100rpx;
+}
+.service-nav .li view text.icon-xia1,.service-nav .li view text.icon-shang{
+  font-size:25rpx;
+  margin-left:10rpx;
+  display: block;
+  height:100rpx;
+  line-height: 100rpx;
+  float:right;
+}
+.service-nav-height{
+  height: 100rpx;
+}
+.reserve-list .ul .li .text {
+  margin-right:0;
+}

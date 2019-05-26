@@ -36,4 +36,5 @@ module.exports = {
   PositionChange: api_ + '/Member/PositionChange',///修改定位
   PhoneChange: api_ + '/Member/PhoneChange',///修改手机号
   GetAuthCode: api_ + '/Member/GetAuthCode',///获取验证码
+  Search: api_ + '/Service/Search',///获取验证码
 }; 

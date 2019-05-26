@@ -1,53 +1,112 @@
 // pages/searchAll/searchAll.js
+var WxParse = require('../../wxParse/wxParse.js');
+//接口
+var prot = require('../../utils/prot.js');
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    api:prot.api,
     searchVal:'',
     reserveListData:[],
-    isNull:false
+    isNull:false,
+    reserveNavData: [{
+      title: '服务商',
+      code: 'Merchant',
+      on: 'on'
+    },
+    {
+      title: '服务',
+      code: 'Service',
+      on: ''
+    }
+    ],
+    userCollectData1:[],
+    userCollectData2:[]
+  },
+  //服务分类选择
+  reserveNavDataClick: function (obj) {
+    var vm = this;
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var datalist = [];
+    this.data.reserveNavData.forEach(function (value, index) {
+      value.on = '';
+      if (value.code == code_) {
+        value.on = 'on';
+      }
+    })
+    this.setData({
+      reserveNavData: this.data.reserveNavData
+    });
+  },
+  //服务商点击
+  serviceListClick: function (obj) {
+    var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
+    var name_ = obj.target.dataset.name || obj.currentTarget.dataset.name;
+    wx.navigateTo({
+      url: '../serviceDetails/serviceDetails?state=1&merchantId=' + code_ + '&merchantName=' + name_
+    })
   },
   //服务列表点击
   reserveListDataClick: function (obj) {
     var code_ = obj.target.dataset.code || obj.currentTarget.dataset.code;
     var name_ = obj.target.dataset.name || obj.currentTarget.dataset.name;
-    var area_ = obj.target.dataset.area || obj.currentTarget.dataset.area;
     var title_ = obj.target.dataset.title || obj.currentTarget.dataset.title;
+    var areaCode = 0;
     wx.navigateTo({
-      url: '../reserveDetails/reserveDetails?code=' + code_ + '&name=' + name_ + '&area=' + area_ + '&title=' + title_
+      url: '../reserveDetails/reserveDetails?state=1&code=' + code_ + '&name=' + name_ + '&title=' + title_ + '&areaCode=' + areaCode
     })
   },
-  searchClick:function(){
-    var the = this;
-    var data = [
-      { title: '私人保镖服务', serviceName: '香港卫安', serviceArea: '中国香港', code: '1', url: '/images/icon_list_1.png', describe: '全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何' },
-      { title: '家庭保镖服务', serviceName: '北京万家', serviceArea: '北京', code: '2', url: '/images/icon_list_1.png', describe: '全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何' },
-      { title: '物资押运', serviceName: '香港卫安', serviceArea: '中国香港', code: '3', url: '/images/icon_list_1.png', describe: '全国范围提供高端高危安全防范服务及解决方案，隆门镖局保镖公司您如何' }
-    ];
-    if (the.data.searchVal!=''){
-      var datas = [];
-      data.forEach(function (value) {
-        if (value.title.indexOf(the.data.searchVal)>=0) {
-          datas.push(value);
-        }
-      })
-      if (datas.length==0){
-        this.setData({
-          isNull: true
-        })
-      }else{
-        this.setData({
-          isNull: false
-        })
-      }
-    }else{
-      var datas = data;
-    }
-    this.setData({
-      reserveListData: datas
+  searchClick:function(code){
+    var vm = this;
+    wx.showLoading({
+      title: '加载中...',
     })
+    wx.request({
+      url: prot.Search,
+      method: 'GET',
+      data: {
+        args: {
+          start: 0,
+          limit: 10,
+          sort: 'SortNo',
+          dir: 'DESC',
+          Name: vm.data.searchVal
+        }
+      },
+      success: function (res) {
+        wx.hideLoading();
+        if (res.statusCode == 200) {
+          var data = typeof (res.data) === 'string' ? JSON.parse(res.data) : res.data;
+          data.merchats.forEach(function (value, index) {
+            if (value.PicUrl && value.PicUrl != null) {
+              value.PicUrl = vm.data.api + value.PicUrl;
+            } else {
+              value.PicUrl = '/images/imgNull.png';
+            }
+            var introduce = value.Introduce;
+            var nodes = WxParse.wxParse('introduce1' + index, 'html', introduce, vm, 5);
+            data.merchats[index]['nodes'] = nodes;
+          });
+          data.services.forEach(function (value, index) {
+            if (value.PicUrl && value.PicUrl != null) {
+              value.PicUrl = vm.data.api + value.PicUrl;
+            } else {
+              value.PicUrl = '/images/imgNull.png';
+            }
+            var introduce = value.Introduce;
+            var nodes = WxParse.wxParse('introduce2' + index, 'html', introduce, vm, 5);
+            data.services[index]['nodes'] = nodes;
+          });
+          vm.setData({
+            userCollectData1: data.merchats,
+            userCollectData2: data.services,
+          });
+        }
+      }
+    });
   },
   searchInput:function(obj){
     this.setData({

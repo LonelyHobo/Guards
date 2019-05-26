@@ -5,22 +5,42 @@
     <view class="r" ><navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">取消</navigator></view>
   </view>
   <view class="search-head-height" ></view>
+  <view class="service-nav" wx:if="{{userCollectData1.length>0 || userCollectData2.length>0}}">
+    <view class="li {{item.on=='on'?'on':''}}"  data-code="{{item.code}}" bindtap="reserveNavDataClick" wx:for="{{reserveNavData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
+      <view>
+        <text>{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="service-nav-height" wx:if="{{userCollectData1.length>0 || userCollectData2.length>0}}"></view>
   <!-- 服务 -->
   <view class="reserve-list">
     <view class="ul" >
-      <view class="li" data-code="{{item.code}}" data-name="{{item.serviceName}}" data-area="{{item.serviceArea}}" data-title="{{item.title}}" bindtap="reserveListDataClick" wx:for="{{reserveListData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.code}}" >
+      <view class="li" wx:if="{{reserveNavData[0].on=='on'}}" data-code="{{item.MerchantID}}" wx:for="{{userCollectData1}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.MerchantID}}" >
         <view class="img imgCenter" >
-          <image src="{{item.url}}" mode="widthFix" ></image>
+          <image src="{{item.PicUrl}}" mode="widthFix" ></image>
         </view>
-        <view class="text" >
-          <view class="title" >{{item.title}}</view>
-          <view class="describe" >{{item.describe}}</view>
+        <view class="text" data-code="{{item.MerchantID}}" data-name="{{item.Name}}" bindtap="serviceListClick" >
+          <view class="title" >{{item.Name}}</view>
+          <view class="describe" >
+            <import src="../../wxParse/wxParse.wxml"/>
+            <template is="wxParse" data="{{wxParseData:item.nodes.nodes}}"/>  
+          </view>
         </view>
-        <view class="btn" >
-          <text>预约</text>
+      </view>
+      <view class="li" wx:if="{{reserveNavData[1].on=='on'}}" data-code="{{item.ServiceID}}" wx:for="{{userCollectData2}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.ServiceID}}" >
+        <view class="img imgCenter" >
+          <image src="{{item.PicUrl}}" mode="widthFix" ></image>
+        </view>
+        <view class="text" data-code="{{item.ServiceID}}" data-name="{{item.Name}}" data-title="{{item.Name}}" bindtap="reserveListDataClick" >
+          <view class="title" >{{item.Name}}</view>
+          <view class="describe" >
+            <import src="../../wxParse/wxParse.wxml"/>
+            <template is="wxParse" data="{{wxParseData:item.nodes.nodes}}"/>  
+          </view>
         </view>
       </view>
     </view>
   </view>
-  <view wx:if="{{isNull}}" class="isnull"><image src="/images/no_data.png" mode="widthFix" ></image></view>
+  <view wx:if="{{userCollectData1.length==0 && userCollectData2.length==0}}" class="isnull"><image src="/images/no_data.png" mode="widthFix" ></image></view>
 </view>
