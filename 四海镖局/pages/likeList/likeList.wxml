@@ -1,2 +1,30 @@
-<!--pages/likeList/likeList.wxml-->
-<text>pages/likeList/likeList.wxml</text>
+ <view class="service">
+ <view class="personal-head">
+    <view class="head-close">
+      <navigator url="../index/index" open-type="navigateBack" hover-class="other-navigator-hover">关闭</navigator>
+    </view>
+    <text class='head-title'>我点赞的商家</text>
+  </view>
+  <view class="service-nav-height"></view>
+  <!-- 列表 -->
+  <view class="reserve-list">
+    <view class="ul" >
+      <view class="li" wx:if="{{reserveNavData[0].on=='on'}}" data-code="{{item.Merchant.MerchantID}}" wx:for="{{userCollectData}}" wx:for-index="index" wx:for-item="item"  wx:key="{{item.Merchant.MerchantID}}" >
+        <view class="img imgCenter" >
+          <image src="{{item.Merchant.PicUrl}}" mode="widthFix" ></image>
+        </view>
+        <view class="text" data-code="{{item.Merchant.MerchantID}}" data-name="{{item.Merchant.Name}}" bindtap="serviceListClick" >
+          <view class="title" >{{item.Merchant.Name}}</view>
+          <view class="describe" >
+            <import src="../../wxParse/wxParse.wxml"/>
+            <template is="wxParse" data="{{wxParseData:item.Merchant.nodes.nodes}}"/>  
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view wx:if="{{userCollectData.length==0}}" >
+        <view class="isnull"><image src="/images/no_data.png" mode="widthFix" ></image></view>
+      </view>
+  </view>
+ </view>

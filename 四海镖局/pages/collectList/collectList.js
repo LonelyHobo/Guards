@@ -116,16 +116,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var vm = this;
-    wx.getStorage({
-      key: 'userKey',
-      success: function (res) {
-        vm.setData({
-          userKey: res.data.key
-        });
-        vm.getUserCollect(res.data.key,'Merchant');
-      }
-    });
+   
   },
 
   /**
@@ -139,7 +130,16 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    var vm = this;
+    wx.getStorage({
+      key: 'userKey',
+      success: function (res) {
+        vm.setData({
+          userKey: res.data.key
+        });
+        vm.getUserCollect(res.data.key, 'Merchant');
+      }
+    });
   },
 
   /**

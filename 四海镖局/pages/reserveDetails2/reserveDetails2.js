@@ -358,8 +358,7 @@ Page({
           limit: 10,
           sort: 'A.SortNo',
           dir: 'DESC',
-          SpecialID: options.code,
-          RegionID: options.areaCode == 1 ? 0 : 1519
+          SpecialID: options.code
         }
       },
       success: function (res) {
